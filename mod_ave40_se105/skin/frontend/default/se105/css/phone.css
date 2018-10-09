@@ -1,0 +1,2310 @@
+.aside-tab .logout-btton, .clearance-page .nav-banner, .product-detail .buyinfo .whole-cart, .phone-hidden .review-main .review-product-rating .ratings span, .mb-select-all, .mb-order-deal-info, .phone-show, .footer-fix-win, #pro-color-list, .phone-wid .aside-tab ul li img, .phone-hidden .operation-list a span {
+    display: none;
+}
+
+.hrxian {
+    display: none;
+    background: #f5f5f5;
+    width: 100%;
+    height: 1px;
+    padding: 0 !important;
+}
+
+/*去掉input type为number时的上下箭头*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+-webkit-appearance: none !important;
+}
+
+input[type="number"]{
+    -moz-appearance:textfield;
+}
+
+.fontsize-red{
+    color: #e10b0b;
+}
+
+.product-review-form {
+    display: none;
+    margin: 50px 20px;
+    color: #110505;
+    font-size: 16px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #a9a9a9;
+}
+.product-review-form textarea{
+    width: 100%;
+    border-radius: 5px;
+    margin: 20px 0;
+    line-height: 30px;
+    font-size: 14px;
+}
+.product-review-form fieldset>div {
+    margin-bottom: 10px;
+    line-height: 30px;
+    padding-right: 10px;
+}
+.product-review-form .info-textarea{
+    clear:both;
+}
+.product-review-form>div:first-child {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+.attr-table{
+    width: 100%;
+    max-height: 400px;
+    overflow-y:scroll;
+}
+td.out {
+    color: #e10b0b;
+    font-size: 16px;
+}
+td.pre-order{
+    color: #f88219;
+}
+td.quantity .disabled{
+    opacity: 0.3;
+}
+.product-total-num {
+    width: 98%;
+    height: 80px;
+    border: 1px solid #929292;
+    border-top: none;
+    box-sizing: border-box;
+}
+.review-button {
+    background-color: #110505;
+    color: #fff;
+    font-size: 18px;
+    padding: 10px 50px;
+}
+#netreviews_reviews_tab, .search-main .minimal-price-link, .join-cart, .details_contair .product-detail .ratings, .keywordsWrappe {
+    display: none;
+}
+.recommend-swiper-box .sales-label{
+    bottom: 24%;
+}
+.arrival-banner {
+    width: 390px;
+}
+ul.reviews-rating li{
+    display: inline-block;
+    width: 27px;
+    height: 24px;
+    background: url('../images/personal/star-24.png') 0 100% no-repeat;
+}
+
+ul.reviews-rating .hover{
+    background: url('../images/personal/star-24.png') 0 0 no-repeat;
+}
+.featured-products .product-item-price .special-price .price, .new-home-b2b .product-item-price .special-price .price{
+    font-size: 24px;
+}
+.color-list select .disabled{
+    color: #ddd;
+}
+/*修改评论列表样式*/
+.feedback .comment-list{
+    margin: 0 20px;
+}
+.comment-list .comment-info{
+    border:none;
+    border-bottom: 1px dashed #a9a9a9;
+    padding: 42px 10px;
+}
+.comment-list dl:last-child {
+    border-bottom-style: solid;
+}
+.comment-list .head-portrait{
+    float: left;
+    right: initial;
+    top: inherit;
+    width: auto;
+    min-width: auto;
+}
+.comment-list dd{
+    float: right;
+    width: 89%;
+}
+.comment-list .head-portrait img{
+    padding: 14px;
+    border: 1px solid #a9a9a9;
+}
+.comment-list .rating-box{
+    display: inline-block;
+    float: left;
+    margin: 0;
+}
+.comment-list .comment-top{
+    float: left;
+    margin: 8px;
+}
+.reviews-pagination {
+    padding-right: 20px;
+}
+.submit-common{
+    background-color: #e10b0b;
+}
+/*产品详情页介绍强制字体颜色为红色*/
+.WordSection1>p:first-child span {
+    color: #e10b0b !important;
+}
+.topic-newarrival-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.clearance-main .product_item_wrap {
+    margin: 0;
+    padding-right: 0;
+    padding-top: 12px;
+}
+@media screen and (max-width: 1199px) {
+
+    .main, .personal-main {
+        width: 100%;
+    }
+
+    .detail-info img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .detail-info .detail-info-box, .feedback .average-rating, .shipp-box {
+        padding: 0;
+        margin: 0;
+    }
+
+    .verif-box, .add-new-address, .personal-main .tab {
+        padding-left: 0;
+    }
+
+    .secu-word {
+        width: auto;
+    }
+
+    .clearance-page .clearance-main .clearance-3-col .clearance-product-list .pagination-common {
+        width: 100%;
+        padding: 0;
+    }
+
+    .vapo-activity-main .vapo-activity-detail{
+        margin: 0;
+    }
+    .vapo-activity-detail>div {
+        padding: 8.4% 4.63%;
+    }
+    /*arrival*/
+    /*sale*/
+    .clearance-main .product_card_other_info{
+        padding: 0 10px;
+    }
+    .clearance-2-col.product_item_sales_template .product_item_card{
+        height: auto;
+        box-shadow: none;
+    }
+    .clearance-page .clearance-main .clearance-2-col {
+        background:none;
+    }
+    .clearance-main .clearance-2-col .product_item_wrap{
+        padding: 0;
+    }
+    .clearance-main .clearance-2-col.product_item_sales_template .product_item_box{
+        padding: 0;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 1199px) and (min-width: 1024px) {
+    .product-info .product-detail {
+        width: 51%;
+        padding-left: 70px;
+    }
+
+    .product-info .product-detail .color-list {
+        width: 300px;
+    }
+
+    /*修改清仓页样式*/
+    .clearance-page .clearance-main .clearance-3-col .clearance-product-brands{
+        clear: both;
+    }
+
+    .clearance-product-list .home-list li.item{
+        border-bottom: none;
+    }
+
+    .clearance-product-title span{
+        padding-left: 10px;
+    }
+
+    .clearance-main .clearance-2-col.product_item_sales_template .product_card_name{
+        margin-bottom: 0;
+    }
+
+    /*修改清仓页样式*/
+}
+
+@media screen and (max-width: 1049px) {
+    .wishlist-exist .wishlist-tab-ul ul li.tab-wishlist-as-low-as, .wishlist-as-low-as{
+        width: 19.8%;
+    }
+
+}
+
+@media screen and (max-width: 1023px) {
+    .home-box .head span:first-child{
+        float: left;
+        margin-top: 0.05rem;
+        height: 0.36rem;
+        line-height: 22px;
+        border-left: solid 0.05rem #ff8a00;
+    }
+
+    .phone-wid .user-head-upload {
+        float: left;
+    }
+
+    .deatails-box{
+        border:0;
+    }
+    .tab{
+        margin: 0;
+    }
+
+    .sales-label{
+        bottom: inherit!important;
+        left: 70px;
+        top: 10px;
+        padding: 1px 5px;
+    }
+    .sales-label .sales-off-num{
+        font-size: 14px;
+    }
+
+    .topic-product .sales-label{
+        left: 10px;
+        bottom: initial;
+    }
+
+    .home-best-seller-product .no_verification_wholesale_tips {
+        padding: 0;
+    }
+    .topic-product .product-other-info{
+        padding: 0;
+    }
+
+    /*修改清仓页*/
+
+    .clearance-1-col{
+        display: none;
+    }
+
+    .clearance-page .nav-banner {
+        display: block;
+        width: 100%;
+    }
+
+    .clearance-page .nav-banner img{
+        margin-bottom: 0.2rem;
+    }
+
+    .clearance-product-list{
+        border: none;
+    }
+
+    .clearance-page .clearance-main .clearance-2-col {
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        float: none;
+        box-shadow: none;
+    }
+
+    .clearance-page .clearance-main .clearance-2-col .home-list .home-product-img, .clearance-page .clearance-main .clearance-2-col .home-list .home-product-img a {
+        width: 100%;
+        height: auto;
+    }
+
+    .clearance-page .clearance-main .clearance-product-show{
+        margin:0;
+    }
+
+    .clearance-page .clearance-main .product-items .product-name {
+        font-size: 14px;
+        height: 0.6rem;
+        line-height: 0.3rem;
+    }
+
+    .clearance-page .clearance-main .clearance-2-col .price-box p{
+        padding-left: 0;
+    }
+
+    .clearance-page .clearance-main .clearance-2-col .old-price .price {
+        font-size: 14px;
+    }
+
+    .clearance-page .clearance-main .home-product-img img{
+        margin: 0;
+        height: inherit;
+    }
+
+    .clearance-product-title .title-01-icon:hover, .clearance-product-title>span.title-01-icon.active {
+        background: url(../images/clearance/clearance_icon0111.png) no-repeat 20% center;
+    }
+
+    .clearance-product-title .title-02-icon:hover, .clearance-product-title>span.title-02-icon.active {
+        background: url(../images/clearance/clearance_icon0311.png) no-repeat 20% center;
+    }
+
+    .clearance-product-title .title-03-icon:hover, .clearance-product-title>span.title-03-icon.active {
+        background: url(../images/clearance/clearance_icon0411.png) no-repeat 20% center;
+    }
+
+    .clearance-product-title .title-04-icon:hover, .clearance-product-title>span.title-04-icon.active {
+        background: url(../images/clearance/clearance_icon0211.png) no-repeat 20% center;
+    }
+
+    .clearance-product-title .title-01-icon, .clearance-product-title .title-01-icon:hover, .clearance-product-title>span.title-01-icon.active, .clearance-product-title .title-02-icon, .clearance-product-title .title-02-icon:hover, .clearance-product-title>span.title-02-icon.active, .clearance-product-title .title-03-icon, .clearance-product-title .title-03-icon:hover, .clearance-product-title>span.title-03-icon.active, .clearance-product-title .title-04-icon, .clearance-product-title .title-04-icon:hover, .clearance-product-title>span.title-04-icon.active{
+        background-position: 50% 25%;
+        background-color: none;
+        color: #333;
+    }
+
+    .clearance-product-title div{
+        padding-top: 0.35rem;
+        font-size: 0.22rem;
+    }
+
+    .clearance-product-title span.active:after, .clearance-product-title span:hover:after{
+        display: none;
+    }
+
+    .clearance-product-title{
+        box-shadow: none;
+    }
+
+    /*修改清仓页*/
+
+
+    .phone-wid .user-info {
+        height: 1.32rem;
+        padding: 0.3rem;
+        text-align: left;
+    }
+
+    .phone-wid{
+        display: none;
+        width: 100%;
+    }
+
+    .phone-wid .user-head-img, .phone-wid .user-head-img img {
+        width: 1.32rem;
+        height: 1.32rem;
+    }
+
+    .phone-wid .user-head-img, .phone-wid .myPoints{
+        border: none;
+    }
+
+    .phone-wid .user-name {
+        padding-left: 0.7rem;
+        /*font-size: 0.35rem;*/
+        color: #333;
+        min-height: 0.5rem;
+        margin: 9px 0 5px;
+    }
+
+
+    .phone-wid .myPoints {
+        padding: 0;
+        /*font-size: 0.18rem;*/
+        padding-left: 2.02rem;
+        color: #666;
+        position: absolute;
+        bottom: 0.2rem;
+        height: 20px;
+        left: 42px;
+    }
+
+    .phone-wid .aside-tab {
+        padding-bottom: 0;
+        margin-top: 0;
+    }
+
+    .phone-wid .aside-tab ul li {
+        height: 1.07rem;
+        line-height: 1.07rem;
+        padding: 0;
+        border-bottom: 1px solid #dbdbdb;
+        text-align: left;
+    }
+
+
+    .phone-wid .aside-tab ul li a.on {
+        color: #333;
+        background: #ffffff;
+        margin: 0;
+    }
+
+
+    .phone-wid .aside-tab ul li img {
+        display: inline;
+        padding: 0 10px;
+        width: 0.4rem;
+        height: 0.4rem;
+    }
+
+    .phone-wid .aside-tab ul li:hover a {
+        background-color: #dbdbdb;
+    }
+
+    .phone-wid .aside-tab ul li .right-pic {
+        background: url(../images/personal/phone-qian.png) no-repeat right;
+        position: relative;
+        top: 0.33rem;
+        display: inline-block;
+    }
+
+    .certifie-icon {
+        left: 2.25rem;
+        bottom: 0.2rem;
+        right: initial;
+        top: initial;
+    }
+
+    .phone-wid .person-btn {
+        width: 0.4rem;
+        height: 0.4rem;
+        background-size: 100%;
+        top: 0.71rem;
+        right: 0.3rem;
+    }
+
+
+    .aside-tab .logout-btton{
+        display: block;
+        width: 100%;
+        border: none;
+        font-size: 14px;
+        line-height: 0.8rem;
+        color: #ffffff;
+        background: #e10b0b;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+    }
+
+    .mobile-logout-btton{
+        display: block;
+        padding: 0 0.2rem;
+        margin: 0.4rem 0;
+    }
+
+    /*arrival 移动*/
+
+    .arrival-product .product_item_new_arrival_template .product_card_price .special-price .price{
+        font-size: 16px;
+    }
+
+}
+
+@media screen and (max-width: 950px) {
+    .product-veri-content{
+        width: 100%;
+        margin: 0;
+    }
+    .product-veri-form select{
+        width: 124px;
+    }
+    .product-total-num{
+        width: 100%;
+    }
+    .product-veriinput03{
+        font-size: 12px !important;
+    }
+    a.product-veri-button {
+        background-color: initial;
+        color: #110505;
+    }
+
+    .exclusive-compare .exclusive-show-time>div{
+        margin-top: 10px;
+    }
+
+    .orders-main .overview-shipping-number,.tab-shipping{
+        display: none;
+    }
+
+    .order-deal-info > li,.overview-order-tab ul li{
+        width: calc((100% - 25px) / 5);
+    }
+}
+
+@media screen and (max-width: 827px) {
+    .filter-right {
+        float: left;
+        margin-top: 15px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .swiper-pagination-arrival-product{
+        top: -40px;
+    }
+
+    .swiper-sellers-product-next, .swiper-sellers-product-prev, .swiper-arrival-product-prev, .swiper-arrival-product-next{
+        top: -18px;
+    }
+
+    .exclusive-header h1{
+        font-size: 20px;
+        margin:20px 0;
+    }
+
+    .product_item_new_arrival_template .product-numberfive .product_item_box:first-child .product_item_card .product_card_img{
+        width: 50%;
+        height: auto;
+        margin: 0 auto;
+        float: left;
+    }
+
+    .product_item_new_arrival_template .product-numberfive .product_item_box:first-child .product_card_name{
+        margin-top: 0.7rem;
+        margin-bottom: 30px;
+    }
+
+
+    .product_item_new_arrival_template .product-numberfive .product_item_box:first-child .product_item_card .product_card_other_info{
+        float: left;
+        width: 50%;
+        height: auto;
+        padding: 0 10px;
+        text-align: left;
+    }
+
+    .product_item_new_arrival_template .product-numberfive .product_item_box:first-child .product_item_card{
+        height: auto;
+    }
+
+    .arrival-product .product_item_new_arrival_template .product_card_img a img{
+        position: inherit;
+        top: initial;
+        transform: initial;
+    }
+
+    .exclusive-bg .a-col-6{
+        width: 50%;
+    }
+    .exclusive-compare .price-box{
+        position: inherit;
+        left: initial;
+    }
+
+    .veri-bewholesale {
+        text-align: center;
+    }
+    .veri-bewholesale .no_verification_submit{
+        width: auto;
+        padding: 0 20px;
+    }
+
+    .clearance-bannerimg {
+        margin: 20px 0;
+    }
+
+    .detail-info-box table.MsoNormalTable {
+        width: 100%!important;
+        display: inline-table;
+    }
+
+    .detail-info-box table.MsoNormalTable tr, .detail-info-box table.MsoNormalTable td {
+        display: inline;
+    }
+
+    .personal-main {
+        border: none;
+        min-height: inherit;
+    }
+    .arrival-banner{
+        display: none;
+    }
+    .arrival-product{
+        width: 100%;
+    }
+
+    /*为产品详情页中产品的介绍表格单独加的宽度*/
+    /*个人中心修改*/
+    /*个人中心修改not reviews*/
+    .phone-hidden .review-main .not-review-produt-status {
+        width: 0.4rem;
+        height: 0.3rem;
+        float: right;
+        margin-top: -0.3rem;
+    }
+
+    .phone-hidden .review-main .not-review-produt-status a div {
+        width: 0.4rem;
+        height: 0.3rem;
+        background: url(../images/details/reviewicon.png) no-repeat center;
+        background-size: 100%;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop {
+        width: 7.1rem;
+        background: none;
+        padding: 0;
+        margin: 0;
+        border: none;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .pop-top-userinfo {
+        display: none;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .pop-top-title {
+        /*font-size: 0.30rem;*/
+        color: #ffffff;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .pop-top {
+        height: 0.8rem;
+        line-height: 0.8rem;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .pop-main {
+        margin: 0;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .review-textarea {
+        height: 2.58rem;
+        font-size: 0.25rem;
+        line-height: 0.5rem;
+        border-radius: 3px;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border: none;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .remain-word {
+        color: #7e7d83;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .black-close {
+        height: 0.45rem;
+        width: 0.45rem;
+        background: url(../images/personal/white-close.png) no-repeat center;
+        background-size: 100%;
+        opacity: 1;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .pop-footer {
+        padding: 0;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .pop-footer .ratings {
+        height: 1rem;
+        line-height: 1rem;
+        /*font-size: 0.25rem;*/
+        color: #ffffff;
+        margin-right: 0.24rem;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .pop-footer .ratings span.score {
+        width: auto;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .pop-footer .star-rating {
+        height: 0.8rem;
+        padding-top: 0.2rem;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .pop-footer .star-rating li {
+        background: url(../images/personal/rating-b.png) 0 repeat-x;
+        background-size: 100%;
+        width: 0.45rem;
+        height: 0.45rem;
+        border: none;
+        margin-right: 0.16rem;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .pop-footer .star-rating li.on {
+        background: url(../images/personal/rating-x.png) 0 repeat-x;
+        background-size: 100%;
+        width: 0.45rem;
+        height: 0.45rem;
+        margin-right: 0.16rem;
+    }
+
+    .phone-hidden .review-main .not-review-product .review-pop .submit-btn {
+        width: 7.1rem;
+        height: 0.8rem;
+        line-height: 0.8rem;
+        border-radius: 3px;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        margin-top: 0.4rem;
+    }
+
+    /*个人中心修改reviews*/
+    .phone-hidden .review-main ul li:last-child {
+        float: right;
+    }
+
+    .phone-hidden .review-main .reviewed-list, .phone-hidden .review-main .not-review-list {
+        padding: 0 0.2rem;
+    }
+
+    .phone-hidden .review-main .not-review-list .order-product-info {
+        margin: 0;
+        padding: 0.5rem 0;
+    }
+
+    .phone-hidden .review-main .review-product-items, .phone-hidden .review-main .not-review-product-items {
+        width: 7.1rem;
+    }
+
+    .phone-hidden .review-main .order-product-parameter {
+        width: 5.2rem;
+        margin-left: 0.45rem;
+        overflow: inherit;
+        float: left;
+        /*font-size: 0.25rem;*/
+        line-height: 0.5rem;
+    }
+
+    .phone-hidden .review-main .order-color-list .order-product-color {
+        color: inherit;
+    }
+
+    .phone-hidden .review-main span.color-name {
+        color: #666;
+    }
+
+    .phone-hidden .review-main span.color-name::after {
+        content: "\A";
+        white-space: pre;
+    }
+
+    .phone-hidden .order-product-img {
+        width: 1.4rem;
+        height: 1.4rem;
+        margin: 0;
+        border: 1px solid #f2f3f7;
+    }
+
+    .phone-hidden .home-list li.item:hover .join-cart{
+        display: block !important;
+    }
+
+    .phone-hidden .order-product-img img {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+
+    .phone-hidden .review-main .review-product-rating {
+        padding-left: 1.85rem;
+        margin-top: -0.2rem;
+    }
+
+    .phone-hidden .review-main .review-product-rating .ratings span {
+        display: inline;
+        /*font-size: 0.25rem;*/
+        font-size: 14px;
+        line-height: 0.5rem;
+    }
+
+    .phone-hidden .review-main .big-rating .rating-box {
+        background: url(../images/personal/rating-w.png) 0 repeat-x;
+        background-size: 0.28rem;
+        width: 1.4rem;
+        height: 0.27rem;
+        margin: 0;
+    }
+
+    .phone-hidden .review-main .big-rating .rating-box .rating {
+        background: url(../images/personal/rating-x.png) 0 repeat-x;
+        background-size: 0.28rem;
+        width: 1.4rem;
+        height: 0.27rem;
+    }
+
+    .phone-hidden .review-main .not-review-product-credit, .phone-hidden .review-main .not-review-produt-status a span, .phone-hidden .review-main .review-product-credit, .phone-hidden .review-main .not-review-credit-word, .phone-hidden .review-main .review-produt-status {
+        display: none;
+    }
+
+    .phone-hidden .review-main .tab-main-content ul li {
+        border-bottom: #f1f4f6 solid 0.03rem;
+    }
+
+    .phone-hidden .review-main .tab-main-content ul li:last-child {
+        border: none;
+    }
+
+    .phone-hidden .review-main .overlay {
+        opacity: 0.5 !important;
+        -moz-opacity: 0.5 !important;
+    }
+
+    /*个人中心修改wishlist*/
+    .phone-hidden .my-account .wishlist-exist ul {
+        padding: 0 0.2rem;
+    }
+
+    .phone-hidden .my-account .wishlist-exist ul li {
+        padding: 0.3rem 0;
+        width: 7.1rem;
+        height: auto;
+        border: none;
+        border-bottom: 1px solid #efefef;
+    }
+
+    .phone-hidden .my-account .wishlist-exist ul li:last-child {
+        border: none;
+    }
+
+    .phone-hidden .my-account .wishlist-exist .home-product-img {
+        width: 1.6rem;
+        height: 1.6rem;
+        border: 1px solid #ff8a00;
+        float: left;
+    }
+
+    .phone-hidden .my-account .wishlist-exist .home-product-img img {
+        margin: 0;
+    }
+
+    .phone-hidden .my-account .wishlist-exist .product-other-info {
+        margin-left: 0.35rem;
+        width: 5.1rem;
+        float: right;
+    }
+
+    .phone-hidden .my-account .wishlist-exist .product-other-info .wishlist-product-delete {
+        display: inline;
+        width: 0.4rem;
+        height: 0.4rem;
+        background: url(../images/personal/phone-rub.png) no-repeat center;
+        background-size: 100%;
+        right: 0;
+        top: 0.3rem;
+    }
+
+    .phone-hidden .my-account .wishlist-exist .product-other-info .join-cart {
+        right: 0;
+        top: 1.5rem;
+        opacity: 1;
+        transition: none;
+        -moz-transition: none;
+        -webkit-transition: none;
+        -o-transition: none;
+    }
+
+    .phone-hidden .my-account .wishlist-exist .product-items li.item .collection{
+        opacity: 1;
+        transition: none;
+        -moz-transition: none;
+        -webkit-transition: none;
+        -o-transition: none;
+    }
+
+    .phone-hidden .my-account .wishlist-exist .product-other-info .join-cart .join-cart-icon {
+        width: 0.5rem;
+        height: 0.5rem;
+        background: url(../images/details/shopping-c.png) no-repeat center;
+        background-size: 100%;
+    }
+
+    .phone-hidden .my-account .wishlist-exist .product-other-info .product-name {
+        height: auto;
+        /*font-size: 0.25rem;*/
+        line-height: 0.5rem;
+        padding: 0 0.4rem 0 0;
+    }
+    .phone-hidden .my-account .wishlist-exist .product-other-info .price-box{
+        text-indent: 0;
+        padding-right: 0.45rem;
+    }
+
+    .phone-hidden .my-account .wishlist-exist .product-other-info .price-box .price {
+        /*font-size: 0.30rem;*/
+        line-height: 0.6rem;
+    }
+
+    .phone-hidden .my-account .wishlist-exist .product-other-info .price-box .label {
+        /*font-size: 0.20rem;*/
+    }
+
+    .phone-hidden .my-account .wishlist-exist .product-other-info .price-box .minimal-price-link {
+        display: inline;
+    }
+
+    /*个人中心修改security*/
+    .phone-hidden .secu-main {
+        padding: 0.2rem;
+    }
+
+    .phone-hidden .secu-main .secu-change-main {
+
+        margin: 0;
+    }
+
+    .phone-hidden .secu-main .secu-word {
+        margin: 0;
+        /*font-size: 0.3rem;*/
+        line-height: 1rem;
+        width: 2.6rem;
+    }
+
+    .phone-hidden .secu-main .secu-input-box {
+        width: 4.3rem;
+        margin: 0.2rem 0 0.2rem 0.2rem;
+        line-height: 0.6rem;
+        /*font-size: 0.25rem;*/
+    }
+
+    .phone-hidden .secu-main .input-tip-info {
+        height: 0.4rem;
+    }
+
+    .phone-hidden .secu-main input {
+        width: 4.3rem;
+        height: 0.6rem;
+    }
+
+    .phone-hidden .secu-main button {
+        font-size: inherit;
+    }
+
+    /*个人中心order下completed*/
+
+    .overview-order-tab .tab-recipicent, .orders-main .overview-recipient, .orders-main .overview-shipping,.orders-main .overview-shipping-method{
+        display: none;
+    }
+
+    .order-deal-info > li,.overview-order-tab ul li{
+        width: calc((100% - 25px) / 4);
+    }
+
+    .order-deal-box{
+        border: none;
+        background: #f6f6f6;
+        padding: 0 0.15rem;
+    }
+
+    .order-deal-info {
+        background: inherit;
+        border-bottom: 1px solid #dddddd;
+        padding: 0.25rem 0;
+    }
+
+    .order-deal-box:last-child .order-deal-info{
+        border-bottom: 0;
+    }
+
+
+    .orders-main .order-deal-box:last-child{
+        border-bottom: 0;
+    }
+
+
+    .orders-main .order-product-list {
+        padding: 0 0.2rem;
+    }
+
+    .orders-main .order-product-list li {
+        margin: 0.2rem 0;
+        border-bottom: 1px solid #f2f3f7;
+        padding-bottom: 0.2rem;
+    }
+
+    /*合并样式*/
+    .orders-main .order-product-parameter {
+        margin-left: 0.5rem;
+        width: 4.8rem;
+    }
+
+    .orders-main .order-product-parameter span {
+        font-weight: 700;
+        line-height: 0.5rem;
+    }
+
+    .orders-main .order-color-list {
+        color: #666;
+        line-height: 0.4rem;
+    }
+
+    .orders-main .order-product-num {
+        margin: 1rem 0 0;
+    }
+
+    .orders-main .order-product-info .order-share-icon ul {
+        right: 0.36rem;
+        top: 0.35rem;
+    }
+
+    .orders-main .mb-order-deal-info li {
+        margin: 0 0.2rem;
+    }
+
+    .orders-main .mb-order-deal-info li h5 {
+        float: left;
+        font-size: 15px;
+        line-height: 0.6rem;
+        font-weight: 700;
+    }
+
+    .orders-main .mb-order-deal-info li span {
+        line-height: 0.6rem;
+        font-size: 14px;
+        float: right;
+    }
+
+    .orders-main .mb-order-deal-info li span.recipient-phone {
+        padding-left: 0.2rem;
+    }
+
+    .tab li{
+        margin-right: 0;
+    }
+
+    .orders-main li.mb-overview-status .logistics-status{
+        font-size: 15px;
+        line-height: 0.6rem;
+        display: inline-block;
+    }
+
+    .orders-main li.mb-overview-status a.add-order-to-wishlist span {
+        display: block;
+        margin: 0 -0.2rem;
+        border-top: 2px #f3f3f3 solid;
+        background: url(../images/details/xinwish.png) no-repeat 2.4rem;
+        background-size: 0.5rem;
+        text-align: center;
+        float: initial;
+        text-indent: 0.25rem;
+    }
+
+    .filter-operating{
+        padding-left: 0.4rem;
+    }
+
+    .orders-main li.mb-overview-status .a-blue-under {
+        color: #666;
+        line-height: 0.6rem;
+        text-decoration: none;
+    }
+
+
+    .mb-select-all {
+        display: inline;
+        padding-left: 0.1rem;
+        color: #333;
+    }
+
+    .orders-main .Operation-bar .buy-again {
+        background: #ff8a00;
+        width: 42%;
+        height: 1.24rem;
+        border-radius: inherit;
+        float: right;
+    }
+
+    .orders-main .Operation-bar .order-wish-icon, .orders-main .Operation-bar .order-del-icon {
+        width: 15%;
+        height: 1.24rem;
+    }
+
+    .orders-main .Operation-bar .order-wish-icon {
+        background: url(../images/details/xinwish.png) no-repeat center;
+        background-size: 0.55rem;
+    }
+
+    .orders-main .Operation-bar .order-del-icon {
+        background: url(../images/personal/phone-rub.png) no-repeat center;
+        background-size: 0.55rem;
+    }
+
+    /*个人中心account下address*/
+    .phone-hidden .default-address {
+        width: 1.15rem;
+        line-height: 0.6rem;
+        color: #333;
+    }
+
+    .phone-hidden .address-words {
+        width: 5.1rem;
+        line-height: 0.45rem;
+        color: #666;
+        float: right;
+        padding: 0 0.1rem;
+    }
+
+    .phone-hidden .ship-address-box {
+        width: 7.1rem;
+        margin: 0.4rem 0;
+    }
+
+    .phone-hidden .operation-list {
+        float: right;
+        margin: 0 0.2rem;
+        width: 3.6rem
+    }
+
+    .phone-hidden .ship-address-list li input:checked + span {
+        border: 1px #a9a9a9 solid;
+    }
+
+    .phone-hidden .address-radio {
+        margin: 0.1rem 0.17rem 0.2rem 0.17rem;
+    }
+
+    .phone-hidden .ship-address-list li:first-child {
+        border: none;
+    }
+
+    .phone-hidden .ship-address-list li {
+        border-top: 1px #f2f3f7 solid;
+        padding: 0.2rem 0 0.4rem 0;
+    }
+
+    .curr-phone-info {
+        line-height: 1rem;
+        margin-left: 0.2rem;
+    }
+
+    .phone-hidden .shipping-address-total {
+        padding: 0 0.2rem;
+    }
+
+    .phone-hidden .operation-list .del {
+        float: right;
+        background: url(../images/personal/phone-rub.png) no-repeat;
+        background-size: 100%;
+        width: 0.4rem;
+        height: 0.4rem;
+        margin-right: 0.8rem;
+    }
+
+    .phone-hidden .operation-list .edit {
+        float: left;
+        background: url(../images/personal/phone-grzx.png) no-repeat;
+        background-size: 100%;
+        width: 0.4rem;
+        height: 0.4rem;
+        margin-bottom: 0;
+    }
+
+    .phone-hidden .operation-list a span {
+        display: inline;
+        line-height: 0.4rem;
+        color: #666;
+        padding-left: 0.65rem;
+    }
+
+    .phone-hidden .add-new-address {
+        margin: 0.6rem 0 0.2rem;
+        background: #ff6700;
+        color: #ffffff;
+        padding: 0;
+        height: 0.8rem;
+        line-height: 0.8rem;
+        text-align: center;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+    }
+
+    .phone-hidden .add-new-address .add-address-btn {
+        height: 0.8rem;
+        line-height: 0.8rem;
+        width: auto;
+        background: inherit;
+        font-size: 15px;
+        display: initial;
+    }
+
+    .phone-hidden .add-new-address .add-icon {
+        vertical-align: inherit;
+        font-size: 15px;
+    }
+
+    .phone-hidden .main-right h1 {
+        padding-left: 0;
+        font-weight: 700;
+        color: #333;
+        background: #f6f6f6;
+        margin: 0 -0.2rem;
+        padding: 0.2rem;
+    }
+
+    .phone-hidden .fieldset .legend {
+        padding: 0;
+        color: #333;
+        height: 0.6rem;
+        background: none;
+        line-height: 0.6rem;
+        border-bottom: 1px solid #f6f6f6;
+    }
+
+    .phone-hidden .add-address-pop .form-list label {
+        text-align: left;
+        width: 2rem;
+        height: 0.6rem;
+        line-height: 0.6rem;
+        margin: 0;
+        color: #666;
+    }
+
+    .phone-hidden .add-address-pop .customer-name input {
+        width: 2.45rem;
+    }
+
+    .phone-hidden .form-list li {
+        margin: 0.3rem 0;
+    }
+
+    .phone-hidden .form-list .customer-name .asterisk{
+        float: right;
+    }
+
+    .phone-hidden .field.fax-field {
+        margin-top: 0.4rem;
+    }
+
+    .phone-hidden .add-address-pop .form-list li.wide input.input-text, .phone-hidden .add-address-pop input#fax, .phone-hidden .add-address-pop input#telephone {
+        width: 5rem;
+    }
+
+    .phone-hidden .form-list li.wide .input-box, .phone-hidden .add-address-pop .fax-field .input-box, .phone-hidden .add-address-pop .telephone-field .input-box {
+        width: auto;
+    }
+
+    .phone-hidden .fax-field .input-box {
+        float: left;
+    }
+
+    .phone-hidden .add-address-pop input#firstname {
+        margin-right: 0.1rem;
+    }
+
+    .phone-hidden .form-list label.required em {
+        right: 0.1rem;
+    }
+
+    .phone-hidden .add-address-pop input#street_2 {
+        margin-left: 2rem;
+    }
+
+    .phone-hidden .city-state-fields, .phone-hidden .zip-country {
+        padding-left: 2rem;
+    }
+
+    .phone-hidden .add-new-ZipCode, .phone-hidden .add-new-city, .phone-hidden .add-new-state, .phone-hidden .form-list .zip-country select {
+        width: 2.38rem;
+    }
+
+    .phone-hidden .add-new-state, .phone-hidden .form-list .zip-country select {
+        margin-left: 0.24rem;
+    }
+
+    .phone-hidden #form-validate input, .phone-hidden #form-validate select, .phone-hidden .buttons-set button.button {
+        height: 0.6rem;
+        line-height: 0.6rem;
+    }
+    .phone-hidden .personal-main{
+        font-size: 14px;
+    }
+
+    .phone-hidden .buttons-set p.required {
+        line-height: 0.4rem;
+    }
+
+    .phone-hidden .buttons-set button.button {
+        width: 100%;
+        height: 0.8rem;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+    }
+
+    /*个人中心account下verfication*/
+    .phone-hidden {
+        width: 100% !important;
+    }
+
+    .verified-banner {
+        margin: 0px 0 20px;
+    }
+
+    .phone-hidden .verif-way-title .one-way-icon, .phone-hidden .mark-to-guide, .phone-hidden .main-tab-title, .phone-hidden .not-review-tab, .phone-hidden .ship-zip-box, .phone-hidden .ship-phone-box, .phone-hidden .ship-name-box {
+        display: none;
+    }
+
+    .phone-hidden .buttons-set button.button, .phone-hidden .fieldset .form-list, .phone-hidden .ship-address-box label, .phone-hidden .personal-main, .phone-hidden .mobile-box label, .phone-hidden .verfi-location-select, .phone-hidden .verifi-send-verify {
+        margin: 0;
+        padding: 0;
+    }
+
+    .phone-hidden .fieldset, .phone-hidden .main-tab {
+        border: none;
+    }
+
+    .phone-hidden .tab {
+        height: 0.8rem;
+        line-height: 0.75rem;
+        padding: 0 0.2rem;
+        border: none;
+        margin: 0;
+    }
+
+    .phone-hidden .tab li.active {
+        border: none;
+    }
+
+    .phone-hidden .personal-main .tab li a {
+        width: auto;
+    }
+
+    .phone-hidden .account-main .tab li:first-child {
+        width: 2.4rem;
+    }
+
+    .phone-hidden .account-main .tab li:last-child {
+        width: 1.8rem;
+    }
+
+    .phone-hidden .account-main .tab li:last-child a {
+        float: right;
+    }
+
+    .phone-hidden .account-main .tab li:nth-child(2) {
+        width: 2.9rem;
+    }
+
+    .phone-hidden .tab li.active a {
+        border-bottom: #ff8a00 0.06rem solid;
+        color: #ff8a00;
+        text-align: center;
+    }
+
+    .phone-hidden .tab li a {
+        color: #333;
+        font-size: 15px;
+        line-height: 0.8rem;
+        height: 0.8rem;
+        text-align: left;
+        padding: 0;
+        background: #fff;
+    }
+
+    .phone-hidden .verif-box {
+        padding: 0.1rem 0 0;
+    }
+
+    .phone-hidden .verif-way-title {
+        line-height: 0.5rem;
+        background-color: #f6f6f6;
+        padding: 0.2rem;
+        font-size: 14px;
+    }
+
+    .phone-hidden .verifi-info {
+        margin: 0;
+        padding: 0.2rem;
+    }
+
+    .phone-hidden .verifi-head-word {
+        width: 2.6rem;
+        line-height: 0.6rem;
+        color: #666;
+    }
+
+    .phone-hidden .verfi-location-select, .phone-hidden .verfi-mobile-input {
+        height: 0.58rem;
+        width: 4.12rem;
+        color: #666;
+        border-radius: inherit;
+    }
+
+    .phone-hidden .verifi-send-verify input {
+        -webkit-appearance: none;
+    }
+
+    .phone-hidden #form-validate select {
+        border-radius: inherit;
+    }
+
+    .phone-hidden .secu-main input, .phone-hidden .add-address-pop input:not(.checkbox) {
+        border-radius: inherit;
+        -webkit-appearance: none;
+    }
+
+    .phone-hidden .location-box {
+        margin: 0.3rem 0 0.6rem 0;
+    }
+
+    .phone-hidden .verifi-btn, .phone-hidden #phone_verify_code {
+        width: 2.8rem;
+        height: 0.78rem;
+        text-align: center;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+    }
+
+    .phone-hidden .verifi-btn {
+        float: right;
+    }
+
+    .phone-hidden .verifi-send-verify .verifi-btn.disable {
+        background: #ddd;
+        cursor: not-allowed;
+        color: #fff;
+    }
+
+    .phone-hidden .verifi-send-verify .verify{
+        background: #ff8a00;
+        color:#ffffff;
+    }
+
+    .phone-hidden .send-code {
+        margin: 0.4rem 0 0 -2.4rem;
+    }
+
+    .phone-hidden #phone_verify_btn {
+        width: 7.1rem;
+        margin: 1rem -0.38rem 0.5rem -2.6rem;
+    }
+
+    .person-inquire-btn{
+        margin: 0 0.2rem 0.2rem 0;
+    }
+
+
+    /*个人中心列表项*/
+
+
+    .phone-wid .personal-aside {
+        width: 100%;
+        float: none;
+        padding: 0;
+        margin: 0;
+        border: 0;
+
+    }
+
+    .phone-wid .up-load-icon {
+        width: 1.32rem;
+        height: 1.32rem;
+        top: 0.3rem;
+        line-height: 1.32rem;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .phone-wid .modal-content{
+        font-size: 14px;
+    }
+
+    .phone-wid .modify-btn {
+        background: url(../images/personal/phone-sz.png) no-repeat center;
+        background-size: 100%;
+        position: absolute;
+        top: 0.71rem;
+        right: 0.3rem;
+    }
+    .linear-line{
+        display: none;
+    }
+
+    /*个人中心修改*/
+    /*修改产品详情介绍*/
+    .details_contair .wholesale-price-list {
+        padding: 0;
+        vertical-align: inherit;
+    }
+
+    .details_contair li.wholesale-price-info {
+        height: 50px;
+        line-height: 23px;
+        width: 1.1rem !important;
+    }
+
+    .details_contair li span {
+        /*font-size: 0.25rem;*/
+        font-size: 14px;
+    }
+
+    .details_contair .wholesale-price .bx-wrapper {
+        padding-left: 25px !important;
+        max-width: 4.4rem !important;
+    }
+
+    .details_contair .bx-wrapper .bx-prev {
+        left: 0;
+    }
+
+    .details_contair .viewed .viewed-product, .viewed-carousel{
+        height: 290px;
+    }
+
+    .deatails-box p.MsoNormal {
+        text-align: left !important;
+    }
+
+    .details_contair .product-name, .details_contair .price-box {
+        height: auto;
+    }
+
+    .viewed .viewed-product .product-name{
+        max-height: 20px;
+    }
+
+    .details_contair .deatails-tab {
+        margin: 0;
+        border-bottom: solid 2px #f5f5f5;
+        height: 1rem;
+    }
+
+    .details_contair .tab {
+        padding-left: 0;
+        line-height: inherit;
+        width: 100%;
+    }
+
+    .details_contair .title:before{
+        display: none;
+    }
+
+     .details_contair .payment, .details_contair .tab li.active, .details_contair .tab {
+        border: none;
+    }
+
+    .details_contair .tab li a {
+        background: none;
+        padding: 0;
+        font-size: 0.25rem;
+        font-weight: 600;
+        line-height: 1rem;
+        height: 1rem;
+        float: none;
+        width: auto;
+        display: inline-block;
+    }
+
+    .feedback .feedback-box{
+        width: 100%;
+    }
+
+    .details_contair .tab li.active a{
+        border-bottom: 2px #e10b0b solid;
+        padding:0; 
+    }
+
+    .details_contair .tab li a:hover {
+        color: #e10b0b !important;
+    }
+
+    .details_contair .tab li:first-child {
+        width: 35%;
+    }
+
+    .details_contair .tab li {
+        width: 23%;
+        text-align: center;
+    }
+
+    .details_contair .tab li:last-child {
+        width: 42%;
+        float: right;
+    }
+
+    .details_contair .tab li:last-child a{
+        padding: 0;
+    }
+
+    .details_contair .deatails-box .detail-main {
+        padding: 0.2rem;
+    }
+    .comment-list .head-portrait{
+        right: 0;
+    }
+    .comment-list .comment-info{
+        padding: .1rem 0 .1rem 0;
+    }
+
+
+    .detail-info-box{
+        overflow: hidden;
+        width: 100%;
+    }
+    /*修改产品详情介绍*/
+    /*修改产品相关操作*/
+    .details_contair .img-show {
+        position: relative;
+        width: 100%;
+        /*height: calc(7.5rem + 100px );*/
+    }
+
+    span.verification-bewholesale {
+        display: none;
+    }
+
+    .buyinfo .detail-To-Wish {
+        border: none;
+        margin: 0;
+        padding-top: 15px;
+    }
+
+    .details_contair .wholesale-price .bx-wrapper .bx-controls-direction a {
+        background-color: #ffffff;
+    }
+
+    .details_contair .product-info .product-detail {
+        width: 100% !important;
+        margin: 0;
+    }
+
+    .details_contair .parameter .words, .details_contair .product-detail .ratings {
+        padding-left: 0.2rem;
+    }
+
+    .parameter .bulk-choice-col .words{
+        width: 92% !important;
+    }
+
+    .details_contair .product-detail .ratings {
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .details_contair .product-detail .product-title {
+        font-size: 16px;
+        margin: 0.2rem;
+    }
+
+    .details_contair .parameter {
+        line-height: 0.35rem;
+        margin-top: 0;
+    }
+
+    .details_contair .parameter .words {
+        width: 1.6rem;
+        line-height: 0.35rem;
+        font-size: 14px;
+    }
+
+    .details_contair .quantity .Quantity-num .num {
+        width: 1.8rem;
+        height: 0.615rem;
+        margin: 0 -4px 0 -5px;
+        border-radius: inherit;
+        -webkit-appearance: none;
+    }
+
+    .details_contair .parameter .buyinfo .trustBuild, .details_contair .inquire, .details_contair .product-detail-ship-pay-title {
+        display: none;
+    }
+
+    .details_contair .parameter .status {
+        font-size: 14px;
+    }
+
+    .details_contair #pro-color-list {
+        display: inline;
+        height: 0.6rem;
+        font-size: 0.30rem;
+        color: #333;
+    }
+
+    .details_contair table.ship-payment-des td, .details_contair table.ship-payment-des th {
+        padding: 0;
+        font-size: 11px;
+    }
+
+    .details_contair .MsoNormalTable td, .details_contair .MsoNormalTable th {
+        margin: 0 !important;
+        padding: 0 !important;
+        word-break: break-all;
+    }
+
+    .details_contair table p.MsoNormal {
+        text-indent: 0 !important;
+    }
+
+    .details_contair .title {
+        font-size: 0.28rem;
+        line-height: 1rem;
+        background: #f4f4f4;
+        text-align: center;
+        color: #333;
+    }
+
+    .details_contair .title span {
+        padding-left: 0.2rem;
+        border-left: #ff8a00 0.05rem solid;
+        background: #f4f4f4;
+    }
+
+    .details_contair .quantity .Quantity-num .icon {
+        width: 0.6rem;
+        height: 0.6rem;
+    }
+
+    .details_contair .quantity .Quantity-num .reduce {
+        background: url("../images/details/jianicon.png") no-repeat right center;
+        background-size: 100%;
+    }
+
+    .details_contair .quantity .Quantity-num .add {
+        background: url("../images/details/jiaicon.png") no-repeat right center;
+        background-size: 100%;
+    }
+
+    .details_contair .wholesale-tip{
+        display: none !important;
+    }
+
+    .mb-order-deal-info {
+        display: block;
+    }
+
+    .details_contair .parameter .sales-price {
+        width: auto;
+    }
+
+    .details_contair .color-list {
+        width: 5.5rem;
+        float: inherit;
+    }
+
+    .details_contair .color-list li.color-list-data {
+        margin: 0;
+        line-height: 0.4rem;
+    }
+
+    .details_contair .pay-icon {
+        height: 50px;
+    }
+
+    .details_contair .detail-To-Wish > div {
+        float: none;
+        text-align: center;
+        margin: 0.1rem 0;
+    }
+
+    .details_contair .detail-To-Wish .add-wish span, .details_contair .parameter .sales-price {
+        font-size: 16px;
+        line-height: initial;
+    }
+    .details_contair .detail-To-Wish .add-wish span{
+        line-height: 0.5rem;
+    }
+
+    .details_contair .detail-To-Wish .add-wish-icon {
+        background: url(../images/details/xinwish.png) no-repeat center;
+        background-size: 100%;
+    }
+
+    .details_contair .addthis_share .icon, .details_contair .add-wish .icon {
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+
+    .details_contair .detail-To-Wish .share-icon {
+        background: url(../images/details/sharebtn.png) no-repeat center;
+        background-size: 100%;
+    }
+
+    .details_contair .parameter .payment .payway {
+        display: inline-block;
+        width: 0.82rem;
+        height: 0.5rem;
+        margin-top: 0;
+    }
+
+    .details_contair .parameter .payment .paypal {
+        background: url('../images/details/paypalicon.png') no-repeat center;
+        background-size: 100%;
+    }
+
+    .details_contair .parameter .payment .western {
+        background: url('../images/details/westernicon.png') no-repeat center;
+        background-size: 100%;
+    }
+
+    .details_contair .parameter .payment .bank {
+        background: url('../images/details/bankicon.png') no-repeat center;
+        background-size: 100%;
+    }
+
+    .details_contair .parameter .payment .visa {
+        background: url('../images/details/visa.png') no-repeat center;
+        background-size: 100%;
+    }
+
+    .details_contair .parameter .payment .mcafee {
+        background: url('../images/details/macicon.png') no-repeat center;
+        background-size: 100%;
+        float: right;
+        margin-right: 0.2rem;
+    }
+
+    .spec-scroll .items ul li{
+        display: inline-block;
+        margin-bottom: 0;
+    }
+
+    .spec-scroll .items ul{
+        position: static;
+        white-space: nowrap;
+    }
+
+    .spec-scroll .items {
+        float: left;
+        position: relative;
+        /*width: 98%;*/
+        width: calc(100% - 60px);
+        overflow: hidden;
+    }
+
+    .spec-scroll {
+        float: left;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .spec-preview {
+        width: 100%;
+    }
+
+    .spec-preview .zoomImg {
+        width: 100%;
+        height: auto;
+    }
+
+    .jqzoom{
+        border: none;
+    }
+
+    .spec-preview .add-wish, .spec-preview .share{
+        display: none;
+    }
+
+    .details_contair .product-info{
+        padding: 0;
+    }
+    /*修改产品相关操作*/
+    /*新底部固定窗口*/
+    .details_contair .parameter .buyinfo{
+        padding: 0;
+        background: #ffffff;
+        position: fixed;
+        width: 100%;
+        height: 1.24rem;
+        bottom: 0;
+        text-align: center;
+        z-index: 9999;
+        font-size: 13px;
+        margin: 0;
+    }
+
+    .details_contair .buyinfo .car_count{
+        left: initial;
+        right: 10px;
+    }
+
+    .product-detail .buyinfo .foot-icon {
+        width: 0.6rem;
+        height: 0.6rem;
+        margin: 0.1rem auto 0.05rem;
+
+    }
+
+    .product-detail .buyinfo .whole-cart {
+        display: inline;
+        width: 23.5%;
+        border-top: 1px solid #eceaea;
+        line-height: 0.48rem;
+        position: relative;
+    }
+
+    .product-detail .buyinfo .whole-sale {
+        background: url(../images/details/wholesale.png) no-repeat center center;
+        background-size: 100%;
+    }
+
+    .product-detail .buyinfo .s-cart {
+        background: url(../images/details/shopping-c.png) no-repeat center center;
+        background-size: 100%;
+    }
+
+    .product-detail .buyinfo .add-buy {
+        color: #ffffff;
+        height: 1.24rem;
+        line-height: 1.24rem;
+        width: 26.5%;
+    }
+
+    .product-detail .buyinfo .add-cart {
+        float: left;
+
+    }
+
+    .product-detail .buyinfo .buy-now {
+        background: #ff3d00;
+        float: right;
+        border-radius: inherit;
+    }
+
+    .product-detail .parameter .buyinfo .addToCart {
+        margin: 0;
+    }
+
+    .product-detail .parameter .buyinfo .no-hover {
+        width: 100%;
+    }
+
+    #add-to-cart-btn {
+        height: 1.24rem;
+        line-height: 1.24rem;
+        border-radius: 0;
+        width: 100%;
+    }
+
+    /* 个人中心修改头像 */
+    .personal-aside .modal-content .avatar-input {
+        width: 100%;
+    }
+
+    .personal-aside .label-warning.ave40-error-msg {
+        margin: 10px 0 0 0;
+    }
+
+    .avatar-body{
+        padding: 0;
+    }
+
+    .avatar-wrapper{
+        height: 150px;
+    }
+
+    .preview-lg, .preview-md{
+        display: none;
+    }
+
+    .avatar-btns{
+        margin-top: 0;
+    }
+
+    .position-fix-qq, .btn-group{
+        display: none;
+    }
+
+    .btn-block{
+        margin-top: 10px;
+    }
+
+    .customer-account-create #right-floor-wrap, .customer-account-login #right-floor-wrap, .review-customer-index #right-floor-wrap, .wishlist-index-index #right-floor-wrap, .sales-order-history #right-floor-wrap, .customer-account-index #right-floor-wrap, .lotusbreath-onestepcheckout-index-index #right-floor-wrap{
+        display: none;
+    }
+
+    .detail-main p{
+        word-break:break-all;
+    }
+
+    button#regit_btn{
+        line-height: 30px;
+        font-size: 14px;
+    }
+
+    /* wishlist */
+    .wishlist-deal-info {
+        padding: 0 0.15rem;
+    }
+
+    .wishlist-product-list-item > div.checked-box, .wishlist-exist .wishlist-tab-ul ul li.wishlist-check{
+        width: 25px;
+        height: 25px;
+    }
+
+    .not-review-product-items {
+        width: calc(100% - 25px);
+    }
+
+    .wishlist-product-list-item .wishlist-unit-price,.wishlist-product-list-item .wishlist-as-low-as {
+        width: 100%;
+        padding-left: 95px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        margin-top: 10px;
+        text-align: left;
+    }
+
+    .wishlist-product-list-item .price{
+        font-size: 12px;
+        font-family: inherit;
+    }
+
+    .mb_wishlist_price_label{
+        display: inline-block;
+        color: #777;
+    }
+
+    .wishlist-product-list-item .wishlist-action {
+        width: 100%;
+        text-align: right;
+    }
+
+    .wishlist-action a {
+        color: #777;
+        display: inline-block;
+        vertical-align: middle;
+        border: 1px solid #ddd;
+        padding: 2px 7px;
+        margin-left: 10px;
+    }
+
+    .order-product-img {
+        margin: 0 10px 0 10px;
+    }
+
+    .wishlist-exist .filter-operating{
+        padding-left: 0.4rem;
+    }
+
+    .wishlist-product-list-item {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .wishlist-product-list-item:last-child{
+        border: none;
+    }
+
+    /* order */
+    .review-tab, .not-review-tab {
+        display: none;
+    }
+
+    .not-review-list{
+        padding: 0 0.15rem;
+    }
+
+    .not-review-list .order-product-info {
+        padding: 20px 0;
+        position: relative;
+    }
+
+    .review-product-status{
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .review-product-status p{
+        text-align: left;
+        padding-left: 70px;
+    }
+
+    .review-product-items{
+        width: 65%;
+    }
+
+    .review-product-rating{
+        width: 35%;
+    }
+
+    /* no review */
+    .not-review-product-credit{
+        width: 100%;
+        text-align: left;
+        padding-left: 72px;
+        margin-top: 10px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .not-review-product-time {
+        width: auto;
+        position: absolute;
+        right: 0;
+    }
+
+    .not-review-product-status {
+        width: 100%;
+        text-align: right;
+    }
+
+    .not-review-product-status .review-btn{
+        text-align: center;
+    }
+
+    .not-review-product-items .order-product-parameter {
+        width: calc(100% - 130px);
+        overflow: hidden;
+    }
+
+    .arrival-product .home-list li.item{
+        width: 50%;
+        margin: 0;
+    }
+
+    .no_verification_wholesale_tips{
+        font-size: 13px;
+    }
+
+}
+
+@media screen and (max-width: 615px) {
+    .details_contair .quantity .Quantity-num .num {
+        height: 0.64rem;
+    }
+    .clearance-product-title .title-01-icon, .clearance-product-title .title-01-icon:hover, .clearance-product-title>span.title-01-icon.active, .clearance-product-title .title-02-icon, .clearance-product-title .title-02-icon:hover, .clearance-product-title>span.title-02-icon.active, .clearance-product-title .title-03-icon, .clearance-product-title .title-03-icon:hover, .clearance-product-title>span.title-03-icon.active{
+        background-size: 20%;
+    }
+    .clearance-product-title .title-01-icon, .clearance-product-title .title-01-icon:hover, .clearance-product-title>span.title-01-icon.active{
+        background-position: 50% 30%;
+    }
+    .clearance-product-title .title-02-icon, .clearance-product-title .title-02-icon:hover, .clearance-product-title>span.title-02-icon.active{
+        background-position: 50% 30%;
+    }
+    .clearance-product-title .title-04-icon, .clearance-product-title .title-04-icon:hover, .clearance-product-title>span.title-04-icon.active{
+        background-position: 50% 30%;
+        background-size: 30%;
+    }
+    .clearance-page .clearance-main .clearance-2-col .home-list li.item{
+        width: 50%;
+        padding: 0;
+    }
+    .clearance-2-col .product_item_wrap{
+        padding: 0;
+    }
+    .topic-product .home-list li.item{
+        width: 100%;
+    }
+    .search-blog-content .home-blog-article ul.blog-main li:first-child a div {
+        height: 3rem;
+    }
+    .home-blog-article ul.blog-main li{
+        width: 48%;
+        margin-right: 4%;
+    }
+    .home-blog-article ul.blog-main li:first-child h2{
+        width: 94%;
+        margin: 0 3% 15px;
+    }
+    .home-blog-article ul.blog-main li h2{
+        font-size: 14px;
+        line-height: 0.5rem;
+        width: 88%;
+        margin: 0 6% 5px;
+    }
+    .home-brands{
+        margin-top: 0.45rem;
+    }
+    .vapo-activity-page .col2-set .col-1, .vapo-activity-page .col2-set .col-2{
+        width: 100%;
+    }
+
+    .overview-order-tab{
+        display: none;
+    }
+
+    .order-deal-info > li{
+        width: calc((100% - 25px) / 3);
+    }
+
+    li.overview-completed {
+        display: block;
+        width: 100%;
+        text-align: right;
+        margin-top: 10px;
+    }
+
+    .overview-completed a {
+        color: #777;
+        display: inline-block;
+        vertical-align: middle;
+        border: 1px solid #ddd;
+        padding: 2px 7px;
+        margin-left: 10px;
+    }
+
+    .order-deal-info{
+        padding: 0.25rem 0 0.15rem;
+    }
+
+    li.overview-completed {
+        display: block;
+        width: 100%;
+    }
+
+    .order-deal-info > li{
+        width: 100%;
+    }
+
+    .order-deal-info > li.order-head-info{
+        width: calc(100% - 25px);
+    }
+
+    .order-head-info p{
+        width: 50%;
+        float: left;
+    }
+
+    .order-head-info p:last-child{
+        text-align: right;
+    }
+
+    .overview-total .special-total{
+        margin-bottom: 0;
+    }
+
+    .overview-total .special-total .price{
+        font-size: 12px;
+    }
+
+    li.overview-total{
+        margin-top: 10px;
+    }
+
+    li.overview-total, li.overview-status {
+        text-align: left;
+        padding-left: 41px;
+    }
+    .arrival-product .product_item_new_arrival_template .product_item_card{
+        height: auto;
+        border: none;
+    }
+}
+
+@media screen and (max-width: 482px) {
+    .filter-operate-box {
+        float: none;
+        margin-top: 15px;
+    }
+    .filter-operate-box .filter-btn:first-child{
+        margin-left: 0;
+    }
+
+    .filter-search label{
+        min-width: 80px;
+        display: inline-block;
+    }
+
+    .filter-search input[type="text"]{
+        width: 78px;
+    }
+
+}
+
+@media screen and (max-width: 374px) {
+    .overview-completed a{
+        padding: 2px 4px;
+        margin-left: 5px;
+    }
+
+}

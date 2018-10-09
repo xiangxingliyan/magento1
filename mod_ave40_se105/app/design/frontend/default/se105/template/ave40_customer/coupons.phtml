@@ -1,0 +1,58 @@
+<?php
+$subpage = strtolower(Mage::app()->getRequest()->getParam('sp'));
+$subpageKeys = ['used-coupons', 'failure-coupons'];
+$subpage = in_array($subpage, $subpageKeys) ? $subpage : $subpageKeys[0];
+$GLOBALS['___subpage'] = $subpage;
+//$page = Mage::app()->getRequest()->getParam('page', 1);
+//$page = $page <= 0 ? 1 : $page;
+$index = 0;
+
+function checkClass($matchkey)
+{
+	return $matchkey == $GLOBALS['___subpage'] ? 'active' : '';
+}
+
+?>
+<div class="personal-main">
+	<div class="main-right review-main">
+		<div class="main-tab">
+			<ul class="tab" data-taboff>
+				<li class="<?= checkClass('used-coupons') ?>"><a  href="?sp=used-coupons" ><?= Mage::helper("Ave40_Translate")->__('Valid') ?></a></li>
+				<li class="<?= checkClass('failure-coupons') ?>"><a href="?sp=failure-coupons"><?= Mage::helper("Ave40_Translate")->__('Invalid') ?></a></li>
+			</ul>
+		</div>
+		
+		<?php if ($subpage == $subpageKeys[$index++]): ?>
+		<div class="tab-main-content use-coupons" >
+			<div class="coupons-list">
+				<?php echo $this->getLayout()->createBlock('core/template')->setTemplate('customer/empty-list.phtml')->toHtml() ?>
+				<!--
+				<div class="coupons-list-info">
+					<img src="<?/*= $this->getSkinUrl('images/personal/youhui.png') */?>" alt="">
+					<i class="icon coupons-del"></i>
+					<span class="coupon-code"><em><?/*= Mage::helper("Ave40_Translate")->__('code') */?>:</em><i class="coupon-code-data">1234567890abc</i>
+					</span>
+				</div>
+				-->
+			</div>
+		</div>
+		<?php endif; ?>
+		
+		<?php if ($subpage == $subpageKeys[$index++]): ?>
+		<div class="tab-main-content failure-coupons" >
+			<div class="coupons-list">
+				<?php echo $this->getLayout()->createBlock('core/template')->setTemplate('customer/empty-list.phtml')->toHtml() ?>
+				<!--
+				<div class="coupons-list-info">
+					<img src="<?/*= $this->getSkinUrl('images/personal/coupons-lost.png') */?>" alt="">
+					<i class="icon coupons-del"></i>
+					<span class="coupon-code"><em><?/*= Mage::helper("Ave40_Translate")->__('code') */?>:</em><i class="coupon-code-data">1234567890abc</i>
+					</span>
+				</div>
+				-->
+			</div>
+		</div>
+		<?php endif; ?>
+		
+	</div>
+</div>

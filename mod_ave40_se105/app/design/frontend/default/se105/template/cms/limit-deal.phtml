@@ -1,0 +1,63 @@
+<?php
+$categoryId = $this->getCategoryId();
+$storeId = Mage::app()->getStore()->getId();
+$media = Mage::getModel('catalog/product_media_config');
+$category = Mage::getModel('catalog/category')->load($categoryId);
+
+$collection = Mage::getModel('catalog/product')->getCollection();
+$collection->addAttributeToSelect(array('name','image', 'price','special_price', 'special_packing','prosort','description','special_from_date','special_to_date'))
+	->setStore($storeId)
+	->addCategoryFilter($category)
+	->addAttributeToSort('position');
+Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($collection);
+Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($collection);
+$productList = array();
+$comingProduct = array();
+foreach($collection as $product){
+	$product = Mage::getModel('catalog/product')->load($product->getId());
+	if (!$product->getSpecialPrice()) {
+		continue;
+	}
+	if ($product->getSpecialPrice() > $product->getPrice()) {
+		continue;
+	}
+	if (strtotime($product->getSpecialFromDate()) > $_SERVER['REQUEST_TIME']) {
+		$comingProduct = $product;
+		continue;
+	}
+	if ($product->getSpecialToDate() && (strtotime($product->getSpecialToDate()) < $_SERVER['REQUEST_TIME'])) {
+		continue;
+	}
+	$productList[] = $product;
+}
+if ($comingProduct) {
+	$comingProductId = $comingProduct->getId();
+}
+?>
+<?php if (count($productList)): ?>
+<?php $firstProduct = array_shift($productList); ?>
+<?php $stock = Mage::getModel('cataloginventory/stock_item')->loadByProduct($firstProduct); ?>
+
+<script>
+jQuery(function(){
+	jQuery('.deal-nav a').on('click',function(){
+		jQuery(this).addClass("on").siblings('a').removeClass("on");
+		var index = jQuery(this).index('.deal-nav a')
+		jQuery(".js-limitTargetPro:eq("+index+")").removeClass('none').siblings(".js-limitTargetPro").addClass('none')
+	})
+
+	// 2017/2/5 16:17:59
+	countDown("<?=$firstProduct->getSpecialToDate()?>","#js-limitDealTime-<?=$categoryId?> .deal-day","#js-limitDealTime-<?=$categoryId?> .deal-hour","#js-limitDealTime-<?=$categoryId?> .deal-minute","#js-limitDealTime-<?=$categoryId?> .deal-second");
+
+	<?php if ($comingProduct): ?>
+	countDown(
+		'<?=$comingProduct->getSpecialFromDate()?>',
+		'#js-limitDealTime-coming-<?=$comingProductId?> .deal-day',
+		'#js-limitDealTime-coming-<?=$comingProductId?> .deal-hour',
+		'#js-limitDealTime-coming-<?=$comingProductId?> .deal-minute',
+		'#js-limitDealTime-coming-<?=$comingProductId?> .deal-second'
+	);
+	<?php endif ?>
+})
+</script>
+<?php endif ?>

@@ -1,0 +1,14 @@
+<?php
+/** @var Ave40_Base_Helper_Customer $baseCustomerHelper */
+$baseCustomerHelper = Mage::helper('ave40_base/customer');
+
+if($this->getData('guide') && !$baseCustomerHelper->isLoginAsWholesales()) {
+    $baseCustomerHelper->setIsGuidePageCustomer();
+}
+
+if($this->getData('guide') || $baseCustomerHelper->isLoginAsWholesales()) {
+	echo Mage::app()->getLayout()->createBlock('core/template')->setTemplate('page/html/index_b2b.phtml')->toHtml();
+} else {
+    echo Mage::app()->getLayout()->createBlock('core/template')->setTemplate('page/html/index_b2c.phtml')->toHtml();
+}
+?>

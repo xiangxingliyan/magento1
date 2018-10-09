@@ -1,0 +1,112 @@
+<?php $_products = $this->getProductCollection() ?>
+<?php
+	if($GLOBALS['_counter']) {
+		$GLOBALS['_counter'] += 1;
+	} else {
+		$GLOBALS['_counter'] = 1;
+	}
+	
+	$rowsPerPage = 6;
+?>
+<div class="topic-product-list" id="<?php echo "newarrival_{$GLOBALS['_counter']}" ?>">
+	<?php if ($_products): ?>
+		<?php $count = 0; ?>
+		<?php foreach ($_products as $i => $p): ?>
+			<?php if($count%$rowsPerPage == 0): ?>
+				<?php if($count != 0): ?>
+					</ul>
+				<?php endif; ?>
+
+				<ul class="topic-product-items home-list clearfix">
+			<?php endif ?>
+			<li class="item" product-id="<?php echo $p->getId() ?>">
+				<div class="home-product-img">
+					<a href="<?php echo $p->getProductUrl() ?>" title="<?php echo $p->getName() ?>">
+						<img class="lazy" data-original="<?php echo $this->helper('catalog/image')->init($p, 'small_image')->resize(200, 200) ?>"
+							 src="<?php echo $this->getSkinUrl('images/loader.gif') ?>"
+							 alt="<?php echo $p->getName() ?>" style="display: inline; width: 200px">
+					</a>
+				</div>
+				<div class="product-other-info">
+					<h2 class="product-name">
+						<?php if($p->getFinalPrice() && $p->getFinalPrice() < $p->getPrice()):?>
+	                        <?php $discountPercent =  ceil(round(($p->getPrice() - $p->getFinalPrice()) / $p->getPrice(), 2) * 100) ?>
+	                        <div class="sales-label">
+	                            <i class="sales-off-num"><?php echo $discountPercent ?></i>
+	                        </div>
+	                    <?php endif; ?>
+						<a href="<?php echo $p->getProductUrl() ?>" title="<?php echo $p->getName() ?>">
+							<?php echo $p->getName() ?>
+						</a>
+					</h2>
+                    <?php echo $this->getPriceHtml($p, true, $this->getPriceSuffix()) ?>
+                    <?php if($p->getFinalPrice() && $p->getFinalPrice() < $p->getPrice()):?>
+                        <?php $discountPercent =  ceil(round(($p->getPrice() - $p->getFinalPrice()) / $p->getPrice(), 2) * 100) ?>
+                        <div class="sales-label hidden">
+                            <i class="sales-off-num"><?php echo $discountPercent ?></i>
+                        </div>
+                    <?php endif; ?>
+				</div>
+				<a class="buy-now-btn" title="buy now" href="<?php echo $p->getProductUrl() ?>"><?php echo Mage::helper("Ave40_Translate")->__('BUY NOW') ?></a>
+			</li>
+			<?php $count ++; ?>
+		<?php endforeach; ?>
+
+		<?php if($count%$rowsPerPage == 0): ?>
+			</ul>
+		<?php endif; ?>
+	<?php endif; ?>
+</div>
+
+
+<style>
+	.cms-new-arrival .pagination-common {
+		width: 1200px;
+	}
+</style>
+
+<?php if($this->getData('enable_pagination')): ?>
+	<?php
+	/* @var Ave40_Widget_Block_Pagination	$block */
+	$block = Mage::app()->getLayout()->createBlock('ave40_widget/pagination');
+	$urlPageKey = $this->getPaginationUrlKey() ? $this->getPaginationUrlKey() : 'page';
+	$block->setUrlQueryKey($urlPageKey);
+	$block->setCurrentPage($_GET[$urlPageKey] <= 0 ? 1 : $_GET[$urlPageKey]);
+	$block->setLastPage($_products->getLastPageNumber());
+	$block->outputHtml();
+	?>
+<?php endif; ?>
+
+<script>
+
+</script>
+
+
+<script type="text/javascript">
+	~function ($) {
+		/*
+		$('#marquee').bxSlider({
+			mode:'fade',
+			pause: 2500,
+			speed: 1000,
+			displaySlideQty:1,
+			moveSlideQty: 1,
+			auto: true,
+			controls: false,
+			autoHover: true
+		});
+		*/
+
+		$('#<?php echo "newarrival_{$GLOBALS['_counter']}" ?>').bxSlider({
+			pager: false,
+			slideWidth: 1200,
+			minSlides: 1,
+			maxSlides:1,
+			hideControlOnEnd: true,
+			autoHover: true,
+			controls: true,
+			infiniteLoop: false
+		});
+
+	}(jQuery)
+</script>

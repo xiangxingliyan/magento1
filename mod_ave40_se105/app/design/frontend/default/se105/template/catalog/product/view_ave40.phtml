@@ -1,0 +1,436 @@
+<?php
+/**
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ * @var $this Ave40_Catalog_Block_Product_View
+ */
+/** @var Ave40_Base_Model_Product_Fastorder $skuEncoder */
+// $this->getAve40CatalogHelper()->calcProductArrivalDate('2018-08-19', '2018-08-26');
+$skuEncoder = Mage::getModel('ave40_base/product_fastorder');
+/** @var Ave40_Base_Helper_Customer $customerHelper */
+$customerHelper = Mage::helper('ave40_base/customer');
+?>
+<script type="text/javascript">
+	var allProductInfo = <?php echo json_encode($this->getAllProductInfo()) ?>;
+	//var quoteProductInfo = <?php //echo json_encode($this->getProductQtyInfoFromQuote()) ?>//;
+	var quoteProductInfo = {};
+</script>
+<script type="text/javascript" src="<?php _insert_asset_url('js/product/page.js') ?>"></script>
+<link rel="stylesheet" href="<?php _insert_asset_url('css/product/page.css') ?>">
+<input type="hidden" id="currency_symbol" value="<?php echo $this->getCurrencySymbol() ?>">
+
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+
+<div class="details_contair">
+	<div class="goods-info" product_id="<?= $this->getProduct()->getId() ?>" product_type="<?php echo $this->getProduct()->getTypeId() ?>">
+		<div class="product-info clearfix">
+			<?php echo $this->getProductMediaHtml() ?>
+
+			<form action="" method="post"
+				  id="product_addtocart_form" <?= $this->getProduct()->getOptions() ? 'enctype="multipart/form-data"' : '' ?>>
+				<div class="product-detail">
+					<?php /* 特价 */ ?>
+					<?php if ($this->getProduct()->getSpecialPrice() && $this->getProduct()->getSpecialToDate()): ?>
+						<div class="promo-end">
+							<div class="promo-end-box">
+								Promo ends in
+								<i class="time">
+									<span class="day">0</span>&nbsp;day(s)&nbsp;
+									<span class="hour">00</span>:
+									<span class="minute">00</span>:
+									<span class="second">00</span>
+								</i>
+							</div>
+						</div>
+					<?php endif ?>
+
+					<?php /* 预售标签 */ ?>
+					<?php if ($this->getProduct()->getData('pre_sales')): ?>
+						<?php $pre_arrival_date = strtotime($this->getProduct()->getData('pre_arrival_date')); ?>
+						<?php if ($pre_arrival_date && $pre_arrival_date > time()): ?>
+							<div class="pre-sales promo-end">
+								<div class="promo-end-box">
+									<span>Expected Date of Arrival</span>
+									<i class="pre-sales-end-time">
+										<span class="month"><?= date('n', $pre_arrival_date) ?></span>/<span class="day"><?= date('j', $pre_arrival_date) ?></span>/<span class="year"><?= date('Y', $pre_arrival_date) ?></span>
+									</i>
+								</div>
+							</div>
+						<?php endif ?>
+					<?php endif ?>
+
+					<h1 class="product-title">
+						<?php $preOrderInfo = $this->getProductPreOrder() ?>
+
+                        <?php /*24HRS标签  */ ?>
+                        <?php if ($this->getProduct()->getData('provide_24hrs')): ?>
+							<i class="details_twenty_four_hours_label">24H<span>RS</span></i>
+                            <?php /*Pre-order标签  */ ?>
+                        <?php elseif ($preOrderInfo['is_pre_order']): ?>
+                            <?php if($preOrderInfo['partial']): ?>
+								<span>PARTIAL PRE-ORDER</span>&nbsp;
+                            <?php else: ?>
+								<span>PRE-ORDER</span>&nbsp;
+                            <?php endif ?>
+                        <?php endif ?>
+
+						<?php /*if ($preOrderInfo['is_pre_order']): */?><!--
+							<?php /*if($preOrderInfo['partial']): */?>
+								<span>PARTIAL PRE-ORDER</span>&nbsp;
+							<?php /*else: */?>
+								<span>PRE-ORDER</span>&nbsp;
+							<?php /*endif */?>
+						--><?php /*endif */?>
+
+						<?php echo $this->getCatalogOutputHelper()->productAttribute($this->getProduct(), $this->getProduct()->getName(), 'name') ?>
+					</h1>
+                    
+                    <?php if ($this->getAve40CatalogHelper()->getProductTagCode($this->getProduct()) == 'onlyshow'): ?>
+                        <div class="coming-soon-product-tips">
+                            <img src="<?php echo $this->getSkinUrl('images/product/comsoon.png') ?>" alt="">
+                            <h2>Coming Soon</h2>
+                            <p>This product will be available in the near future.Please stay tuned.</p>
+                        </div>
+                    <?php else: ?>
+						<?php
+						Mage::unregister('ave40_instance_product_items_block');
+						Mage::register('ave40_instance_product_items_block', new Varien_Object([
+							'attr_enable_rating_bar' => 1
+						])); ?>
+						<?php echo $this->getReviewsSummaryHtml($this->getProduct(), 'short', true) ?>
+						<?php Mage::unregister('ave40_instance_product_items_block'); ?>
+	
+	
+						<div class="parameter" id="ave40_attributes_list">
+							<?php /* 优惠金额 */ ?>
+							<div class="discount-price">
+								<span class="words"><?php echo __t('Price') ?>:</span>
+								<div class="sales-price" id="price_label">
+									<?php echo $this->getCoreHelper()->currency($this->getProductFinalPrice(), true, false); ?>
+								</div>
+	
+								<?php if (!$this->getAve40CustomerHelper()->isWholesaleUser()
+									&& $this->getProductFinalPrice() != $this->getProduct()->getPrice()): ?>
+									<div class="old-price">
+										<span class="price">
+											<?php echo $this->getCoreHelper()->formatPrice($this->getProduct()->getData('price')) ?>
+										</span>
+									</div>
+								<?php endif; ?>
+	
+								<?php if (!$this->getAve40CustomerHelper()->isWholesaleUser()
+									&& $this->getProductFinalPrice() != $this->getProduct()->getPrice()): ?>
+									<div class="off">
+										<span class="off-text">
+											<span id="ave40_off_label">
+												- <?php echo $this->getDiscountPercent() ?></span>
+											%</span>
+									</div>
+								<?php endif ?>
+							</div>
+	
+							<?php /* 价格 */ ?>
+							<?php if ($this->getProductFinalPrice() != $this->getProduct()->getPrice()): ?>
+								<div class="old-price hidden">
+									<span class="words"><?php echo __t('Price') ?>:</span>
+									<span class="price">
+										<?php echo $this->getCoreHelper()->formatPrice($this->getProduct()->getData('price')) ?>
+									</span>
+								</div>
+							<?php endif; ?>
+
+                            <?php echo $this->getProductTierPriceHtml() ?>
+
+                            <?php /* MSRP */ ?>
+                            <?php if ($this->getAve40CustomerHelper()->isWholesaleUser() && $this->getProduct()->getData('msrp')): ?>
+                                <div class="msrp-price-col">
+                                    <span class="words">Msrp: </span>
+                                    <div class="msrp-price-info">
+                                        <span class="msrp-value" id="msrp_value">
+											<?php echo $this->getCoreHelper()->currency($this->getProduct()->getData('msrp'), true, false); ?>
+										</span>
+                                        <span class="msrp-discount-percent">
+                                            <span>Discount:</span>
+                                            <span id="msrp_discount_percent">
+												-<?php echo $this->getDiscountPercent($this->getProductFinalPrice(), $this->getProduct()->getData('msrp')) ?>%
+											</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            <?php endif ?>
+							
+							<?php echo $this->getChildHtml('product_type_data') ?>
+							
+							<!-- 发货日期 -->
+							<?php if($this->getProduct()->getTypeId() == 'simple'): ?>
+								<?php if($this->getProduct()->getData('pre_sales')): ?>
+                                    <?php if($this->getProduct()->getData('crm_arrival_date')): ?>
+										<div class="crm-arrival-date-col arrival-date-col" id="crm_arrival_date" >
+											<span class="words">Estimated Delivery Date: </span>
+											<div class="date-box crm-arrival-date-info value ">
+												<?php echo $this->getAve40CatalogHelper()->calcProductArrivalDate($this->getProduct()->getData('crm_arrival_date')) ?>
+											</div>
+										</div>
+									<?php endif; ?>
+								<?php else: ?>
+									<?php if($this->getProduct()->getData('mdw_ed_days')): ?>
+										<div class="mdw-ed-date-col arrival-date-col" id="mdw_ed_days" >
+											<span class="words">Dispacth: </span>
+											<div class="date-box mdw-ed-date-info value">Ship in <?php echo $this->getProduct()->getData('mdw_ed_days') ?> business days.</div>
+										</div>
+									<?php endif; ?>
+								<?php endif; ?>
+							<?php else: ?>
+								<div class="mdw-ed-date-col arrival-date-col" id="mdw_ed_days" style="display:none;">
+									<span class="words">Dispacth: </span>
+									<div class="date-box">
+										Ship in <span class="mdw-ed-date-info value"></span> business days.
+									</div>
+								</div>
+								
+								<div class="crm-arrival-date-col arrival-date-col" id="crm_arrival_date" style="display:none;">
+									<span class="words">Estimated Delivery Date: </span>
+									<div class="date-box crm-arrival-date-info value">
+									</div>
+								</div>
+							<?php endif; ?>
+							
+							<?php $typeInstance = $this->getProduct()->getTypeInstance(true); ?>
+								<div class="stock_left" id="qty-show" data-pmap='<?= json_encode($pmap)?>'>
+									<?php if ($rqty <= 200 && $rqty > 0): ?>
+									<!--<div>Only <span></span> left</div>-->
+									<?php endif ?>
+								</div>
+
+                            <!-- simple product sku newsku -->
+							<?php if($this->getProduct()->getTypeId() == 'simple'): ?>
+                            <div class="simple-product-sku">
+                                <span class="words">Sku:</span>
+                                <span class="text"><?php echo $skuEncoder->encodeSku($this->getProduct()->getData('itemnum')) ?></span>
+                            </div>
+							<?php endif; ?>
+
+                            <?php if($this->getAve40CustomerHelper()->isWholesaleUser() && $this->getProduct()->getTypeId() == 'configurable'): ?>
+								<?php $this->outputBulkChoiceHtml() ?>
+							<?php else: ?>
+                                <?php $this->outputAttributeSelectHtml() ?>
+							<?php endif; ?>
+	
+
+							<?php if (!$customerHelper->isLoginAsWholesales()): ?>
+							
+								<?php if (!$customerHelper->isLoginned()): ?>
+									<div class="veri-bewholesale clearfix">
+										<a href="/customer/account/create/" class="no_verification_submit_login">Register</a>
+										<span><em class="fontsize-red">* </em>Register a wholesale account to view our tier pricing table.</span>
+										</div>
+								<?php else: ?>
+									<div class="veri-bewholesale clearfix">
+										<a href="javascript:;" class="no_verification_submit">Verification</a>
+										<span><em class="fontsize-red">* </em>Become a wholesaler to view our tier pricing table.</span>
+									</div>
+								<?php endif ?>
+								
+							<?php endif; ?>
+	
+							<div class="paypalCheckoutWrapper" id="paypal_ec_link">
+								<p><a href="javascript:;" onclick="_gaq.push(['_trackEvent','Detail_Payment_Click_checkout_with_paypal','Click','Detail_Payment_Click_checkout_with_paypal']);" data-href="<?php echo Mage::getBaseUrl(); ?>paypal/express/start/button/1/"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-medium.png" alt="Checkout with PayPal" title="Checkout with PayPal"></a></p>
+								<a href="javascript:;" onclick="_gaq.push(['_trackEvent','Detail_Payment_Click_paypal_credit','Click','Detail_Payment_Click_paypal_credit']);" data-href=<?php echo Mage::getBaseUrl(); ?>paypal/bml/start/button/1/"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/ppcredit-logo-medium.png" alt="Checkout with PayPal Paypal Credit" title="Checkout with PayPal Paypal Credit"></a>
+								<a  target="_blank" href="https://www.securecheckout.billmelater.com/paycapture-content/fetch?hash=AU826TU8&content=/bmlweb/ppwpsiw.html"><img src="https://www.paypalobjects.com/webstatic/en_US/btn/btn_bml_text.png"></a>
+
+                                <?php if($customerHelper->isWholesaleUser() && Mage::helper('ave40_catalog')->isProductInCategoryByUrlkey('1036', $this->getProduct()->getId())): ?>
+                                <!-- vladding所有产品提示信息 -->
+                                <div class="normal_tips">
+                                    <div class="normal_tips-text">
+                                        <h3>To wholesale customers:</h3>
+                                        <p>Vladdin products are mandatory declaration at China customs. If not declared, there will be extra 12% tax added. Thanks for your understanding!</p>
+                                    </div>
+                                </div>
+                                <?php endif; ?>
+
+                            </div>
+	
+							<div class="inquire clearfix">
+								<span class="wholesaler"><?php echo Mage::helper("Ave40_Translate")->__('Wholesaler? Get best offers and free samples') ?></span>
+								<span class="inquireNow inquireNow-popup-btn"><?php echo Mage::helper("Ave40_Translate")->__('1 on 1 Inquiry') ?></span>
+							</div>
+	
+							<div class="payment">
+								<span class="words"><?php echo Mage::helper("Ave40_Translate")->__('Payment') ?>:</span>
+								<i class="visa payway"></i>
+								<i class="western payway"></i>
+								<i class="bank payway"></i>
+								<i class="paypal payway"></i>
+							</div>
+						</div>
+					<?php endif;/* onlyshow */ ?>
+				</div>
+			</form>
+		</div>
+	</div> <!-- 产品详细信息 end -->
+	<?php echo $this->getChildHtml('inquire_form') ?>
+
+
+	<!-- 相关产品 begin-->
+	<?php
+	/* @var Mage_Catalog_Model_Resource_Product_Link_Collection $relatedCollection */
+	$relatedCollection = $this->getProduct()->getRelatedLinkCollection();
+	$relatedCollection->setOrder('position');
+	?>
+	<?php if ($relatedCollection->getSize() > 0): ?>
+		<div class="viewed">
+			<p class="title"><span><?php echo Mage::helper("Ave40_Translate")->__('Customers Who Bought This Item Also Viewed') ?></span></p>
+			<div class="viewed-carousel-box">
+                    <div class="viewed-carousel swiper-container product-items home-list">
+                        <ul class="swiper-wrapper">
+                            <?php $idx = 0;
+                            $countPerLi = 5;
+                            $productCount = count($this->getProduct()->getRelatedLinkCollection()) ?>
+							<?php foreach ($relatedCollection as $link): ?>
+							<?php $related_product = Mage::getModel('catalog/product')->load($link->getLinkedProductId()); ?>
+                                <li class="swiper-slide">
+									<div class="viewed-product" product_id="<?= $related_product->getId() ?>">
+										<div class="frequen-product-img">
+											<a href="/<?= $related_product->getUrlKey() ?>.html"
+											   title="<?= $related_product->getName() ?>">
+
+												<img src="<?php echo $this->helper('catalog/image')->init($related_product, 'small_image')->resize(170, 170) ?>"
+													 alt="<?= $related_product->getName() ?>"
+													 style="display: inline; width:170px; height: 170px;">
+											</a>
+										</div>
+										<div class="product-other-info product_item_search_template">
+											<h2 class="product-name">
+												<a href="/<?= $related_product->getUrlKey() ?>.html"
+												   title="<?= $related_product->getName() ?>">
+                                                    <?php if($related_product->getFinalPrice() && $related_product->getFinalPrice() < $related_product->getPrice()):?>
+                                                        <?php $discountPercent =  ceil(round(($related_product->getPrice() - $related_product->getFinalPrice()) / $related_product->getPrice(), 2) * 100) ?>
+														<i class="sales_label">-<?php echo $discountPercent ?>%</i>
+                                                    <?php endif; ?>
+													<?= $related_product->getName() ?>
+												</a>
+											</h2>
+
+											<!-- price -->
+                                            <?php $hasMsrp = $related_product->getMsrp()?>
+                                            <?php $canShowMsrp = $customerHelper->getIsGuidePageCustomer() || $customerHelper->isLoginAsWholesales() ?>
+											<!-- price -->
+											<div class="product_card_price  <?php echo $hasMsrp && $canShowMsrp ? 'show_msrp_price clearfix' : '' ?>">
+                                                <?php if($canShowMsrp): ?>
+                                                    <?php if($related_product->getMsrp()): ?>
+														<div class="msrp-price">MSRP<span><?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() ?><?php echo sprintf('%.2f', round($related_product->getMsrp(), 2)) ?></span></div>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                                <?php echo $this->getPriceHtml($related_product, $vars['display_aslowas_price'], $this->getPriceSuffix()) ?>
+
+											</div>
+
+
+                                            <?php $canShowFreeShippingLabel = $customerHelper->getIsGuidePageCustomer() || $customerHelper->isLoginAsWholesales() ?>
+                                            <?php if(!$canShowFreeShippingLabel): ?>
+												<!-- free shipping 标签 -->
+												<div class="free_shipping_label">FREE SHIPPING</div>
+                                            <?php endif; ?>
+
+                                            <?php /*if($_product->getMsrp()): */?><!--
+												<div class="msrp-price">MSRP<span><?php /*echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() */?><?php /*echo sprintf('%.2f', round($_product->getMsrp(), 2)) */?></span></div>
+                                            <?php /*endif; */?>
+											--><?php /*echo $this->getPriceHtml($related_product, true) */?>
+
+
+										</div>
+									</div>
+                                </li>
+							<?php endforeach ?>
+					</ul>
+				</div>
+
+				<div class="btn left"></div>
+				<div class="btn right"></div>
+			</div>
+		</div>
+	<?php endif ?>
+	<!-- 相关产品 end-->
+
+	<!--Key words-->
+	<?php $productKeywordsHtml = trim(Mage::app()->getLayout()->createBlock('cms/block')
+		->setBlockId('product-detail-keywords')->toHtml()) ?>
+	<?php if (!empty($productKeywordsHtml)): ?>
+	<div class="key-words-col" style="">
+		<p class="title"><?php echo Mage::helper("Ave40_Translate")->__('Categotie Relativo') ?></p>
+		<ul class="key-words-list clearfix">
+			<!--<li><a href="?">Consumer</a></li>-->
+			<?php echo $productKeywordsHtml ?>
+		</ul>
+	</div>
+	<?php endif; ?>
+
+	<?php /* VLADDIN 一款产品特殊显示提示 */ ?>
+    <?php if (!empty($this->getProduct()->getId()) && $this->getProduct()->getId() == '320323'):?>
+    <div class="normal_tips">
+        <i class="normal_tips-icon"></i>
+        <div class="normal_tips-text">
+            <h3>To our valued customers in USA:</h3>
+            <p>This product cannot sell to the USA. Please think twice before putting it to your shopping cart.</p>
+        </div>
+    </div>
+    <?php endif; ?>
+
+	<div class="deatails-box">
+		<div class="deatails-tab">
+			<ul class="tab">
+				<li hash="ProductDetails" class="active"><a title=""><?php echo Mage::helper("Ave40_Translate")->__('Product Description') ?></a></li>
+				<li hash="Feedback"><a><?php echo Mage::helper("Ave40_Translate")->__('Customer Reviews') ?></a></li>
+				<li hash="ShippingPayment"><a><?php echo Mage::helper("Ave40_Translate")->__('Shipping & Payment') ?></a></li>
+			</ul>
+		</div>
+
+		<div class="detail-main show detail-info">
+			<div class="detail-info-box">
+				<?= Mage::getModel('core/email_template_filter')->filter($this->getProduct()->getDescription()) ?>
+			</div>
+		</div>
+
+		<div class="detail-main hide feedback">
+			<div class="feedback-box">
+				<?php echo $this->getChildHtml('reviews') ?>
+			</div>
+		</div>
+
+		<div class="detail-main hide shipping">
+			<div class="shipp-box">
+
+				<?= Mage::getModel('cms/block')->setStoreId(Mage::app()->getStore()->getId())->load('product_shipping_and_payment')->getContent() ?>
+			</div>
+		</div>
+   	  	<div class="partner-sitel">
+		<?php if(Mage::helper('ave40_widget')->pageIs('/asvape-michael-vo200-tc-box-mod.html')): ?>
+		<span><?php echo Mage::helper("Ave40_Translate")->__('Partner sites list:') ?></span><a href="https://www.fazwaz.com/" title="FazWaz">FazWaz</a>
+	 	<?php endif; ?>
+	 	</div>
+	</div>
+	<!--Key words-->
+    <?php echo $this->getChildHtml('product_view.keyword') ?>
+</div>
+
+<?php /*倒计时脚本*/ ?>
+<script type="text/javascript">
+	<?php if ($this->getProduct()->getSpecialPrice() && $this->getProduct()->getSpecialToDate()): ?>
+	countDown("<?=$this->getProduct()->getSpecialToDate()?>", ".time .day", ".time .hour", ".time .minute", ".time .second");
+	<?php endif ?>
+</script>
+
+<!-- 引入验证wholesale模块 -->
+<?php echo Mage::app()->getLayout()->createBlock('core/template')->setTemplate('ave40_verify_wholesale/verify_form.phtml')->toHtml() ?>
+
+<?php /* 分享插件 */  ?>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-58fefb0c3bbf5bfe"></script>

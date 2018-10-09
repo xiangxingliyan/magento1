@@ -1,0 +1,179 @@
+
+<?php
+$_product = $this->getProduct();
+$_helper = $this->helper('catalog/output');
+?>
+<style type="text/css">
+    .swiper-spec-scroll-prev, .swiper-spec-scroll-next{
+        background-color: #fff;
+        top: 0;
+        width: 30px;
+        height: 86px;
+        margin-top: 0;
+        text-align: center;
+    }
+    .swiper-spec-scroll-prev img, .swiper-spec-scroll-next img{
+        margin-top: 31px;
+    }
+    .swiper-spec-scroll-prev{
+        left: 0;
+        background-image: none;
+    }
+    .swiper-spec-scroll-next{
+        right: 0;
+        background-image: none;
+    }
+</style>
+<div class="img-show">
+    <div class="spec-scroll hidden">
+        <div class="items ">
+            <ul id="ave40_preview_image_list" data-mcs-theme="dark" class="preview_image_list ">
+                <?php if (!$_product->getImage() || $_product->getImage() == 'no_selection'): ?>
+                    <li class="spec-first-li ">
+                        <img
+                            bimg="<?=$this->helper('catalog/image')->init($_product, 'image')->resize(800)?>"
+                            mimg="<?=$this->helper('catalog/image')->init($_product, 'image')->resize(450)?>"
+                            src="<?=$this->helper('catalog/image')->init($_product, 'image')->resize(56)?>"
+                            onmousemove="preview(this);" />
+                    </li>
+                <?php elseif (count($this->getGalleryImages()) == 0): ?>
+                    <li >
+                        <img
+                            bimg="/media/catalog/product<?=$_product->getImage()?>"
+                            mimg="/media/catalog/product<?=$_product->getImage()?>"
+                            src="/media/catalog/product<?=$_product->getImage()?>"
+                            onmousemove="preview(this);" />
+                    </li>
+                <?php endif; ?>
+                <?php $imgIndex = 1 ?>
+                <?php foreach ($this->getGalleryImages() as $_image): ?>
+                    <?php $imgIndex++ ?>
+                    <?php if (!isset($defaultImage)) { $defaultImage = $_image; } ?>
+                    <li >
+                        <img
+                            alt="<?php echo $this->escapeHtml($_product->getName()) . " banner image $imgIndex" ?>"
+                            data-label="<?php echo  $_image->getLabel() ?>"
+                            test="<?=$_image->getFile()?>"
+                            bimg="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(800); ?>"
+                            mimg="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(450); ?>"
+                            src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(56); ?>"
+                            onmousemove="preview(this);" />
+                    </li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+    </div>
+
+    <div id="preview" class="spec-preview">
+        <div class="jqzoom">
+            <?php if (!$_product->getImage() || $_product->getImage() == 'no_selection'): ?>
+                <img
+                    jqimg="<?=$this->helper('catalog/image')->init($_product, 'image')->resize(800)?>"
+                    src="<?=$this->helper('catalog/image')->init($_product, 'image')->resize(450)?>"
+                    class="zoomImg" id="bigImg" />
+            <?php elseif (count($this->getGalleryImages()) == 0): ?>
+                <img
+                    jqimg="/media/catalog/product<?=$_product->getImage()?>"
+                    src="/media/catalog/product<?=$_product->getImage()?>"
+                    class="zoomImg" id="bigImg" />
+            <?php else: ?>
+                <?php if (isset($defaultImage)) { $_image = $defaultImage; } ?>
+                <img test="<?=$_image->getFile()?>"
+                     jqimg="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(800); ?>"
+                     src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(450); ?>"
+                     class="zoomImg" id="bigImg"  />
+            <?php endif; ?>
+            <?php if ($this->getProduct()->getData('tpd')): ?>
+                <div class="tpd-compliant"></div>
+            <?php endif ?>
+
+        </div>
+    </div>
+
+    <div class="spec-scroll">
+        <div class="items swiper-container swiper-container-spec-scroll">
+            <ul id="ave40_preview_image_list" data-mcs-theme="dark" class="preview_image_list swiper-wrapper">
+                <?php if (!$_product->getImage() || $_product->getImage() == 'no_selection'): ?>
+                    <li class="spec-first-li swiper-slide">
+                        <img
+                            bimg="<?=$this->helper('catalog/image')->init($_product, 'image')->resize(800)?>"
+                            mimg="<?=$this->helper('catalog/image')->init($_product, 'image')->resize(450)?>"
+                            src="<?=$this->helper('catalog/image')->init($_product, 'image')->resize(56)?>"
+                            onmousemove="preview(this);" />
+                    </li>
+                <?php elseif (count($this->getGalleryImages()) == 0): ?>
+                    <li class="swiper-slide">
+                        <img
+                            bimg="/media/catalog/product<?=$_product->getImage()?>"
+                            mimg="/media/catalog/product<?=$_product->getImage()?>"
+                            src="/media/catalog/product<?=$_product->getImage()?>"
+                            onmousemove="preview(this);" />
+                    </li>
+                <?php endif; ?>
+                <?php $imgIndex = 1 ?>
+                <?php foreach ($this->getGalleryImages() as $_image): ?>
+                    <?php $imgIndex++ ?>
+                    <?php if (!isset($defaultImage)) { $defaultImage = $_image; } ?>
+                    <li class="swiper-slide">
+                        <img
+                            alt="<?php echo $this->escapeHtml($_product->getName()) . " banner image $imgIndex" ?>"
+                            data-label="<?php echo  $_image->getLabel() ?>"
+                            test="<?=$_image->getFile()?>"
+                            bimg="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(800); ?>"
+                            mimg="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(450); ?>"
+                            src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(56); ?>"
+                            onmousemove="preview(this);" />
+                    </li>
+                <?php endforeach ?>
+            </ul>
+            <div class="swiper-button-prev swiper-spec-scroll-prev"><img src="<?= $this->getSkinUrl('images/details/prodetails-left.png') ?>" alt=""></div>
+            <div class="swiper-button-next swiper-spec-scroll-next"><img src="<?= $this->getSkinUrl('images/details/prodetails-right.png') ?>" alt=""></div>
+        </div>
+    </div>
+
+    <div class="detail-To-Wish clearfix">
+        <div class="add-wish hidden">
+            <a class="<?php if (Mage::getModel('customer/session')->isLoggedIn()): ?>add-to-wishlist<?php endif; ?>"
+                <?php if (!Mage::getModel('customer/session')->isLoggedIn()): ?>
+                    href="/customer/account/login"
+                <?php else: ?>
+                    href="javascript:;"
+                <?php endif; ?>
+
+               data-url="/ave40api/wishlist/add/product/<?php echo $_product->getId() ?>/form_key/<?= Mage::getSingleton('core/session')->getFormKey() ?>"
+               title="">
+                <span class="icon add-wish-icon"></span>
+                <span><?php echo Mage::helper("Ave40_Translate")->__('Add to Wish List') ?></span>
+            </a>
+        </div>
+        <!--<div class="share">
+            <a class="icon share-icon"></a>
+            <a class="icon facebook-icon"></a>
+            <a class="icon ins-icon"></a>
+            <a class="icon twitter-icon"></a>
+            <a class="icon google-icon"></a>
+            <a class="icon vk-icon"></a>
+        </div>-->
+        <div class="share">
+            <ul class="addthis_share">
+                <li class="icon share-icon"></li>
+
+                <div class="addthis_inline_share_toolbox" data-media="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(170, 170) ?>"></div>
+                <a class="wanelo-save-button" rel="nofollow" href="//wanelo.co/" data-url="" data-title="" data-image="" data-price="" style="vertical-align: middle;"></a>
+                <script async="true" type="text/javascript" src="//cdn-saveit.wanelo.com/bookmarklet/3/save.js"></script>
+                <!--<li class="icon facebook-icon addthis_share_button" data-service="facebook"
+									data-url="<?php /*echo $_product->getProductUrl() */?>"></li>
+				<li class="icon twitter-icon addthis_share_button" data-service="twitter"
+									data-url="<?php /*echo $_product->getProductUrl() */?>"
+									data-title="<?php /*echo $productName */?>"></li>
+				<li class="icon google-icon addthis_share_button" data-service="google"
+									data-url="<?php /*echo $_product->getProductUrl() */?>"
+									data-title="<?php /*echo $productName */?>"></li>
+				<li class="icon vk-icon addthis_share_button" data-service="vk"
+									data-url="<?php /*echo $_product->getProductUrl() */?>"
+									data-title="<?php /*echo $productName */?>"></li>-->
+            </ul>
+        </div>
+    </div>
+
+</div>

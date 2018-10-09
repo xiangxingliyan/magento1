@@ -1,0 +1,195 @@
+<?php
+/**
+ * Customer login form template
+ *
+ * @see app/design/frontend/base/default/template/customer/form/login.phtml
+ */
+/** @var $this Mage_Customer_Block_Form_Login */
+?>
+<style type="text/css">
+	.main {
+		width: auto;
+		padding: 0;
+	}
+
+	.col-main {
+		width: auto;
+		padding: 0;
+	}
+	.input_form .btn span {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+	html,body{
+		height: 100%;
+	}
+	.input_form .info {
+		display: none;
+	}
+</style>
+<?= $this->getChildHtml('jstranslate') ?>
+<!--<div id="login_back"></div>
+<div class="login_back_opac"></div>-->
+<div class="login_regit_content">
+	<div class="login login_regit_page">
+		<div class="aveLogo">
+			<h1>LOGIN OR CREATE AN ACCOUNT</h1>
+		</div>
+
+        <?php if (Mage::getStoreConfig('ave40_login/global/enabled') && !empty($_GET['platform'])): ?>
+            <div class="platform_method_box">
+                <div class="method_switch">
+                    <a href="#" class="current"><?php echo Mage::helper("Ave40_Translate")->__('Link An Existing Account') ?></a>
+                    <a href="<?= $this->getCreateAccountUrl() . '?' . $_SERVER['QUERY_STRING'] ?>"><?php echo Mage::helper("Ave40_Translate")->__('Create A New Account') ?></a>
+                </div>
+                <div class="info_text">
+                    <?php echo Mage::helper("Ave40_Translate")->__('This procedure will help you connect your current social media account with the existing Ave40 account.') ?>
+                </div>
+            </div>
+        <?php endif ?>
+        <div class="col2-set">
+			<div class="input_form col-1">
+				<form action="/ave40api/customer/loginPost" method="post" id="login-form">
+					<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+					<input name="redirect" type="hidden" value="<?php echo $_SERVER['HTTP_REFERER'] ?>" />
+					<h2>REGISTERED CUSTOMERS</h2>
+					<p>If you have an account with us, please log in.</p>
+	                <div class="login-account-col">
+	                    <span class="words"><?php echo Mage::helper("Ave40_Translate")->__('Account') ?> :</span>
+	                    <input type="email" name="login[username]" value="<?php echo $this->escapeHtml($this->getUsername()) ?>"
+	                           required id="email" title="<?php echo Mage::helper("Ave40_Translate")->__('Email Address') ?>"
+	                           placeholder="<?php echo Mage::helper("Ave40_Translate")->__('Email Address') ?>"/>
+	                </div>
+					<div class="input-tip "></div>
+
+	                <div class="login-password-col">
+	                    <span class="words"><?php echo Mage::helper("Ave40_Translate")->__('Password') ?> :</span>
+	                    <input type="password" name="login[password]" id="pass" autocomplete="off" title="<?php echo Mage::helper("Ave40_Translate")->__('Password') ?>"
+	                           required placeholder="<?php echo Mage::helper("Ave40_Translate")->__('Password') ?>"/>
+	                </div>
+					<div class="input-tip" style="height: auto"></div>
+					<div class="forget-tip">
+						<div class="forget_passwd " >
+							<a href="<?= $this->getForgotPasswordUrl() ?>" title="Forget password?"><?php echo Mage::helper("Ave40_Translate")->__('Forget Your password?') ?></a>
+						</div>
+					</div>
+
+	                <?php if (Mage::getStoreConfig('ave40_login/global/enabled') && isset($_GET['platform'])): ?>
+	                    <input type="hidden" name="platform" value="<?php echo $_GET['platform']; ?>">
+	                <?php endif ?>
+
+	                <?php echo $this->getChildHtml('form.additional.info'); ?>
+					<?php echo $this->getChildHtml('persistent.remember.me'); ?>
+					<?php echo $this->getChildHtml('persistent.remember.me.tooltip'); ?>
+					<div class="regist_info">
+						<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+					</div>
+
+	                <div>
+	                    <button type="submit" class="sign-in-btn btn" onclick="_gaq.push(['_trackEvent','SignIn_loginPage_button','Click','SignIn_loginPage_button']);">
+	                        <?php if(isset($_GET['platform'])): ?>
+	                            <span><?php echo Mage::helper("Ave40_Translate")->__('Done') ?></span>
+	                            <?php else:?>
+	                            <span><?php echo Mage::helper("Ave40_Translate")->__('Account Sign in') ?></span>
+	                        <?php endif?>
+	                    </button>
+	                </div>
+
+					<?php if (Mage::getStoreConfig('ave40_login/global/enabled') && empty($_GET['platform'])): ?>
+						<div class="sign_way">
+							<span><?php echo Mage::helper("Ave40_Translate")->__('Sign in with') ?>:</span>
+							<?php if (Mage::getStoreConfig('ave40_login/facebook/enabled')): ?>
+								<a href="/login?platform=facebook&action=do_login" title="Facebook"
+								   class="icon facebook-icon"></a>
+							<?php endif ?>
+
+							<?php if (Mage::getStoreConfig('ave40_login/instagram/enabled')): ?>
+								<a href="/login?platform=instagram&action=do_login" title="Instagram"
+								   class="icon ins-icon"></a>
+							<?php endif ?>
+
+							<?php if (Mage::getStoreConfig('ave40_login/google/enabled')): ?>
+								<a href="/login?platform=google&action=do_login" title="Google"
+								   class="icon google-icon"></a>
+							<?php endif ?>
+
+							<?php if (Mage::getStoreConfig('ave40_login/vk/enabled')): ?>
+								<a href="/login?platform=vk&action=do_login" title="VK" class="icon vk-icon"></a>
+							<?php endif ?>
+
+							<?php if (Mage::getStoreConfig('ave40_login/twitter/enabled')): ?>
+							<a href="/login?platform=twitter&action=do_login" title="Twitter" class="icon twitter-icon"></a>
+							<?php endif ?>
+
+						</div>
+					<?php endif ?>
+				</form>
+			</div>
+			<div class="col-2">
+				<h2>NEW CUSTOMERS</h2>
+				<p>By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.</p>
+				<div class="back-sign-in clearfix">
+					<a class="back-signin-btn" href="<?= $this->getCreateAccountUrl() ?>"><?php echo Mage::helper("Ave40_Translate")->__('Create an Account') ?></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	~function ($) {
+		$(function () {
+			$("#login-form").validate({
+				rules: {
+					'login[username]': {
+						required: true,
+						email: true
+					},
+					'login[password]': {
+						required: true,
+						minlength: 6
+					}
+				},
+                onkeyup:false,
+				errorClass: 'mess-error-tip',
+				errorElement: "div",
+				errorPlacement: function (error, element) {
+					error.appendTo(element.parent().next('.input-tip'));
+				},
+
+				submitHandler: function (form) {
+                    console.log('success')
+					ave40.showLoading('<?php echo Mage::helper("Ave40_Translate")->__("Logging in...") ?>');
+					var FormData = $('#login-form').serialize();
+					$.ajax({
+						url: form.action,
+						type: 'POST',
+						dataType: 'json',
+						data: FormData,
+						success: function (data) {
+							if (data.errno == 0) {
+								Ave40MessageBox.alertSuccess('<?php echo Mage::helper("Ave40_Translate")->__("You have successfully logged in") ?>!')
+								ave40.getLoading().setAlertText('Loading');
+								
+								if(data.redirect) {
+									window.location.href = data.redirect;
+								} else {
+									window.location.href = '/';
+								}
+								
+							}else{
+								ave40.closeLoading();
+								Ave40MessageBox.alertError(data.errmsg);
+							}
+						},
+						error: function (error) {
+							console.log('error message show')
+						}
+					});
+				}
+			})
+
+		});
+	}(jQuery)
+
+</script>

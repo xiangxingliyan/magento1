@@ -1,0 +1,89 @@
+<div class="share-off-page ">
+    <div class="share-off-1-col imgCenterPosition">
+        <img src="/media/wysiwyg/topic/share-off/share_01.jpg" alt="">
+        <img src="/media/wysiwyg/topic/share-off/share_02.jpg" alt="">
+    </div>
+    <div class="share-off-2-col ">
+        <p class="share-off-price">$300</p>
+        <div class="share-off-2-btn">
+            <div class="share-to-link">
+                <a href="https://www.instagram.com/ave40official/" title="instagram" class="follow-us-icon ins"></a>
+                <a href="https://twitter.com/AveForty" title="twitter" class="follow-us-icon twitter"></a>
+                <a href="https://www.facebook.com/Ave40" title="facebook" class="follow-us-icon facebook"></a>
+                <a href="https://www.youtube.com/c/ave40" title="youtube" class="follow-us-icon youtube"></a>
+            </div>
+            <a href="javascript:;" class="share-to-btn off-btn"></a>
+            <a href="javascript:;" class="help-to-btn off-btn"></a>
+        </div>
+        <div class="share-table" >
+            <div class="share-table-title">
+                    <span>Name</span>
+                    <span>Costs Reduced</span>
+                    <span>Time</span>
+            </div>
+            <ul class="share-table-carousel">
+                <li class="clearfix">
+                    <span>xx</span>
+                    <span>- $5</span>
+                    <span>2017-06-20</span>
+                </li>
+                <li class="clearfix">
+                    <span>xx</span>
+                    <span>- $5</span>
+                    <span>2017-06-20</span>
+                </li>
+                <li class="clearfix">
+                    <span>xx</span>
+                    <span>- $5</span>
+                    <span>2017-06-20</span>
+                </li>
+                <li class="clearfix">
+                    <span>xx</span>
+                    <span>- $5</span>
+                    <span>2017-06-20</span>
+                </li>
+                <li class="clearfix">
+                    <span>xx</span>
+                    <span>- $5</span>
+                    <span>2017-06-20</span>
+                </li>
+                <li class="clearfix">
+                    <span>xx</span>
+                    <span>- $5</span>
+                    <span>2017-06-20</span>
+                </li>
+                <li class="clearfix">
+                    <span>xx</span>
+                    <span>- $5</span>
+                    <span>2017-06-20</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="imgCenterPosition">
+        <img src="/media/wysiwyg/topic/share-off/share_05.jpg" alt="">
+    </div>
+</div>
+
+<script>
+    ~function ($) {
+        $(function () {
+            $('.share-to-btn').toggle(function () {
+                $('.share-to-link').animate({left:'22%'},500);
+            },function () {
+                $('.share-to-link').animate({left:'35%'},500);
+            });
+            $('.share-table-carousel').bxSlider({
+                mode:'vertical',
+                auto:true,
+                responsive:false,
+                moveSlides:1,
+                autoHover: true,
+                pager: false,
+                minSlides: 5,
+                pause: 3000,
+                controls:false
+            });
+        })
+    }(jQuery)
+</script>

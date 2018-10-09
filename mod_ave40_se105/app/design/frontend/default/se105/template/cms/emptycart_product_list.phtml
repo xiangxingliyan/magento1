@@ -1,0 +1,169 @@
+<div class="cart-empty-page">
+
+    <div class="cart-empty-word">
+        <div class="cart-empty-img">
+            <img src="<?= $this->getSkinUrl('images/cart/empty-cart.png') ?>" alt="">
+        </div>
+        <div class="cart-empty-tip">
+            <p>
+            <?php echo Mage::helper("Ave40_Translate")->__('Shopping cart is empty,Walk around,find something amazing') ?>
+            </p>
+            <a href="/" class="go-homepage no-hover "><?php echo Mage::helper("Ave40_Translate")->__('Go homepage') ?></a>
+        </div>
+    </div>
+    <?php
+    $categoryId = $this->getCategoryId();
+    if (empty($categoryId)) {
+        $categoryId = Mage::getModel('core/variable')->loadByCode('empty_cart_recommend_category_id')->getValue('html');
+    }
+    $storeId = Mage::app()->getStore()->getId();
+    $media = Mage::getModel('catalog/product_media_config');
+    $category = Mage::getModel('catalog/category')->load($categoryId);
+
+    $collection = Mage::getModel('catalog/product')->getCollection();
+    $collection->addAttributeToSelect('*')
+        ->setStore($storeId)
+        ->addCategoryFilter($category)
+        ->addAttributeToSort('position');
+    Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($collection);
+    Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($collection);
+    ?>
+    <?php if ($collection): ?>
+        <div class="may-like">
+            <div class="may-like-title"><span><?php echo Mage::helper("Ave40_Translate")->__('You may like') ?></span></div>
+
+            <div class="viewed">
+                <div class="viewed-carousel-box">
+                    <div class="viewed-carousel product-items home-list swiper-container swiper-container-empty-cart">
+                        <ul class="swiper-wrapper">
+                            <?php foreach ($collection as $_product): ?>
+                                <li class="swiper-slide">
+                                    <div class="viewed-product " idx="<?= $idx ?>"
+                                         product_id="<?= $_product->getId() ?>">
+                                        <div class="frequen-product-img">
+                                            <a href="/<?= $_product->getUrlKey() ?>.html"
+                                               title="<?= $_product->getName() ?>">
+
+                                                <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(170, 170) ?>"
+                                                     alt="<?= $_product->getName() ?>"
+                                                     style="display: inline; width:170px; height: 170px;">
+                                            </a>
+                                        </div>
+                                        <h2 class="product-name">
+                                            <a href="/<?= $_product->getUrlKey() ?>.html"
+                                               title="<?= $_product->getName() ?>">
+                                                <?= $_product->getName() ?>
+                                            </a>
+                                        </h2>
+                                        <div class="price-box">
+                                            <p class="special-price">
+                                                <span class="price"
+                                                      id="product-price-<?= $_product->getId() ?>-featured">$<?= number_format($_product->getSpecialPrice() ? $_product->getSpecialPrice() : $_product->getPrice(), 2) ?></span>
+                                            </p>
+                                            <p class="old-price">
+                                                <span class="price"
+                                                      id="old-price-<?= $_product->getId() ?>-featured">$<?= number_format($_product->getPrice(), 2) ?></span>
+                                            </p>
+                                        </div>
+
+                                        <?php
+                                        /** @var Ave40_Base_Helper_Customer $customerHelper */
+                                        $customerHelper = Mage::helper('ave40_base/customer');
+                                        ?>
+                                        <?php $canShowFreeShippingLabel = $customerHelper->getIsGuidePageCustomer() || $customerHelper->isLoginAsWholesales() ?>
+                                        <?php if(!$canShowFreeShippingLabel): ?>
+											<!-- free shipping 标签 -->
+											<div class="free_shipping_label">FREE SHIPPING</div>
+                                        <?php endif; ?>
+
+                                    </div>
+                                </li>
+                            <?php endforeach ?>
+                        </ul>
+
+
+                        <!--<ul >
+						<li class="">
+						<?php /*$idx = 0; */ ?>
+						<?php /*foreach ($collection as $_product): */ ?>
+						<?php /*$idx++; */ ?>
+
+							<div class="viewed-product " idx="<? /*=$idx*/ ?>" product_id="<? /*=$_product->getId()*/ ?>">
+								<div class="frequen-product-img">
+									<a href="/<? /*=$_product->getUrlKey()*/ ?>.html" title="<? /*=$_product->getName()*/ ?>">
+
+										<img  src="<?php /*echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(170, 170) */ ?>" alt="<? /*=$_product->getName()*/ ?>" style="display: inline; width:170px; height: 170px;">
+									</a>
+								</div>
+								<h2 class="product-name">
+									<a href="/<? /*=$_product->getUrlKey()*/ ?>.html" title="<? /*=$_product->getName()*/ ?>">
+										<? /*=$_product->getName()*/ ?>
+									</a>
+								</h2>
+								<div class="price-box">
+									<p class="special-price">
+										<span class="price" id="product-price-<? /*=$_product->getId()*/ ?>-featured">$<? /*=number_format($_product->getSpecialPrice() ? $_product->getSpecialPrice() : $_product->getPrice(), 2)*/ ?></span>
+									</p>
+									<p class="old-price">
+										<span class="price" id="old-price-<? /*=$_product->getId()*/ ?>-featured">$<? /*=number_format($_product->getPrice(), 2)*/ ?></span>
+									</p>
+								</div>
+							</div>
+
+						<?php /*if (($idx > 0) && ($idx % 5 == 0)): */ ?>
+						</li>
+						<li class="">
+						<?php /*endif */ ?>
+
+						<?php /*endforeach */ ?>
+						</li>
+					</ul>-->
+
+                    </div>
+                    <div class="btn left"></div>
+                    <div class="btn right"></div>
+                </div>
+            </div>
+
+
+        </div>
+    <?php endif; ?>
+</div>
+
+<script>
+    jQuery(function () {
+
+        var mayLikeSwiper = new multipleProductCarousl({
+            parentSelector: '.viewed-carousel-box',
+            elmSelector: '.swiper-container-empty-cart',
+            isLoop: false,
+            slidesPerColumn: 1,
+            slidesPerView : 6,
+            nextBtnSelector: '.viewed-carousel-box .right',
+            prevBtnSelector: '.viewed-carousel-box .left',
+            breakpoints:{
+                320: {
+                    slidesPerView: 1
+                },
+
+                500: {
+                    slidesPerView: 1
+                },
+                640: {
+                    slidesPerView: 1
+                },
+                768: {
+                    slidesPerView: 2
+                },
+                1199: {
+                    slidesPerView: 4
+                },
+                1920:{
+                    slidesPerView: 4
+                }
+            }
+
+        });
+    })
+
+</script>

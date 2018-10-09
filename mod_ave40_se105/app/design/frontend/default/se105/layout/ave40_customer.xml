@@ -1,0 +1,37 @@
+<layout version="1.0.0">
+    <ave40_customer_points_index>
+        <update handle="customer_account"/>
+        <reference name="root">
+            <reference name="head">
+                <action method="setTitle" translate="title">
+                    <title>My Points</title>
+                </action>
+            </reference>
+            <block name="content" type="ave40_customer/points" template="ave40_customer/points.phtml"/>
+        </reference>
+    </ave40_customer_points_index>
+
+    <ave40_customer_coupons_index>
+        <update handle="customer_account"/>
+        <reference name="root">
+            <reference name="head">
+                <action method="setTitle" translate="title">
+                    <title>My Coupon</title>
+                </action>
+            </reference>
+            <block name="content" type="ave40_customer/coupons" template="ave40_customer/coupons.phtml"/>
+        </reference>
+    </ave40_customer_coupons_index>
+
+    <ave40_customer_account_resetpasswordsuccess>
+        <reference name="root">
+            <remove name="left"/>
+            <reference name="head">
+                <action method="setTitle" translate="title">
+                    <title>Password reseted successful</title>
+                </action>
+            </reference>
+            <block name="content" type="core/template" template="customer/form/forgotpassword-step3.phtml"/>
+        </reference>
+    </ave40_customer_account_resetpasswordsuccess>
+</layout>

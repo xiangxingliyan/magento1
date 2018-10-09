@@ -1,0 +1,23 @@
+<?php $_products = $this->getProductCollection() ?>
+
+<?php if ($_products): ?>
+	<?php foreach ($_products as $i => $p): ?>
+		<li class="item" product-id="<?php echo $p->getId() ?>">
+			<div class="home-product-img">
+				<a href="<?php echo $p->getProductUrl() ?>">
+					<img class="lazy" data-original="<?php echo $this->helper('catalog/image')->init($p, 'small_image')->resize(200, 200) ?>"
+						 src="<?php echo $this->getSkinUrl('images/loader.gif') ?>"
+						 width="201" alt="<?php echo $p->getName() ?>" style="display: inline;">
+				</a>
+			</div>
+			<div class="product-other-info">
+				<h2 class="product-name">
+					<a href="<?php echo $p->getProductUrl() ?>" title="<?php echo $p->getName() ?>">
+						<?php echo $p->getName() ?>
+					</a>
+				</h2>
+			</div>
+			<a class="buy-now-btn" title="buy now" href="<?php echo $p->getProductUrl() ?>"><?php echo Mage::helper("Ave40_Translate")->__('BUY NOW') ?></a>
+		</li>
+	<?php endforeach; ?>
+<?php endif; ?>

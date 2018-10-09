@@ -1,0 +1,19 @@
+<div class="block-subscribe">
+    <div class="block-title">
+        <?php echo Mage::helper("Ave40_Translate")->__('Get Deal') ?>
+		<br />
+		<em><?php echo Mage::helper("Ave40_Translate")->__('Sign Up for Our Hot Deal Newsletter ') ?></em>
+    </div>
+    <form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="newsletter-validate-detail">
+        <div class="subscribe-content">
+               <input type="text" name="email" id="newsletter" title="<?php echo Mage::helper("Ave40_Translate")->__('Sign up for our newsletter') ?>" class="input-text required-entry validate-email" />
+                <button type="submit" title="<?php echo Mage::helper("Ave40_Translate")->__('Subscribe') ?>" class="button"><span><?php echo Mage::helper("Ave40_Translate")->__('Subscribe') ?></span></button>
+
+        </div>
+    </form>
+    <script type="text/javascript">
+    //<![CDATA[
+        var newsletterSubscriberFormDetail = new VarienForm('newsletter-validate-detail');
+    //]]>
+    </script>
+</div>

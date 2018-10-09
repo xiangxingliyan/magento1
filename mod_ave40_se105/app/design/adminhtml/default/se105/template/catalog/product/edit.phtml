@@ -1,0 +1,418 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Template for Mage_Adminhtml_Block_Catalog_Product_Edit
+ */
+?>
+
+
+
+<div class="content-header">
+	<h3 class="icon-head head-products"><?php echo $this->getHeader() ?></h3>
+	<p class="content-buttons form-buttons"><?php echo $this->getBackButtonHtml() ?>
+        <?php echo $this->getCancelButtonHtml() ?>
+        <?php if($this->getProductId()): ?>
+            <?php echo $this->getDeleteButtonHtml() ?>
+            <?php if($this->getProductSetId() && $this->getIsConfigured()): ?>
+                <?php echo $this->getDuplicateButtonHtml() ?>
+            <?php endif; ?>
+        <?php endif; ?>
+        <?php if($this->getProductSetId() && $this->getIsConfigured()): ?>
+            <?php echo $this->getSaveButtonHtml() ?>
+            <?php echo $this->getSaveAndEditButtonHtml() ?>
+        <?php endif; ?>
+	</p>
+</div>
+<form action="<?php echo $this->getSaveUrl() ?>" method="post" id="product_edit_form" enctype="multipart/form-data">
+    <?php echo $this->getBlockHtml('formkey')?>
+	<div style="display:none"></div>
+</form>
+<script type="text/javascript">
+	//<![CDATA[
+	var productTemplateSyntax = /(^|.|\r|\n)({{(\w+)}})/;
+	var productForm = new varienForm('product_edit_form', '<?php echo $this->getValidationUrl() ?>');
+	productForm._processValidationResult = function(transport) {
+		var response = transport.responseText.evalJSON();
+		if (response.error){
+			if (response.attribute && $(response.attribute)) {
+				$(response.attribute).setHasError(true, productForm);
+				Validation.ajaxError($(response.attribute), response.message);
+				if (!Prototype.Browser.IE){
+					$(response.attribute).focus();
+				}
+			}
+			else if ($('messages')) {
+				$('messages').innerHTML = '<ul class="messages"><li class="error-msg"><ul><li>' + response.message + '</li></ul></li></ul>';
+			}
+		}
+		else{
+			productForm._submit();
+		}
+	};
+	function saveAndContinueEdit(urlTemplate) {
+		var template = new Template(urlTemplate, productTemplateSyntax);
+		var url = template.evaluate({tab_id:product_info_tabsJsTabs.activeTab.id});
+		productForm.submit(url);
+	}
+	function setSettings(urlTemplate, setElement, typeElement) {
+		var template = new Template(urlTemplate, productTemplateSyntax);
+		setLocation(template.evaluate({attribute_set:$F(setElement),type:$F(typeElement)}));
+	}
+
+	function setSuperSettings(urlTemplate, attributesClass, validateField) {
+		var attributesFields = $$('.' + attributesClass);
+		var attributes = Form.serializeElements(attributesFields, true).attribute;
+		if(typeof attributes == 'string') {
+			attributes = [attributes];
+		}
+
+		if(!attributes) {
+			$(validateField).value = 'no-attributes';
+		} else {
+			$(validateField).value = 'has-attributes';
+		}
+
+		if (productForm.validator.validate()) {
+			var template = new Template(urlTemplate, productTemplateSyntax);
+			var url = template.evaluate({
+				attributes: encode_base64(attributes.join(',')).replace(new RegExp('/','g'),'%2F').replace(new RegExp('=','g'),'%3D')
+			});
+			setLocation(url);
+		}
+	}
+
+	function checkMaxLength(Object, MaxLen)
+	{
+		if (Object.value.length > MaxLen-1) {
+			Object.value = Object.value.substr(0, MaxLen);
+		}
+		return 1;
+	}
+
+	Event.observe(window, 'load', function() {
+		var objName = '<?php echo $this->getSelectedTabId() ?>';
+		if (objName) {
+			obj = $(objName);
+			//IE fix (bubbling event model)
+			product_info_tabsJsTabs.setSkipDisplayFirstTab();
+			product_info_tabsJsTabs.showTabContent(obj);
+		}
+		Product.AttributesBridge.setTabsObject(product_info_tabsJsTabs);
+	});
+
+	Validation.addAllThese([
+		['validate-super-product-attributes', '<?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__('Please select one or more attributes.')) ?>', function(v) {
+			return (v != "no-attributes");
+		}]]);
+	//]]>
+</script>
+
+<?php if ($this->getProduct()->getTypeId() == 'configurable'): ?>
+    <?php /* 产品图片映射到属性 */ ?>
+	<script>var ___$$=$;</script>
+	<script type="text/javascript" src="/js/lib/jquery/jquery-1.10.2.min.js"></script>
+	<script>
+		$=___$$;
+		~function($) {
+			var $productConfAttrInput = $('#configurable_save_attributes');
+			var $mediaGalleryContentTable = $('#media_gallery_content_grid');
+			var $labelInputs = $mediaGalleryContentTable.find('tr td.cell-label input[type=text]');
+			var $attributeSelectBox = null;
+			var $attributeSelectBoxTable = null;
+			var $attributeSelectBoxTableBody = null;
+
+			try {
+				var attributes = eval($productConfAttrInput.val());
+			} catch(e) {
+				attributes = [];
+			}
+
+			var simpleAttributes = collectAttribute(attributes);
+			var keyAttributes = makeKeyAttributes(simpleAttributes);
+
+			// console.log(simpleAttributes);
+			// console.log(keyAttributes);
+			generateAttributeSelectBox();
+			generateAttributeSelectedButton();
+
+			$(window).load(function () {
+				updateInputText();
+			});
+
+
+			function generateAttributeSelectedButton() {
+				var $content = $('#product_info_tabs_group_10_content');
+				var display = $content.css('display');
+				$content.css({
+					visiable:'hidden',
+					position:'absolute',
+					display:'block'
+				});
+
+				for(var i=0; i<$labelInputs.length; i++) {
+					var $input = $labelInputs.eq(i);
+					var $labelInput = $($input[0].outerHTML)
+						.removeAttr('id')
+						.removeAttr('click')
+						.removeAttr('onkeyup')
+						.removeAttr('onchange')
+						.addClass('ave40-label')
+						.attr('readonly', 'readonly')
+						.css({
+							opacity:0.7
+						});
+
+					$input.parent().append($labelInput);
+					$input.css('display', 'none');
+
+					var $td = $input.parent();
+					var height = $input.innerHeight();
+					var top =  ($input.outerHeight() - $input.innerHeight()) / 2 + parseInt($td.css('paddingTop'));
+					var right =  ($input.outerWidth() - $input.innerWidth()) / 2 + parseInt($td.css('paddingRight'));
+
+					var $button = $('<span>指定</span>');
+					$button.css({
+						position: 'absolute',
+						top: top,
+						display: 'inline-block',
+						height: height,
+						right: right,
+						padding: '0 3px',
+						background: '#d6d6d6',
+						cursor: 'pointer'
+					}).click((function ($elm) {
+						return function () {
+							showAttributeSelectBox($elm);
+						}
+					})($input));
+					$td.css('position', 'relative');
+					$td.append($button);
+				}
+
+				$content.css({
+					visiable:'',
+					position:'',
+					display:display
+				});
+			} /* generateAttributeSelectedButton */
+
+			function updateInputText() {
+				for(var i=0; i<$labelInputs.length; i++) {
+					var labelval = $labelInputs.eq(i).val();
+					var labelvals = labelval.split(';');
+
+					if(labelval != '') {
+						labelvals = translateLabels(labelvals);
+					} else {
+						labelvals = [];
+					}
+
+					$labelInputs.eq(i).parent().find('input.ave40-label').val(labelvals.join(';')).attr('title', labelvals.join(';'));
+				}
+			}
+
+			function makeKeyAttributes(attributes) {
+				var newattr = {};
+				for(var i=0; i<attributes.length; i++) {
+					newattr [attributes[i].value] = attributes[i];
+				}
+
+				return newattr;
+			}
+
+			function translateLabels(labelValues) {
+				for(var i=0; i<labelValues.length; i++) {
+					var attrname = keyAttributes[labelValues[i]] ? keyAttributes[labelValues[i]].attributeName : '';
+					labelValues[i] = attrname ? attrname : labelValues[i];
+				}
+
+				return labelValues;
+			}
+
+			function showAttributeSelectBox($elm) {
+				var currentLabel = $elm.val();
+				var labels = currentLabel.split(';');
+
+				$attributeSelectBoxTableBody.html('');
+
+				for(var i=0; i<simpleAttributes.length; i++) {
+					var checked = '';
+					var val = simpleAttributes[i].value;
+					var text = simpleAttributes[i].text;
+					var id = 'ave40_product_image_label_'+val;
+
+					if(labels.indexOf(val)>=0) {
+						checked = 'checked';
+					}
+
+					var changeText = $('<p>' + text + '</p>').text();
+
+					var html = '<tr><td><input id="'+id+'" type="checkbox" label value="'+val+'" data-label-text="'+changeText+'"'+checked+'/></td>'+
+						'<td><label for="'+id+'">'+text+'</label></td></tr>';
+					var $tr = $(html);
+					$tr.find('input').click(function () {
+						updateCheckedClass();
+					});
+
+					$attributeSelectBoxTableBody.append($tr);
+				}
+
+				$attributeSelectBox.prop('targetInput', $elm);
+				$attributeSelectBox.show();
+				updateCheckedClass();
+			}
+
+			function updateCheckedClass() {
+				var $inputs = $attributeSelectBoxTableBody.find('input[label]');
+
+				$inputs.parent().parent().css('backgroundColor', '');
+				$inputs.filter(':checked').parent().parent().css('backgroundColor', '#e1e1e1');
+			}
+
+			function collectAttribute(attribute, index, prev) {
+				var ary = [];
+				prev = prev == undefined ? {} : prev;
+				index = index == undefined ? 0 : index;
+
+				if(index >= attribute.length) {
+					return ary;
+				}
+
+				for(var i=0; i<attribute[index].values.length; i++) {
+					var value = attribute[index].values[i];
+					var labelName = attribute[index].frontend_label + ':<b style="font-size: 1.1em;">' + value.label + '</b>';
+					var labelValue = attribute[index].id + '_' +  value.value_index;
+					var attributeName = prev.attributeName ? (prev.attributeName + ',' + value.label) : value.label;
+					var text = prev.text ? (prev.text + ', ' + labelName) : labelName;
+					var textVal = (prev.value || prev.text === 0) ? (prev.value + ',' + labelValue) : labelValue;
+					var obj = {text:text, value: textVal, attributeName: attributeName};
+
+					ary.push(obj);
+					ary = ary.concat(collectAttribute(attribute, index+1, obj));
+				}
+
+				return ary;
+			}
+
+			function hideAttributeSelectBox() {
+				$attributeSelectBox.css('display', 'none');
+			}
+
+			function applySelectedAttribute() {
+				var $checkboxs = $attributeSelectBox.find('input[label]:checked');
+				var labels = [];
+				var labelText = [];
+
+				for(var i=0; i<$checkboxs.length; i++) {
+					labels.push($checkboxs[i].value);
+					labelText.push($checkboxs.eq(i).data('labelText'));
+				}
+
+				var $input = $attributeSelectBox.prop('targetInput');
+				$input.val(labels.join(';'))[0].onkeyup();
+				$input.parent().find('.ave40-label').val(labelText.join(';'));
+				updateInputText();
+			}
+
+			function generateAttributeSelectBox() {
+				$attributeSelectBox = $('<div><div><table><thead><th width="20">'+
+					'<input type="checkbox" checkall />'
+					+'</th><th>产品</th></thead><tbody></tbody></table><span></span></div></div>');
+				$attributeSelectBox.css({
+					display: 'none',
+					position: 'fixed',
+					top: '50%',
+					left: '50%',
+					width: 700,
+					height: 400,
+					marginLeft: -350,
+					marginTop: -200,
+					zIndex: 99,
+					background: 'white',
+					border: 'solid 1px gray'
+				});
+
+				$attributeSelectBox.find('> div').css({
+					width:'100%',
+					height:'100%',
+					overflow:'auto'
+				});
+
+				$attributeSelectBoxTable = $attributeSelectBox.find('> div > table');
+				$attributeSelectBoxTableBody = $attributeSelectBoxTable.find('tbody');
+				$attributeSelectBoxTable.css({
+					width:'100%',
+					marginBottom:30
+				});
+
+				var $okButton = $('<button type="button">确定</button>').css({marginLeft: 10}).click(function () {
+					applySelectedAttribute();
+					hideAttributeSelectBox();
+				});
+				var $cancelButton = $('<button type="button">取消</button>').css({marginLeft: 10}).click(function () {
+					hideAttributeSelectBox();
+				});
+
+				$attributeSelectBox.find('> div > span').css({
+					height: 30,
+					width:'100%',
+					background: '#e2e2e2',
+					position: 'absolute',
+					bottom:0,
+					left:0,
+					lineHeight: '30px'
+				})
+					.append($okButton)
+					.append($cancelButton);
+
+				$('body').on('mousewheel', function (e) {
+					var delta = -e.originalEvent.wheelDelta || e.originalEvent.detail;
+
+					if($attributeSelectBox.css('display') == 'block') {
+						var $sliderWrap = $attributeSelectBox.find('> div');
+
+						if(delta > 0) {
+							//向下
+							if($sliderWrap[0].scrollHeight - $attributeSelectBox.innerHeight() == $sliderWrap[0].scrollTop) {
+								e.preventDefault();
+							}
+						} else {
+							//向上
+							if($sliderWrap[0].scrollTop == 0) {
+								e.preventDefault();
+							}
+						}
+					}
+				});
+
+				$mediaGalleryContentTable.parent().append($attributeSelectBox);
+			}
+		} (jQuery);
+	</script>
+
+<?php endif; ?>

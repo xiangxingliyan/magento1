@@ -1,0 +1,212 @@
+<?php
+/* @var Mage_Sales_Model_Order $order */
+$order = $this->getOrder();
+// $order = $order ? $order : new Varien_Object();
+?>
+<div class="transfer-pay-page" id="print_body">
+    <style>
+        .main-container {
+            background: #f1f1f1;
+            overflow: hidden;
+        }
+
+        .transfer-pay-page {
+            background: #fff;
+            overflow: hidden;
+            margin-top: 1px;
+        }
+
+        .trans-pay-head {
+            padding: 0 0.6rem;
+            margin-top: 40px;
+        }
+
+        .trans-pay-4-col .trans-pay-succ-icon {
+            background: url(<?php echo $this->getSkinUrl('images/cart/print.png') ?>) no-repeat;
+        }
+
+        .trans-pay-succ-icon {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: middle;
+            background: url(<?php echo $this->getSkinUrl('images/cart/pay-success.png') ?>) no-repeat center;
+            background-size: 100%;
+        }
+
+        .trans-pay-succ-word {
+            font-size: 22px;
+            vertical-align: middle;
+        }
+
+        .trans-pay-main {
+            padding: 0.35rem 0.6rem 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .trans-pay-2-col {
+            margin: 40px 0 60px;
+        }
+
+        .trans-pay-order-no {
+            font-size: 16px;
+        }
+
+        .trans-pay-table {
+            width: 100%;
+        }
+
+        .trans-pay-table th, .trans-pay-table td {
+            font-family: opensans-semibold;
+            text-indent: 20px;
+            height: 38px;
+        }
+
+        .trans-pay-table th {
+            width: 30%;
+            font-weight: normal;
+            background: #f6f6f6;
+            color: #666;
+        }
+
+        .trans-pay-table td {
+            background: #f6f6f6;
+        }
+
+        .trans-pay-order-table {
+            margin: 15px 0;
+        }
+
+        .trans-pay-1-col {
+            font-size: 14px;
+            margin: 30px 0.6rem 0 0.6rem;
+        }
+
+        .trans-pay-3-col ol {
+            list-style-position: outside;
+            margin-left: 20px;
+        }
+
+        .trans-pay-3-col ol li {
+            list-style-type: disc;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        .trans-pay-4-col {
+            margin: 80px 0 40px;
+        }
+
+        .trans-pay-table th, .trans-pay-table td {
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .trans-pay-table tr:last-child th, .trans-pay-table tr:last-child td{
+            border-bottom:0
+        }
+
+        .trans-pay-table tr td:last-child{
+            border-right: 0;
+        }
+
+        .trans-pay-4-col a {
+            color: #e10b0b;
+            font-family: opensans-semibold;
+            padding: 0 15px;
+        }
+
+        .trans-pay-4-col a:hover {
+            text-decoration: underline;
+        }
+
+        .trans-pay-4-col .back-to-ave {
+            border-right: 1px solid #e8e8e8;
+        }
+    </style>
+	<div class="trans-pay-head">
+		<i class="trans-pay-succ-icon"></i>
+		<span class="trans-pay-succ-word font-opsans-bold">Your payment request has been accepted.</span>
+
+	</div>
+    <p class="trans-pay-1-col">Please go to local banks to make the transfer (in USD only). After we receive the money, this payment will be finished.</p>
+	<div class="trans-pay-main">
+
+
+		<div class="trans-pay-2-col">
+			<div class="trans-pay-order-no font-opsans-bold">
+                <span class="trans-pay-order-info">
+                    <span style="color:gray;">Payment Amount:&nbsp;&nbsp; </span>
+                    <span style="color:#e10b0b;font-size:20px;">US$<?php echo round($order->getGrandTotal(), 2) ?></span>
+                </span>
+                <span class="trans-pay-order-info">
+                    <span style="color:gray;">Order Number:&nbsp;&nbsp; </span>
+                    <span style="font-size:20px"><?php echo $order->getIncrementId() ?></span>
+                </span>
+			</div>
+			<div class="trans-pay-order-table">
+				<table class="trans-pay-table" border="0" cellpadding="0" cellspacing="0" style="text-align: left;">
+					<tr>
+						<th>BENEFICIARY NAME</th>
+						<td>AVENUE FORTY CO., LIMITED</td>
+					</tr>
+					<tr>
+						<th>BENEFICIARY BANK</th>
+						<td>HANG SENG BANK LIMITED</td>
+					</tr>
+					<tr>
+						<th>BENEFICIARY BANK ADDRESS</th>
+						<td>83 DES VOEUX ROAD CENTRAL, HONGKONG</td>
+					</tr>
+                    <tr>
+                        <th>SWIFT CODE</th>
+                        <td>HASEHKHH</td>
+                    </tr>
+					<tr>
+						<th>BENEFICIARY ACCOUNT NO</th>
+						<td>774-536403-883</td>
+					</tr>
+				</table>
+			</div>
+			<p class="transtern-pay-tip" style="color:red;">Please offer your payment record with order number to payment@ave40.com as soon as you complete the payment.</p>
+		</div>
+
+		<div class="trans-pay-3-col">
+			<ol>
+				<li>Please complete your payment in USD ONLY</li>
+				<li>Make sure you enter the information accurately, and according to the formats required.</li>
+				<li>Keep bank remittance slip for payment confirmation and Do not share it with anyone.</li>
+				<li>Your payment will be processed in 7 working days, if your order has not changed to “Buyer has paid the order” 7 working days after you made the payment, please contact AVE40 Customer Support.</li>
+				<li>When using bank transfers, please transfer enough money to cover all banks’ service fees. This will ensure that Ave40 receives your full payment and will help you avoid monetary loss caused by refunds or disputes.</li>
+			</ol>
+		</div>
+
+		<div class="trans-pay-4-col hide-when-printing">
+			<a href="/" class="back-to-ave">Back to Ave40</a>
+			<!--<a href="">Change payment method</a>-->
+			<a href="javascript:printPage()" class="trans-pay-succ-icon" title="print" style="background-position-y: -62px;display:inline-block;padding:0;"></a>
+		</div>
+	</div>
+</div>
+
+<script>
+	function printPage() {
+		~function($) {
+			var $ifr = $('#print_body_iframe');
+
+			if(!$ifr.prop('htmlloaded')) {
+				$ifr.prop('htmlloaded', true);
+				$ifr[0].contentWindow.document.body.innerHTML = $('#print_body').html();
+				$($ifr[0].contentWindow.document.body).find('.hide-when-printing').hide();
+			}
+
+			$ifr[0].contentWindow.print();
+		} (jQuery);
+	}
+</script>
+
+
+
+<iframe id="print_body_iframe" src="" frameborder="0" width="1" height="1"></iframe>

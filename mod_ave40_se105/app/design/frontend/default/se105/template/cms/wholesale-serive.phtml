@@ -1,0 +1,132 @@
+<div class="wholesale-page">
+    <div class="wholesale-main clearfix">
+
+        <div class="whole-serive-l">
+            <h2 class="title font-opsans-bold">Wholesale Service</h2>
+            <div class="whole-serive-form">
+                <form action=""  id="wholesale-service-form">
+
+                    <div class="wholesale-group wholesale-email">
+                        <input type="email" name="email" required="required" placeholder="Email" class="wholesale-email-input">
+                        <span class="asterisk">*</span>
+                    </div>
+                    <p class="form-tip"></p>
+                    <div class="wholesale-group wholesale-name">
+                        <input type="text" name="name" required="required" placeholder="Name" class="wholesale-name-input">
+                        <span class="asterisk">*</span>
+                    </div>
+                    <p class="form-tip"></p>
+                    <div class="wholesale-group wholesale-mobile">
+                        <input type="text" name="telephone" placeholder="Mobile" class="wholesale-mobile-input">
+                    </div>
+                    <p class="form-tip"></p>
+                    <div class="wholesale-group wholesale-textarea">
+                        <textarea name="comment" placeholder="Message" required="required" class="wholesale-textarea-input"
+                                  onkeydown="checkMaxInput(this,200)"
+                                  onkeyup="checkMaxInput(this,200)"
+                                  onfocus="checkMaxInput(this,200)"
+                                  onblur="checkMaxInput(this,200)"></textarea>
+                        <span class="asterisk">*</span>
+                        <span class="remain-word">(<i class="Max_msg">0</i>/200)</span>
+                    </div>
+                    <p class="form-tip"></p>
+                    <?php if(Mage::getStoreConfig('inquire_setting/global/enabled')): ?>
+						<div class="info-captcha wholesale-group">
+							<span class="words"><?php echo Mage::helper("Ave40_Translate")->__('Captcha') ?></span>
+                            <?php echo Mage::app()->getLayout()->getBlock('inquire-captcha')->setFormId('inquire_inline')->toHtml() ?>
+							<span class="asterisk">*</span>
+						</div>
+                        <p class="form-tip"></p>
+						<input type="hidden" name="captcha_model" value="inquire_inline">
+                    <?php endif ?>
+
+                    <div class="wholesale-checkout">
+                        <input type="checkbox" id="wholesale-newsletter">
+                        <label for="wholesale-newsletter">I'd like to receive the latest newsletters from AVE40</label>
+                    </div>
+
+                    <div class="wholesale-submit">
+                        <button type="submit" value="0" class="send" onclick="_gaq.push(['_trackEvent','wholesale-service','Click','send']);"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="whole-serive-r">
+            <div class="whole-serive-logo">
+                <img src="<?php echo $this->getSkinUrl('images/homepage/email-logo.jpg') ?>" alt="">
+            </div>
+            <div class="whole-serive-remarks">
+                <h2 class="font-opsans-bold">How to become a wholesale customer?</h2>
+                <p>We do our best to insure accuracy on our product description and the price. The price show on ave40.com is fit for sample order and retail, NOT wholesale. If you want to become a wholesale customer and view our Wholesale prices, please sign in and add your phone number on AVE40 account center. We will send you a text message with a verification code to help you create a regular “Wholesale Account”. After the phone verification completed, you can view our wholesale prices on each product page. </p>
+                <br /><br />
+                <h2 class="font-opsans-bold">Need the newest vaping kits, E-cigs devices, rebuildable tanks, E-liquids, and DIY Accessories? </h2>
+                <p>1 on 1 Service can connect you with the right customer agent more quickly.
+                    <p>We have over 150 professional consultants to provide deep insights and offer a differentiated customer service. Any questions about our products, please confirm with our customer service. We deeply appreciate your insights and your concern!</p>
+                </p>
+                <br /><br />
+                <p>Plus, special promotion will always be waiting for you. Simply send us an inquiry</p>
+                <p>and you would be surprised at the great discounted rates for high-quality products!</p>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    ~function ($) {
+        $(function () {
+            var validator = $("#wholesale-service-form").validate({
+                errorClass: 'mess',
+                errorElement: "div",
+                onfocusout: false,
+                ignore: '.telephone',
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.closest('.wholesale-group').next('.form-tip'));
+                },
+                submitHandler: function (form) {
+                    var inquireFormData = $('#wholesale-service-form').serialize();
+                    ave40.showLoading('Sending');
+
+                    if ($('#wholesale-newsletter')[0].checked) {
+                        var $wholesaleName = $('.wholesale-email-input').val();
+                        ave40.ajaxPost('/newsletter/subscriber/new?ajax=1',{email:$wholesaleName}, function (data) {
+                            if (data.errno == 0) {
+
+                                ave40.ajaxPost('/inquire/index/axpost', inquireFormData, function () {
+                                    if (this.ok) {
+                                        ave40.closeLoading();
+                                        form.reset();
+                                        Ave40MessageBox.alertSuccess('Your inquiry was submitted and will be responded to as soon as possible. Thank you for contacting us');
+                                    } else {
+                                        ave40.closeLoading();
+                                        Ave40MessageBox.alertError(this.message);
+                                    }
+                                });
+                            } else {
+                                Ave40MessageBox.alertError(data.errmsg);
+                            }
+                        });
+                    }else{
+                        ave40.ajaxPost('/inquire/index/axpost', inquireFormData, function () {
+                            if (this.ok) {
+                                ave40.closeLoading();
+                                form.reset();
+                                Ave40MessageBox.alertSuccess('Your inquiry was submitted and will be responded to as soon as possible. Thank you for contacting us');
+                            } else {
+                                ave40.closeLoading();
+                                Ave40MessageBox.alertError(this.message);
+                            }
+                        });
+                    }
+
+
+
+
+                }
+            });
+
+
+        })
+    }(jQuery)
+</script>

@@ -1,0 +1,571 @@
+<?php
+// $quote = Mage::getModel('sales/quote')->load($cartId);
+// $quote = Mage::helper('checkout/cart')->getCart()->getQuote();
+$quote = Mage::getSingleton('checkout/session')->getQuote();
+$items = $quote->getAllItems();
+// $items = $quote->getAllVisibleItems();
+
+$form_key =  Mage::getSingleton('core/session')->getFormKey();
+
+Mage::getSingleton('core/session', array('name' => 'frontend'));
+$sessionCustomer = Mage::getSingleton('customer/session');
+$customer = $sessionCustomer->getCustomer();
+if ($customer) {
+	$addressList = $customer->getAddresses();
+
+	$wishList = Mage::getSingleton('wishlist/wishlist')->loadByCustomer($customer);
+	$wishListItemCollection = $wishList->getItemCollection();
+	$wishProductlist = array();
+	if (count($wishListItemCollection)) {
+		foreach ($wishListItemCollection as $item) {
+			$productId = $item->getProductId();
+			$wishProductlist[$productId] = $productId;
+		}
+	}
+}
+?>
+<div class="cart-page ">
+	<div class="cart-head ">
+		<div class="cart-head-Content clearfix">
+			<div class="border">
+				<h1 class="logo">
+					<strong>AVE40</strong>
+					<a href="/" title="AVE40" class="logo">
+						<img src="<?=$this->getSkinUrl('images/media/logo.png')?>" alt="AVE40">
+					</a>
+					<i class="light"></i>
+				</h1>
+				<div class="step-content">
+					<div class="step on">
+						<i class="step-icon"></i>
+						<p>Step 1: Confirm Items</p>
+					</div>
+					<i class="line"></i>
+					<div class="step step-two">
+						<i class="step-icon"></i>
+						<p>Step 2: Payment & Shipping</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="cart-content">
+		<div class="cart-main">
+			<?=$this->getBlockHtml('formkey')?>
+			<?php if ($items): ?>
+			<div class="cart-product">
+				<ul class="cart-product-catalog clearfix">
+					<li class="catalog-select">Selected Item(s)</li>
+					<li class="catalog-unit">Unit Price</li>
+					<li class="catalog-quantity">Quantity</li>
+					<li class="catalog-subtotal">Subtotal</li>
+				</ul>
+				<ul class="cart-product-list">
+					<?php foreach ($items as $item): ?>
+					<?php
+						$itemId = $item->getId();
+						$productId = $item->getProductId();
+						$_product = Mage::getModel('catalog/product')->load($productId);
+						$colors = $_product->getAttributeText('color');
+						$product_image = $_product->getImage();
+						if (!$product_image || $product_image == 'no_selection') {
+							$product_images = $_product->getMediaGalleryImages();
+							$product_image = array_shift($product_images->getItems());
+							if ($product_image) {
+								$product_image = $product_image->getUrl();
+							} else {
+								$product_image = '/media/catalog/product/images/no_image.jpg';
+							}
+						} else {
+							$product_image = '/media/catalog/product'.$product_image;
+						}
+						if ($product_image == 'no_selection') {
+							$product_image = '/media/catalog/product/images/no_image.jpg';
+						}
+					?>
+					<li class="cart-product-info" item_id="<?=$itemId?>" product_id="<?=$productId?>">
+						<div class="cart-info-input">
+							<input type="checkbox" checked="checked" class="cart-info-checkbox" />
+						</div>
+						<div class="cart-info-image">
+							<a href="<?='/'.$_product->getUrlKey().'.html'?>" style="display: inline-block;width: 100px;height: 100px;overflow: hidden;">
+								<img class="lazy" data-original="<?=$product_image?>" src="<?=$product_image?>" alt="<?=$item->getName()?>" width="100" height="100" style="display: inline;">
+							</a>
+						</div>
+						<div class="cart-info-details">
+							<p class="product-title"><?=$item->getName()?></p>
+							<?php if ($_product->getSpecialPrice() && $_product->getSpecialToDate()): ?>
+							<span class="limit-time limit-time-<?=$productId?>">
+								<i class="time">
+									<span class="day">0</span>&nbsp;days&nbsp;
+									<span class="hour">00</span>:
+									<span class="minute">00</span>:
+									<span class="second">00</span>
+								</i>
+							</span>
+							<script type="text/javascript">
+								jQuery(document).ready(function(){
+									countDown("<?=$_product->getSpecialToDate()?>", ".limit-time-<?=$productId?> .time .day", ".limit-time-<?=$productId?> .time .hour", ".limit-time-<?=$productId?> .time .minute", ".limit-time-<?=$productId?> .time .second");
+								});
+							</script>
+							<?php endif ?>
+							<div class="color">
+								<span class="words">Color:</span>
+								<div class="color-list">
+									<?php if ($colors): ?>
+									<?php foreach ($colors as $idx => $color): ?>
+									<span class="listBox <?=$idx == 0 ? 'on' : ''?>"><img src="<?=$this->getSkinUrl('images/details/color-list.png')?>" title="<?=$color?>"></span>
+									<?php endforeach ?>
+									<?php else: ?>
+									<span class="listBox on"><img src="<?=$this->getSkinUrl('images/details/color-list.png')?>" title="default"></span>
+									<?php endif ?>
+								</div>
+							</div>
+						</div>
+						<div class="unit-price">
+							<span class="sales-price" id="">
+								<span class="price">$<span class="unit-price-data"><?=number_format($_product->getSpecialPrice() ? $_product->getSpecialPrice() : $_product->getPrice(), 2)?></span></span>
+							</span>
+							<span class="old-price" id="product-price-<?=$productId?>-latest">
+								<span class="price">$<?=number_format($_product->getPrice(), 2)?></span>
+							</span>
+						</div>
+						<div class="quantity">
+							<div class="Quantity-num" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;">
+								<i class="reduce icon"></i>
+								<input type="text" class="num" onkeyup="onlyNumberKeyup(this)" onafterpaste="onlyNumberAfterpaste(this)" onfocus="onlyNumberFocus(this)" value="<?=$item->getQty()?>">
+								<i class="add icon"></i>
+							</div>
+						</div>
+						<div class="subtotal">
+							<span class="sales-price" id="">
+								<span class="subtotal-price"><i>$</i><span class="subtotal-price-data"></span></span>
+							</span>
+						</div>
+						<div class="operation">
+							<?php if (!isset($wishProductlist[$productId])): ?>
+							<a href="/wishlist/index/add/product/<?=$productId?>/form_key/<?=$form_key?>" >Add to my wishlist</a>
+							<?php endif ?>
+							<a href="<?=Mage::getUrl('checkout/cart/delete', array('id' => $itemId))?>" class="delete">Delete</a>
+						</div>
+					</li>
+					<?php endforeach ?>
+				</ul>
+				<div class="all-operation">
+					<input type="checkbox" name="" id="select-all" checked="checked">
+					<label for="select-all" class="select-all">Select all</label>
+					<span>With selected</span>
+					<a class="delete" href="/checkout/cart/delete">Delete</a>
+					<a href="/wishlist/index/add/product">Add to my wishlist</a>
+				</div>
+			</div>
+			<?php else: ?>
+			<div class="page-title">
+				<h1><?php echo $this->__('Shopping Cart is Empty') ?></h1>
+			</div>
+			<div class="cart-empty">
+				<?php echo $this->getMessagesBlock()->toHtml() ?>
+				<?php echo $this->getChildHtml('checkout_cart_empty_widget'); ?>
+				<p><?php echo $this->__('You have no items in your shopping cart.') ?></p>
+				<p><?php echo $this->__('Click <a href="%s">here</a> to continue shopping.', $this->getContinueShoppingUrl()) ?></p>
+				<?php echo $this->getChildHtml('shopping.cart.table.after'); ?>
+			</div>
+			<?php endif ?>
+			<div class="pay-info">
+				<div class="shipping-address">
+					<h1 class="pay-info-title">Shipping Address</h1>
+
+					<?php if ($this->customerHasAddresses()): ?>
+					<?php $address = $this->getAddress()->getData(); ?>
+					<p class="select-address">
+						Select address from:
+						<?php echo $this->getAddressesHtmlSelect('billing') ?>
+					</p>
+					<p class="select-address">or add new</p>
+					<?php endif ?>
+
+					<input type="hidden" name="billing[address_id]" />
+					<input type="hidden" name="billing[use_for_shipping]" value="1" />
+					<input type="hidden" name="billing[save_in_address_book]" value="1" />
+
+					<div class="input_form">
+						<form method="post" action="/checkout/onepage/saveBilling/" class="pay-form" name="payform">
+							<div class="address-entry">
+								<label ><span class="asterisk">*</span>Email</label>
+								<input  type="email" id="billing:email" name="billing[email]" class="apartment" placeholder="Email" required="required" value="<?=isset($address['email']) ? $address['email'] : ''?>" />
+							</div>
+							<div class="name-entry">
+								<label ><span class="asterisk">*</span>Name</label>
+								<input type="text" id="billing:firstname" name="billing[firstname]" class="firstname" placeholder="First name" required="required" onblur="nameCheck()" value="<?=isset($address['firstname']) ? $address['firstname'] : ''?>" />
+								<input  type="text" id="billing:lastname" name="billing[lastname]" class="lastname" placeholder="Last name" required="required" onblur="nameCheck()" value="<?=isset($address['lastname']) ? $address['lastname'] : ''?>" />
+								<p class="cart-name error info"><i></i><span>Please enter a name (Characters only)</span></p>
+							</div>
+							<div class="address-entry">
+								<label ><span class="asterisk">*</span>Address</label>
+								<div class="address-input">
+									<input type="text" name="billing[street][]" id="street-address" placeholder="<?php echo Mage::helper("Ave40_Translate")->__('Street Address') ?>" required="required" onblur="addressCheck()" value="<?=isset($address['lastname']) ? $address['lastname'] : ''?>" />
+									<p class="cart-address error info"><i></i><span>Please Enter Address</span></p><br />
+
+									<input type="text" name="billing[street][]" class="apartment" placeholder="<?php echo Mage::helper("Ave40_Translate")->__('Apartment,Suit,Unit(etc)') ?>" required="required" onblur="addressCheck()" value="<?=isset($address['lastname']) ? $address['lastname'] : ''?>" /><br />
+
+									<?php
+										$options    = false;
+										$useCache   = Mage::app()->useCache('config');
+										if ($useCache) {
+											$cacheId    = 'DIRECTORY_COUNTRY_SELECT_STORE_' . Mage::app()->getStore()->getCode();
+											$cacheTags  = array('config');
+											if ($optionsCache = Mage::app()->loadCache($cacheId)) {
+												$options = unserialize($optionsCache);
+											}
+										}
+
+										if ($options == false) {
+											$options = $this->getCountryCollection()->toOptionArray();
+											if ($useCache) {
+												Mage::app()->saveCache(serialize($options), $cacheId, $cacheTags);
+											}
+										}
+										unset($options[0]);
+									?>
+									<select name="billing[country_id]" class="country" required="required">
+										<option value="" class="tip" disabled="disabled" selected="selected">Country</option>
+										<?php foreach ($options as $option): ?>
+										<option value="<?=$option['value']?>" class="tip"><?=$option['label']?></option>
+										<?php endforeach ?>
+									</select>
+
+									<input name="billing[region_id]" class="state" placeholder="*State/Province" required="required" />
+									<br />
+
+									<input type="text" name="billing[city]" class="city" placeholder="City" required="required" onblur="addressCheck()" value="<?=isset($address['city']) ? $address['city'] : ''?>" />
+									<input type="text" name="billing[postcode]" class="zip-code" placeholder="Zip/Postal Code" required="required" onblur="addressCheck()" value="<?=isset($address['postcode']) ? $address['postcode'] : ''?>" />
+								</div>
+							</div>
+							<div class="phone-entry">
+								<label ><span class="asterisk">*</span><span>Phone No.</span></label>
+								<span>+</span>
+								<span class="phone-prefix">86</span>
+								<input type="text" name="billing[telephone]" class="phone-num" placeholder="Phone Number" minlength="5" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this);" onblur="phoneCheck()" required="required" value="<?=isset($address['telephone']) ? $address['telephone'] : ''?>" />
+								<p class="cart-phone error info"><i></i><span>Please Enter Your Phone Number</span></p><br/>
+							</div>
+
+							<div class="logistic">
+								<?php if (!empty($_GET['debug'])): ?>
+								<input type="submit">
+								<?php endif ?>
+								<span class="asterisk">***</span><span>Logistics provider varies from quantity, </span>
+								<p>You can find tracking info on user center.</p>
+							</div>
+						</form>
+					</div>
+
+				</div>
+
+				<div class="payment">
+					<h1 class="pay-info-title">Payment</h1>
+					<ul class="payment-way">
+						<?php
+							$payments = Mage::getSingleton('payment/config')->getActiveMethods();
+							$methods = array();
+							foreach ($payments as $paymentCode => $paymentModel) {
+								$paymentTitle = Mage::getStoreConfig('payment/'.$paymentCode.'/title');
+								$methods[$paymentCode] = $paymentTitle;
+							}
+						?>
+						<?php foreach ($methods as $paymentCode => $paymentTitle): ?>
+						<li>
+							<input type="radio" id="payment-<?=$paymentCode?>" name="payment" value="<?=$paymentCode?>">
+							<label for="payment-<?=$paymentCode?>"><?=$paymentTitle?></label>
+						</li>
+						<?php endforeach ?>
+						<li>
+							<input type="radio" checked="checked" id="cart-paypal" name="payment">
+							<label for="cart-paypal" class="pay-icon paypal-icon"></label>
+						</li>
+						<li>
+							<input type="radio" name="payment" id="cart-western">
+							<label for="cart-western" class="pay-icon western-icon"></label>
+						</li>
+						<li>
+							<input type="radio" name="payment" id="cart-ave">
+							<label for="cart-ave" class="pay-icon ave-word">AVE40 Credit Points</label>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="cart-right">
+			<div class="cart-right-content">
+
+				<h3 >$55.00 away from FREE shipping</h3>
+
+				<div class="subtotal-box">
+					<span >Subtotal:</span>
+					<span class="subtotal-price"><i>$</i><span class="subtotal-price-data">00.00</span></span>
+				</div>
+
+				<div class="item-box">
+					<span >items weight(width packing):</span><br/>
+					<span class="weight-num">369g</span>
+
+				</div>
+				<div class="shipping-fee">
+					<span >Shipping fee:</span><br/>
+					<span class="shipping-price">$<span class="shipping-price-data">20.00</span></span><br/>
+				</div>
+				<div class="promo-code">
+					<span >Promo Code (optional):</span><br/>
+					<input type="text" class="promo-input" />
+					<span class="apply-btn">Apply</span>
+				</div>
+
+				<div class="total-box">
+					<span >Total:</span>
+					<span class="total-price subtotal-price"><i>$</i><span class="total-price-data">00.00</span></span><br/>
+					<span class="or">or:<i class="or-num">1965</i>Credit Points</span>
+
+					<span class="currency">
+						<a><i class="icon curr-icon"></i>currency reference</a>
+						<div class="parameter-pop currency-info">
+							<?=Mage::getModel('cms/block')->setStoreId(Mage::app()->getStore()->getId())->load('product_currency_reference')->getContent()?>
+						</div>
+					</span>
+					<br/>
+					<button class="palce-order" onclick="check_fields()" type="button">Place order</button>
+				</div>
+				<div class="inquire">
+					<span>Wholesaler?</span>
+					<p>Get your free offer</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<div class="cart-footer">
+	<?=$this->getLayout()->createBlock('cms/block')->setBlockId('footer-related')->toHtml()?>
+	<div id="copyright">
+		<p><?=Mage::getStoreConfig('design/footer/copyright')?></p>
+	</div>
+</div>
+<script type="text/javascript">
+	/*palce-order*/
+	var myflag = false;
+	function nameCheck(){
+		var firstname = jQuery('.name-entry .firstname').val();
+		var lastname = jQuery('.name-entry .lastname').val();
+		if (firstname == "" || lastname=="") {
+			jQuery('.cart-name ').show();
+			return myflag = false;
+		}else{
+			jQuery('.cart-name ').hide();
+			return myflag = true;
+		}
+
+	}
+	function addressCheck(){
+		jQuery(".address-input :input").each(function () {
+			if (jQuery(this).val() == "") {
+				jQuery('.cart-address ').show();
+				return myflag = false;
+			} else {
+				jQuery('.cart-address ').hide();
+				return myflag = true;
+			}
+		});
+		return myflag
+
+		jQuery(".address-input select").each(function () {
+			if (jQuery(this).val() == "") {
+				jQuery('.cart-address ').show();
+				return myflag = false;
+			} else {
+				jQuery('.cart-address ').hide();
+				return myflag = true;
+			}
+		});
+		return myflag
+	}
+
+	function phoneCheck(){
+		var phoneNum = jQuery('.phone-entry .phone-num').val();
+		if (phoneNum == "" || phoneNum.length < 5 ) {
+			jQuery('.cart-phone').show();
+			return myflag = false;
+		} else {
+			jQuery('.cart-phone').hide();
+			return myflag = true;
+		}
+	}
+
+	function check_fields(){
+		nameCheck();
+		addressCheck();
+		phoneCheck();
+		if (nameCheck() && addressCheck() && phoneCheck()) {
+			document.payform.submit();
+		};
+	}
+
+	jQuery(function(){
+		jQuery(window).scroll(function(){
+			if (jQuery('.pay-info').offset().top - jQuery("body").scrollTop() < 300) {
+				jQuery('.step-content .step-two').addClass('on').siblings('.step').removeClass('on');
+			}else{
+				jQuery('.step-content .step').addClass('on').siblings('.step-two').removeClass('on');
+			}
+		})
+
+		jQuery(".color .color-list .listBox").on('click', function() {
+				jQuery(this).addClass('on').siblings('.listBox').removeClass('on');
+		});
+
+		/*inquireNow click pop*/
+		jQuery('.inquire .inquireNow').on('click', function() {
+			jQuery('.inquireNow-info').show();
+		});
+		jQuery('.inquire .close').on('click', function() {
+			jQuery('.inquireNow-info').hide();
+		});
+
+		jQuery('.Quantity-num .reduce').click(function(){
+			var num = jQuery(this).siblings('.num');
+			num.val( parseInt(num.val()-1) < 1 ? 1 : parseInt(num.val()-1));
+
+			setNumAjax(this);
+			subtotalCompute();
+			totalCompute();
+		})
+		jQuery('.Quantity-num .add').click(function(){
+			var num = jQuery(this).siblings('.num');
+			num.val(parseInt(num.val())+1);
+
+			setNumAjax(this);
+			subtotalCompute();
+			totalCompute();
+		})
+		jQuery('.Quantity-num .num').blur(function(){
+			setNumAjax(this);
+			subtotalCompute();
+			totalCompute();
+		})
+
+		function setNumAjax(_this){
+			var itemid = jQuery(_this).closest('.cart-product-info').attr('item_id');
+			var cartFormKey = document.getElementsByName('form_key')[0].value;
+			var qty = jQuery(_this).parent().children('.num').val();
+			jQuery.axspost('/checkout/cart/updatePost/?form_key='+cartFormKey+'&acthion=update_qty&cart['+itemid+'][qt12y]='+qty+'&ajax=1',null,null,null)
+		}
+
+		/*product subtotal */
+		function subtotalCompute(){
+
+			var subtotal  = 0;
+			jQuery('.cart-product-info').each(function(){
+				subtotal = parseFloat(jQuery(this).find('.unit-price .unit-price-data').text()) * parseInt(jQuery(this).find('.quantity .num').val());
+				jQuery(this).find(".subtotal-price-data").html(subtotal.toFixed(2));
+			});
+		}
+		subtotalCompute();
+
+		/*全选或全不选*/
+		jQuery("#select-all").click(function(){
+			if(this.checked){
+				jQuery(".cart-product-list :checkbox").prop("checked", true);
+				totalCompute();
+			}else{
+				jQuery(".cart-product-list :checkbox").prop("checked", false);
+				totalCompute();
+			}
+		});
+
+		jQuery(".cart-product-list :checkbox").click(function(){
+			allchk();
+			totalCompute();
+		});
+		// 检测全选框应该是选中状态还是未选中状态的
+		function allchk(){
+			var chknum = jQuery(".cart-product-list :checkbox").size();
+			var chk = 0;
+			jQuery(".cart-product-list :checkbox").each(function () {
+				if(jQuery(this).prop("checked") == true){
+					chk++;
+				}
+			});
+			if(chknum==chk){
+				jQuery("#select-all").prop("checked",true);
+			}else{
+				jQuery("#select-all").prop("checked",false);
+			}
+			if (chknum == 0) {
+				jQuery("#select-all").prop("checked",false);
+			}
+		}
+
+		/*单个删除*/
+		jQuery('.operation .delete').on('click', function(e){
+			var e= e || window.event;
+			e.preventDefault();
+			jQuery(this).closest('.cart-product-info').remove();
+			totalCompute();
+			var url = jQuery(this).attr('href');
+			jQuery.axspost(url,null,null,null);
+
+			isCartEmpty();
+		})
+
+		/*选中删除*/
+		jQuery(".all-operation .delete").click(function(e){
+			var e = e || window.event;
+			e.preventDefault();
+			var intL=jQuery(".cart-product-list :checkbox").length;
+			var item_ids = '';
+			if(intL){
+				jQuery(".cart-product-list :checkbox").each(function(index){
+					if(this.checked){
+						var itemID = jQuery(this).closest('.cart-product-info').attr('item_id');
+						item_ids += '&id[]='+itemID;
+						// var jQuery(this).closest('.cart-product-info').attr('item_id'));
+						jQuery(this).closest('.cart-product-info').remove();
+
+					}
+				})
+				console.log(item_ids)
+				jQuery.axspost('/checkout/cart/delete'+'?ajax=1'+item_ids,null,null);
+
+				totalCompute();
+				allchk();
+				isCartEmpty();
+			}
+
+
+		})
+		/*计算总价*/
+		function totalCompute(){
+			var allSubtotal = 0;
+			var total = 0;
+			jQuery('.cart-product-info').each(function(){
+				// console.log(jQuery(this).find('.cart-info-checkbox').is(':checked'))
+				if (jQuery(this).find('.cart-info-checkbox').is(':checked')) {
+					allSubtotal += parseFloat(jQuery(this).find(".subtotal-price-data").html())
+				}
+			})
+			total +=parseFloat(allSubtotal) + parseFloat(jQuery('.shipping-fee .shipping-price-data').html());
+
+			jQuery(".subtotal-box .subtotal-price-data").html(allSubtotal.toFixed(2));
+			jQuery('.total-box .total-price-data').html(total.toFixed(2) );
+		}
+		totalCompute();
+
+		function isCartEmpty(){
+			var intL=jQuery(".cart-product-list :checkbox").length;
+			if (intL == 0) {
+				location.href="/empty-cart/"
+			}
+		}
+
+	})
+</script>

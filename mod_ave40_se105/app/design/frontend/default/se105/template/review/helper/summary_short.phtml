@@ -1,0 +1,52 @@
+<?php
+	$productItemsBlock = Mage::registry('ave40_instance_product_items_block');
+	$productItemsBlock = $productItemsBlock == null ? new Varien_Object() : $productItemsBlock;
+?>
+
+<?php if ($productItemsBlock->getAttrEnableRatingBar()): ?>
+<div class="ratings">
+	<div class="rating-box">
+		<div class="rating" style="width:<?/*=$this->getRatingSummary()*/?>%"></div>
+	</div>
+	<!--
+	<span class="amount">
+		<?php // echo $this->getReviewsUrl(); ?>
+		<a>
+			<?php // echo Mage::helper("Ave40_Translate")->__('(%d)', $this->getReviewsCount()); ?>
+		</a>
+	</span>
+		-->
+</div>
+
+<?php endif; ?>
+
+<?php if (!$productItemsBlock->getAttrDisabledJoinCartBar()): ?>
+<style>
+	.home-list span.product-wishlist-button-bar a{
+		width:auto !important;
+	}
+
+	.home-list span.product-wishlist-button-bar {
+		width:30px;
+		right:10px;
+	}
+</style>
+<span class="collection product-wishlist-button-bar">
+	<a rel="nofollow" title="collection"
+		<?php if (!Mage::getModel('customer/session')->isLoggedIn()): ?>
+			href="/customer/account/login"
+		<?php endif; ?>
+		   add_url="/ave40api/wishlist/add/product/<?=$this->getProduct()->getId()?>/form_key/<?=Mage::getSingleton('core/session')->getFormKey()?>" del_url="/ave40api/wishlist/remove/item/">
+		<i class="icon heart-icon <?php if (Mage::getModel('customer/session')->isLoggedIn()): ?>wish-list-toggle<?php endif; ?>"></i>
+	</a>
+	<?php //echo Mage::helper("Ave40_Translate")->__('(%d)', $this->getWishCount())?>
+</span>
+
+
+<?php $simple = $this->getProduct()->getTypeId() == 'simple'; ?>
+<span class="join-cart <?php echo $simple ? 'join-cart-btn' : '' ?> " data-id="<?=$this->getProduct()->getId()?>">
+    <a href="<?php echo $simple ? 'javascript:;' : $this->getProduct()->getProductUrl() ?>" title="">
+         <i class="icon join-cart-icon"></i>
+    </a>
+</span>
+<?php endif; ?>

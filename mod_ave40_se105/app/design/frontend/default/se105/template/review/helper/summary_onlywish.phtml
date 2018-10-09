@@ -1,0 +1,48 @@
+
+<?php
+    $funcRand = mt_rand(100000000, 999999999);
+    $funcName = "toggle_func_$funcRand";
+?>
+
+<span class="collection">
+    <a rel="nofollow" title="collection"
+       add_url="/wishlist/index/add/product/<?=$this->getProduct()->getId()?>/form_key/<?=Mage::getSingleton('core/session')->getFormKey()?>" del_url="/wishlist/index/remove/product/<?=$this->getProduct()->getId()?>/form_key/<?=Mage::getSingleton('core/session')->getFormKey()?>">
+        <i class="icon heart-icon"
+           onclick="<?=$funcName ?>.call(this)"
+           data-is-logined="<?= Mage::getSingleton('customer/session')->isLoggedIn()?'1':'0' ?>"
+           data-no-login-msg="<?= Mage::helper("Ave40_Translate")->__('You need to sign in to do this') ?>"
+        ></i>
+    </a>
+    <!--<span class="wishcount">--><?//=Mage::helper("Ave40_Translate")->__('(%d)', $this->getWishCount())?><!--</span>-->
+</span>
+	<script>
+        function <?=$funcName ?>() {
+            var $this = jQuery(this);
+            var msg = $this.data('noLoginMsg');
+
+            if(!$this.data('isLogined')) {
+                alert(msg);
+                return;
+            }
+
+            if($this.data('toggleSelected')) {
+                $this.data('toggleSelected', 0);
+                $this.css('background-image','url("/skin/frontend/default/se105/images/heart.png")')
+                var collecDelUrl = $this.parent('a').attr('del_url');
+                jQuery.axpost(collecDelUrl,null,function(data){
+                    alert(data.data);
+                },function(error){
+                    alert(error)
+                })
+            } else {
+                $this.data('toggleSelected', 1);
+                $this.css('background-image','url("/skin/frontend/default/se105/images/heart-y.png")')
+                var collecAddUrl = $this.parent('a').attr('add_url');
+                jQuery.axpost(collecAddUrl,null,function(data){
+                    alert(data.data);
+                },function(error){
+                    alert(error)
+                })
+            }
+        }
+	</script>

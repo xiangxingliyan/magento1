@@ -1,0 +1,622 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Shopping cart template
+ *
+ * @see Mage_Checkout_Block_Cart
+ */
+
+/** @var Ave40_Base_Helper_Shoppingcart $shoppingcartHelper */
+$shoppingcartHelper = Mage::helper('ave40_base/shoppingcart');
+$quote = $shoppingcartHelper->getTmpQuote();
+$allItemProductInfo = $shoppingcartHelper->getItemProductInfo();
+?>
+
+<?php if(empty($quote->getAllVisibleItems())): ?>
+<?php
+	echo Mage::app()->getLayout()->createBlock('core/template')
+		->setCategoryId(ave40_sitedata('empty_cart/may_like_category'))
+		->setProductsCount(ave40_sitedata('empty_cart/products_count'))
+		->setTemplate('cms/emptycart_product_list.phtml')->toHtml();
+	return;
+?>
+<?php endif; ?>
+<style>
+	.Quantity-num [disabled] {
+		opacity:0.4;
+	}
+</style>
+<div class="ave40-step clearfix">
+    <dl class="first-step doing">
+        <dt>1</dt>
+        <dd>1. view the shoppingcart</dd>
+    </dl>
+    <dl class="second-step undone">
+        <dt>2</dt>
+        <dd>2. check out</dd>
+    </dl>
+    <dl class="last-step undone">
+        <dt>3</dt>
+        <dd>3. Complete payment</dd>
+    </dl>
+</div>
+<div class="cart">
+	<input type="hidden" class="currentCurencyCode" value="<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>" />
+    <form action="/checkout/cart/updatePost" method="post">
+        <?php echo $this->getBlockHtml('formkey'); ?>
+        <div class="ave40-cart-table mobile-table">
+            <table id="shopping-cart-table" class="data-table cart-table ave40-cart-table-list ">
+                <col width="1" />
+                <col />
+                <col width="1" />
+            <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+                <col width="1" />
+            <?php endif ?>
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+                <col width="1" />
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+                <col width="1" />
+
+            <?php $mergedCells = ($this->helper('tax')->displayCartBothPrices() ? 2 : 1); ?>
+                <thead>
+                    <tr>
+                        <th width="3%" rowspan="<?php echo $mergedCells; ?>"></th>
+                        <th width="10%" rowspan="<?php echo $mergedCells; ?>">Item</th>
+                        <th rowspan="<?php echo $mergedCells; ?>"><span class="nobr"></span></th>
+                        <th class="a-center" colspan="<?php echo $mergedCells; ?>"><span class="nobr"><?php echo Mage::helper("Ave40_Translate")->__('Unit Price') ?></span></th>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center"><?php echo Mage::helper("Ave40_Translate")->__('Qty') ?></th>
+                        <th class="a-center" colspan="<?php echo $mergedCells; ?>"><?php echo Mage::helper("Ave40_Translate")->__('Subtotal') ?></th>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center">Action</th>
+                    </tr>
+                    <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+                    <tr>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                    </tr>
+                    <?php endif; ?>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="50" class="a-left">
+                            <div  class="options footerOptions">
+                                <div class="selectAll">
+                                    <input type="checkbox" class="allitem" name="allitem" id="checkout-select-all" />
+                                    <label for="checkout-select-all">Select All</label>
+                                </div>
+                                <!--<div class="selectStocked">-->
+                                <!--    <input type="checkbox" class="stocked" name="" id="checkout-select-stocked" />-->
+                                <!--    <label for="checkout-select-stocked">Stocked</label>-->
+                                <!--</div>-->
+                                <div>
+                                    <a href="javascript:;" class="mutiaddwishlistAction iconfont icon-lovetaoxin"></a>
+                                </div>
+                                <div>
+                                    <a href="javascript:;" class="delete_cart_action iconfont icon-shanchu"></a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+				<?php /** @var Mage_Sales_Model_Quote_Item $_item */ ?>
+                <?php foreach($quote->getAllVisibleItems() as $_item): ?>
+
+                    <?php
+                    if($_item->getProductType() == 'configurable') {
+                        $subproduct = Mage::getModel('catalog/product_type_configurable')->getProductByAttributes(
+                            $_item->getBuyRequest()->getSuperAttribute(), $_item->getProduct()
+                        );
+                    } else {
+                        $subproduct = $_item->getProduct();
+                    }
+    
+                    /** @var Mage_Catalog_Model_Product $itemProduct */
+                    $itemProduct = $allItemProductInfo[$_item->getId()];
+                    ?>
+
+                    <tr class="first odd" data-type="item" id="item_<?php echo $_item->getId() ?>">
+                        <td class="cart-checked-box">
+                            <!--<input type="hidden" class="supperattribute" value='--><?php //echo ($_item->getProduct()->getCustomOption('attributes') != "") ? $_item->getProduct()->getCustomOption('attributes')->getValue() : ""; ?><!--'/ >-->
+                            <input type="hidden" class="productid selectItem_<?php echo $_item->getItemId(); ?>"  value="<?php echo $_item->getProduct()->getId(); ?>"/>
+							<input type="checkbox" data-type="id" id="cart-checkbox-<?php echo $_item->getId(); ?>"  <?php echo $itemProduct->getData('is_in_stock') ? '' : 'disabled=1' ?>  deleteId="<?php echo $_item->getId(); ?>" rel="<?php echo $_item->getProduct()->getId(); ?>" class="quoteItemId" name="quoteItemId[]" value="<?php echo $_item->getItemId();  ?>">
+							<input type="hidden" id="price_val_<?php echo $_item->getId() ?>" data-item="<?php echo $_item->getId() ?>" data-type="price" value="<?php echo $_item->getCalculationPrice(); ?>"/>
+                            <input type="hidden" id="weight_val_<?php echo $_item->getId() ?>" data-item="<?php echo $_item->getId() ?>" data-type="weight" value="<?php echo $_item->getProduct()->getWeight(); ?>"/>
+                            <label for="cart-checkbox-<?php echo $_item->getId(); ?>" class="cart-checkbox-label"></label>
+                        </td>
+                        <td class="cart-product-img-box a-center "><a href="<?php echo $_item->getProduct()->getProductUrl();  ?>" class="product-image"><img src="<?php echo (string)Mage::helper('catalog/image')->init($_item->getProduct(), 'thumbnail')->resize(80); ?>"></a></td>
+                        <td class="cart-product-info-box">
+                            <h2 class="product-name">
+                                <a href="<?php echo $_item->getProduct()->getProductUrl();  ?>"><?php echo $_item->getProduct()->getName();  ?></a>
+                                <ul class="product-option-list">
+                                    <?php if($_item->getProduct()->getTypeId() != "simple"): ?>
+										<?php
+										$helper = Mage::helper('catalog/product_configuration');
+										$_options = $helper->getConfigurableOptions($_item);
+										?>
+										<?php if ($_options):?>
+											<?php foreach($_options as $_option): ?>
+												<li class="product-option-item"><span class="label"><?php echo $this->escapeHtml($_option['label']) ?>:</span> <span class="value"><?php echo $this->escapeHtml($_option['value']) ?></span></li>
+											<?php endforeach; ?>
+										<?php endif;?>
+                                    <?php endif; ?>
+                                    <li style="display:none;"><span class="label"><?php echo __t('Weight') ?>:</span><span class="weight weight_<?php echo $_item->getItemId();  ?>" class="value"><?php echo number_format($_item->getProduct()->getWeight(),2); ?></span></li>
+                                </ul>
+                            </h2>
+                        </td>
+                        <td class="cart-product-price a-center">
+                            <span class="cart-price">
+                                <span class="price" data-fill-id="price">
+									<?php echo $this->helper('checkout')->formatPrice($_item->getCalculationPrice()) ?>
+								</span>
+							</span>
+                        </td>
+                        <!-- QTY -->
+                        <td class="cart-product-qty a-center">
+                            <div class="Quantity-num review-qty-box" unselectable="on" onselectstart="return false;" style="-moz-user-select:none;">
+                                <span rel="<?php echo $_item->getId() ?>" class="_reduce qty-btn qty-reduce-btn" <?php echo $itemProduct->getData('is_in_stock') ? '' : 'disabled=1' ?>>-</span>
+                                <input data-type="qty" <?php echo $itemProduct->getData('is_in_stock') ? '' : 'disabled=1' ?> type='text' itemid="<?php echo $_item->getItemId(); ?>" name="cart[<?php echo $_item->getProduct()->getId(); ?>][qty]" data-cart-item-id="<?php echo $_item->getSku(); ?>" value="<?php echo $_item->getQty();  ?>" size="4" title="Qty" style="padding:0" class="input-text input_qty input_qty_<?php echo $_item->getItemId(); ?> qty" maxlength="12" / >
+                                <span rel="<?php echo $_item->getId() ?>" class="_add qty-btn qty-add-btn" <?php echo $itemProduct->getData('is_in_stock') ? '' : 'disabled=1' ?>>+</span>
+                            </div>
+							<?php if(!$itemProduct->getData('is_in_stock')): ?>
+							<span style="color:red;">Out of stock</span>
+							<?php endif; ?>
+                        </td>
+
+                        <!--Sub total starts here -->
+                        <td class="cart-subtotal-box a-center">
+                            <span class="cart-price cart-subtotal-price">
+								<span rel="<?php echo $_item->getCalculationPrice(); ?>" class="subtal_<?php echo $_item->getItemId();  ?> price" data-fill-id="subtotal">
+									<?php echo Mage::helper('core')->currency($_item->getCalculationPrice()*$_item->getQty(), true, false);  ?>
+								</span>
+                            </span>
+                        </td>
+                        <td class="cart-action-box a-center action last">
+                            <?php if(Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+                                <span style="display: block;" rel="<?php echo $_item->getProduct()->getId(); ?>" class="addwishlist" data-buyrequest='<?php echo json_encode($_item->getBuyRequest()->getData()) ?>'>Add wishlist</span>
+                            <?php endif; ?>
+                            <span rel="<?php echo $_item->getId(); ?>" class="_btn-remove"><?php echo __t('Delete') ?></span>
+						</td>
+                    </tr>
+    
+                    <?php if ($itemProduct && $itemProduct->getStockItem()->getQty() < $_item->getQty()): ?>
+                    <tr style="opacity:1;" class="cart-limted-tips" id="qty_not_available_<?php echo $_item->getId() ?>">
+                        <td colspan="7">
+                            <div class="cart-product-info-hr">
+                                <div class="info-text ">
+                                    <i class="cart-attention-icon"></i>
+                                    <?php //echo Mage::helper("Ave40_Translate")->__('Attention: The quantity of this item is temporarily limited. Your shipment might be split or delayed.') ?>
+									<?php echo __t('The requested quantity is not available.') ?>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endif?>
+                <?php endforeach ?>
+
+                </tbody>
+            </table>
+            <script type="text/javascript">decorateTable('shopping-cart-table')</script>
+        </div>
+    </form>
+	<div class="quoteDetail clearfix" style="display:none;">
+        <div class="quoteDetail-list clearfix">
+            <div class="qty"><span class="label"><?php echo __t('Qty') ?>:</span><span class="value" id="total_qty"></span></div>
+            <div class="weight"><span class="label"><?php echo __t('Weight') ?>:</span><span class="value" id="total_weight"></span></div>
+
+        </div>
+
+        <div class="subtal total"><span class="label"><?php echo __t('Total') ?>:</span><span class="value" id="total_price"></span></div>
+
+	</div>
+    <div class="checkoutbutton">
+		<button class="processCheckout btn-checkout"><?php echo Mage::helper("Ave40_Translate")->__('Confirm'); ?></button>
+    </div>
+</div>
+
+<script type="text/javascript">
+	~function ($) {
+		function calcProductPrice() {
+			var allItems = $('tr[data-type=item]');
+			var totalPrice = 0;
+			var totalWeight = 0;
+			var totalQty = 0;
+			var itemSelected = false;
+			
+			for(var i=0; i<allItems.length; i++) {
+				var item = $(allItems[i]);
+				var price = parseFloat(item.find('input[data-type=price]').val());
+				var weight = parseFloat(item.find('input[data-type=weight]').val());
+				var qty = parseFloat(item.find('input[data-type=qty]').val());
+				
+				var subtotal = qty * price;
+				
+				if(item.find('[data-type=id]').prop('checked')) {
+					itemSelected = true;
+					totalQty += qty;
+					totalPrice += subtotal;
+					totalWeight += weight*qty;
+				}
+				
+				item.find('[data-fill-id=subtotal]').html(formatPriceLabel(subtotal));
+				item.find('[data-fill-id=price]').html(formatPriceLabel(price));
+			}
+			
+			if(itemSelected) {
+				$(".quoteDetail").show();
+			} else {
+				$(".quoteDetail").hide();
+			}
+			
+			$('#total_price').html(formatPriceLabel(totalPrice));
+			$('#total_qty').html(formatQtyLabel(totalQty));
+			$('#total_weight').html(formatWeightLabel(totalWeight));
+		}
+		
+		function formatWeightLabel(weight) {
+			return String(formatPriceNumber(weight)) + 'Kg';
+		}
+		
+		function formatQtyLabel(qty) {
+			return String(parseInt(qty));
+		}
+		
+		function formatPriceLabel(price) {
+			var currencySymbol = '<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() ?>';
+			return currencySymbol + formatPriceNumber(price);
+		}
+		
+		function formatPriceNumber(price) {
+			if(isNaN(price)) {
+				price = 0;
+			}
+			
+			price = parseFloat(price).toFixed(2);
+			var priceStr = String(price);
+			var dotpos = priceStr.indexOf('.');
+			var intpart = priceStr.substr(0, dotpos);
+			var floatpart = priceStr.substr(dotpos);
+			var chunkAry = intpart.split('');
+			var pos = intpart.length%3;
+			
+			for(var i=0; i < parseInt(intpart.length/3); i++) {
+				if(pos == 0) {
+					pos += 3;
+					continue;
+				}
+				
+				chunkAry.splice(pos, 0, ',');
+				pos += 4;
+			}
+			
+			return chunkAry.join('') + floatpart;
+		}
+		
+		/**
+		 * 选中时重新计算价格
+		 */
+		$(".quoteItemId").click(function () {
+			calcProductPrice();
+		});
+		
+		
+		function eventInit() {
+			/**
+			 * 删除item处理
+			 */
+			$("._btn-remove").click(function() {
+				var itemId = $(this).attr("rel");
+				var url = "/ave40checkout/cart/deleteItem";
+				ave40.showLoading('<?php echo Mage::helper("Ave40_Translate")->__("Please wait..."); ?>');
+				ave40.ajaxPost(url, {
+					items: itemId,
+					form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>'
+				}, function () {
+					// ave40.closeLoading();
+					if (this.ok) {
+						window.location.reload();
+					} else {
+						ave40.closeLoading();
+						Ave40MessageBox.alertError(this.message);
+					}
+				});
+				
+			});
+			
+			/**
+			 * 改变购物车input事件处理
+			 */
+			$(".input_qty").blur(function(){
+				var itemId = $(this).attr("itemid");
+				var currentQty = $(this).val();
+				//
+				if(currentQty <= 0) {
+					Ave40MessageBox.alertError('<?php echo Mage::helper("Ave40_Translate")->__("Quantity must be greater than 0") ?>');
+					currentQty = 1;
+					$(this).val(1);
+				}
+				
+				updateQuoteQtyAjax(itemId, currentQty);
+			});
+			
+			/**
+			 * 加入心愿单事件处理
+			 */
+			$(".addwishlist").click(function() {
+				var productId = $(this).attr("rel");
+				var params = $(this).data('buyrequest');
+				params['product'] = productId;
+				params['form_key'] = '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>';
+				
+				var url = "/ave40api/wishlist/add";
+				ave40.showLoading('<?php echo Mage::helper("Ave40_Translate")->__("Please wait..."); ?>');
+				ave40.ajaxPost(url, params, function () {
+					ave40.closeLoading();
+					
+					if (this.ok) {
+						Ave40MessageBox.alertSuccess(this.message);
+					} else {
+						Ave40MessageBox.alertError(this.message);
+					}
+				});
+			});
+			
+			/**
+			 * 减少qty数量button事件处理
+			 */
+			$("._reduce").click(function(){
+				if($(this).attr('disabled')) {
+					return;
+				}
+				
+				var itemId = $(this).attr("rel");
+				var currentQty = $(".input_qty_"+itemId).val();
+				var modifyCurrentQty = parseInt(currentQty)-1;
+				
+				if(modifyCurrentQty <= 0) {
+					Ave40MessageBox.alertError('<?php echo Mage::helper("Ave40_Translate")->__("Quantity must be greater than 0") ?>');
+					$(".input_qty_"+itemId).val(1);
+					return;
+				}
+				
+				updateQuoteQtyAjax(itemId, modifyCurrentQty);
+			});
+			
+			/**
+			 * 增加qty数量button事件处理
+			 */
+			$("._add").click(function(){
+				if($(this).attr('disabled')) {
+					return;
+				}
+				
+				var itemId = $(this).attr("rel");
+				var currentQty = $(".input_qty_"+itemId).val();
+				var modifyCurrentQty = parseInt(currentQty)+1;
+				updateQuoteQtyAjax(itemId, modifyCurrentQty);
+			});
+			
+			/**
+			 * 批量加入心愿单事件处理
+			 */
+			$(".mutiaddwishlistAction").click(function() {
+				var noselectItem = true;
+				var url = "/ave40api/wishlist/batchAdd";
+				var productids = [];
+				var params = {data:[], form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>'};
+				
+				//判断是否选中
+				$('.quoteItemId').each(function(){
+					if($(this).is(":checked")) {
+						noselectItem = false;
+						var productid = $(this).attr("rel");
+						productids.push(productid);
+						
+						var addwishlistBtn = $(this).closest('tr').find('.addwishlist');
+						var buyrequest = addwishlistBtn.data('buyrequest');
+						buyrequest['product'] = productid;
+						params.data.push(buyrequest);
+					}
+				});
+				
+				if(!noselectItem) {
+					ave40.showLoading('<?php echo Mage::helper("Ave40_Translate")->__("Please wait..."); ?>');
+					
+					ave40.ajaxPost(url, params, function () {
+						ave40.closeLoading();
+						if (this.ok) {
+							Ave40MessageBox.alertSuccess('Add to wishlist Success');
+						} else {
+							Ave40MessageBox.alertError(this.message);
+						}
+					});
+				}
+				else {
+					Ave40MessageBox.alertError("Please select a product item for the checkout page.");
+				}
+			});
+			
+			/**
+			 * 批量删除quoteitem事件处理
+			 */
+			$('.delete_cart_action').click(function() {
+				var noselectItem = true;
+				var url = "/ave40checkout/cart/deleteItem";
+				var quoteItemIds = [];
+				
+				//判断是否选中
+				$('.quoteItemId').each(function(){
+					if($(this).is(":checked")) {
+						noselectItem = false;
+						_quoteItemId = $(this).attr("deleteId");
+						quoteItemIds.push(_quoteItemId);
+					}
+				});
+				
+				if(!noselectItem) {
+					ave40.showLoading('<?php echo Mage::helper("Ave40_Translate")->__("Please wait..."); ?>');
+					ave40.ajaxPost(url, {
+						items: quoteItemIds.join(','),
+						form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>'
+					}, function () {
+						// ave40.closeLoading();
+						if (this.ok) {
+							// Ave40MessageBox.alertSuccess(this.message);
+							window.location.reload();
+						} else {
+							ave40.closeLoading();
+							Ave40MessageBox.alertError(this.message);
+						}
+					});
+				}
+				else {
+					Ave40MessageBox.alertError("Please select a product item for the checkout page.");
+				}
+				
+				calcProductPrice();
+			});
+			
+			/**
+			 * 全选事件处理
+			 */
+			$(".allitem").click(function(){
+				if($(this).is(":checked")) {
+					$('.quoteItemId').each(function(){
+						if($(this).attr('disabled')) {
+							return ;
+						}
+						
+						jQuery(this).attr("checked", true);
+					});
+				}
+				else {
+					$('.quoteItemId').each(function(){
+						jQuery(this).attr("checked", false);
+					});
+				}
+				
+				calcProductPrice();
+			});
+			
+			/**
+			 * confirm 按钮事件逻辑处理跳转到支付页面
+			 */
+			$('.btn-checkout').click(function() {
+				var noselectItem = true;
+				var url = "/ave40checkout/cart/translate";
+				var quoteItemIds = [];
+				var qtys = [];
+				var productids = [];
+				var supperattribute = [];
+				
+				var $selectItems = $('.quoteItemId:checked');
+				var items = {};
+				var selected = false;
+				
+				$selectItems.each(function () {
+					selected = true;
+					var qty = $(this).closest('tr').find('input.input_qty').val();
+					
+					if(qty > 0) {
+						items [$(this).val()] = qty;
+					}
+				});
+				
+				if(!selected) {
+					Ave40MessageBox.alertError("Please select a product item for the checkout page.");
+					return ;
+				}
+				
+				ave40.showLoading('<?php echo Mage::helper("Ave40_Translate")->__("Please wait..."); ?>');
+				ave40.ajaxPost(url, {
+					items:items,
+					form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>'
+				}, function () {
+					// ave40.closeLoading();
+					if (this.ok) {
+						window.location = this.data.url;
+					} else {
+						ave40.closeLoading();
+						Ave40MessageBox.alertError(this.message);
+					}
+				});
+				
+				
+			});
+		}
+		
+		function updateQuoteQtyAjax(item, qty) {
+			ave40.showLoading('<?php echo Mage::helper("Ave40_Translate")->__("Please wait..."); ?>');
+			ave40.ajaxPost('/ave40checkout/cart/updateItemQty', {
+				item:item,
+				qty:qty,
+				form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>'
+			}, (function(itemId) {return function () {
+				ave40.closeLoading();
+				if (this.ok) {
+					
+					if(this.data.qty) {
+						$(".input_qty_"+itemId).val(this.data.qty);
+					}
+					
+					if(this.data.price) {
+						$("#price_val_"+itemId).val(this.data.price);
+					}
+					
+					updateTopCartInfo(this);
+					calcProductPrice();
+					
+					if(this.data.is_qty_not_available) {
+						Ave40MessageBox.alertError(this.message);
+					}
+					
+					if(this.data.qty) {
+						$('#qty_not_available_' + itemId).animate({'opacity':0}, 500, null, function(){$(this).hide()});
+					}
+				} else {
+					Ave40MessageBox.alertError(this.message);
+				}
+			}})(item));
+		}
+		
+		eventInit();
+		calcProductPrice();
+	}(jQuery)
+
+</script>

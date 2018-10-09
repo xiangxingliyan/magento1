@@ -1,0 +1,34 @@
+<?php
+/**
+ * @var Ave40_Sales_Block_Order_History $this
+ */
+?>
+
+<?php if(Mage::helper('ave40_widget')->getDeviceDetector()->isMobile()): ?>
+    <style>
+        .personal-aside{
+            display: none;
+        }
+    </style>
+<?php endif; ?>
+
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+<div class="personal-main">
+
+	<div class="main-right orders-main" style="display: block;">
+		<div class="main-tab">
+			<ul class="tab" data-taboff>
+				<li class="<?= $this->getTabSwitcherClass('overview') ?>"><a href="?sp=overview"><span><?= Mage::helper("Ave40_Translate")->__('ALL') ?></span></a></li>
+				<li class="<?= $this->getTabSwitcherClass('pending') ?>"><a href="?sp=pending"><span><?= Mage::helper("Ave40_Translate")->__('Pending') ?></span></a></li>
+ 				<li class="<?= $this->getTabSwitcherClass('paid') ?>"><a href="?sp=paid"><span><?= Mage::helper("Ave40_Translate")->__('Paid') ?></span></a></li>
+				<li class="<?= $this->getTabSwitcherClass('shipped') ?>"><a href="?sp=shipped"><span><?= Mage::helper("Ave40_Translate")->__('Shipped') ?></span></a></li>
+				<li class="<?= $this->getTabSwitcherClass('complete') ?>"><a href="?sp=complete"><span><?= Mage::helper("Ave40_Translate")->__('Completed') ?></span></a></li>
+			</ul>
+		</div>
+
+		<?= $this->getSubpageHtml() ?>
+
+		<?= $this->getPagerHtml() ?>
+	</div>
+</div>
+

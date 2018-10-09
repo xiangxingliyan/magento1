@@ -1,0 +1,79 @@
+<?php
+$orderId = $this->getsessionOrderId();
+/* @var Mage_Sales_Model_Order $order */
+$order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+
+$total = $order->getGrandTotal();
+$subtotal = $order->getSubtotal();
+$discount = $order->getDiscountAmount();
+$affiliateTotal = ($subtotal + $discount);
+
+// 清除session
+Mage::getSingleton('checkout/session')->unsLastRealOrderId();
+
+?>
+<script src="https://cdn.ywxi.net/js/conversion.js" class="mcafeesecure-track-conversion"
+        data-type="purchase"
+        data-orderid="<?php echo $orderId ?>"
+        data-email="<?php echo $order->getCustomerEmail() ?>"
+        data-firstname="<?php echo $order->getCustomerFirstname() ?>"
+        data-lastname="<?php echo $order->getCustomerLastname() ?>"
+        data-country="<?php echo $order->getShippingAddress()->getCountryId()?>"
+></script>
+
+<img src="https://shareasale.com/sale.cfm?amount=<?php echo $total; ?>&tracking=<?php echo $orderId; ?>&transtype=sale&merchantID=76012" width="1" height="1">
+
+<div class="pay-success-page">
+    <!--
+	<div class="page-title">
+		<h1><?php /*echo Mage::helper("Ave40_Translate")->__('Your order has been received') */?></h1>
+	</div>
+	-->
+    <div class="page-content-se">
+        <h2 class="sub-title"><i class="icon finish-icon"></i><span><?php echo Mage::helper("Ave40_Translate")->__('Congratulations on your successful payment') ?></span></h2>
+        
+        
+        <div class="pay-success-order-info">
+            <img src="https://shareasale.com/sale.cfm?tracking=<?php echo $orderId; ?>&amount=<?php echo $affiliateTotal; ?>&transtype=sale&merchantID=72888" width="1" height="1">
+            
+                <?php if ($order->getCanViewOrder()) : ?>
+                    <div class="pay-order-num"><?php echo Mage::helper("Ave40_Translate")->__('Order number: %s', sprintf('<a href="%s">%s</a>', $this->escapeHtml('/sales/order/history/'), $this->escapeHtml($this->getOrderId()))) ?></div>
+                <?php else : ?>
+                    <div><?php echo Mage::helper("Ave40_Translate")->__('Your order # is') ?>: <?php echo $this->escapeHtml($orderId) ?></div>
+                <?php endif; ?>
+                <div class="pay-success-amount">
+                    <span>Payment amount :</span>
+                    <span class="price">$<?=number_format($order->getBaseGrandTotal(), 2);?></span>
+                </div>
+                <div class="pay-success-button">
+                    <a href="/sales/order/history/" _href="<?= $this->getViewOrderUrl() ?>" class="pay-succ-btn">View order</a>
+                    <a href="javascript:;" class="pay-succ-btn inquireNow inquireNow-popup-btn">Inquire now</a>
+                </div>
+                <?php echo $this->getChildHtml('inquire_form') ?>
+                
+                <!--
+			<div class="buttons-set">
+				<button type="button" class="button" title="<?php /*echo Mage::helper("Ave40_Translate")->__('Continue Shopping') */?>"
+						onclick="window.location='<?php /*echo $this->getUrl() */?>'">
+					<span><span><?php /*echo Mage::helper("Ave40_Translate")->__('Continue Shopping') */?></span></span></button>
+			</div>
+			-->
+        </div>
+    </div>
+    
+    
+    <?php
+    $orderAmount = floatval(Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId())->getGrandTotal());
+    ?>
+    
+    <?php if($this->getOrderId()): ?>
+        <!-- BEGIN OF FLEXOFFERS.COM TRACKING CODE -->
+        <img src="https://track.flexlinks.com/tracker.aspx?AID=4ce45f74-bc41-4396-9437-90e167cbe753&AMT=<?php echo $orderAmount ?>&UID=<?php echo $this->getOrderId() ?>" width="1" height="1" alt=""/>
+        <!-- END OF FLEXOFFERS.COM TRACKING CODE -->
+    <?php endif; ?>
+    
+    <!-- ve -->
+    <img src="//cdsch2.veinteractive.com/DataReceiverService.asmx/Pixel?journeycode=70016FF3-E8E0-45E8-83C5-7F8EF79CF29A" width="1" height="1"/>
+
+</div>
+

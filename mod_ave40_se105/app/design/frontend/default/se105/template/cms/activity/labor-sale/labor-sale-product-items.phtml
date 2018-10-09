@@ -1,0 +1,328 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2017/3/21
+ * Time: 下午 4:57
+ */
+
+/* @var Ave40_Catalog_Block_Product_Items $this */
+$_productCollection = $this->getProductCollection();
+/** @var Ave40_Base_Helper_Customer $customerHelper */
+$customerHelper = Mage::helper('ave40_base/customer');
+
+$vars = [
+	'only_list' => !!$this->getData('only_list'),
+	'special_countdown' => !!$this->getData('special_countdown'),
+	'mouse_over_tools' => !!(($this->getData('mouse_over_tools')===null) ? true : $this->getData('mouse_over_tools')),
+	'enable_pagination' => $this->getData('enable_pagination'),
+	'display_aslowas_price' => !!(($this->getData('display_aslowas_price')==null) ? true : $this->getData('display_aslowas_price')),
+];
+
+if($vars['special_countdown']):
+	$__isOutOfSpecialDate = function($product) {
+		$fromDate = $product->getSpecialFromDate();
+		$toDate = $product->getSpecialToDate();
+		$now = time();
+
+		return $now < strtotime($fromDate) || $now > strtotime($toDate);
+	};
+
+	$__calcDetailTwoDate = function ($start, $end) {
+		$start = is_numeric($start) ? $start : strtotime($start);
+		$end = is_numeric($end) ? $end : strtotime($end);
+		$dvalue = $end - $start;
+
+		$days=0;
+		$hours=0;
+		$minutes=0;
+		$seconds=0;
+
+		if($dvalue > 0) {
+			$minSeconds = 60;
+			$hourSeconds = 60 * $minSeconds;
+			$daySecond = 24 * $hourSeconds;
+
+			$days = floor ($dvalue / $daySecond);
+			$dvalue -= $days * $daySecond;
+			$hours = floor( $dvalue / $hourSeconds);
+			$dvalue -= $hours * $hourSeconds;
+			$minutes = floor( $dvalue / $minSeconds);
+			$dvalue -= $minutes * $minSeconds;
+			$seconds = $dvalue;
+		}
+
+		$result = compact(explode(' ', 'days hours minutes seconds'));
+		$result['start_time'] = $start;
+		$result['end_time'] = $end;
+		return $result;
+	};
+
+	$__getProductSpecialDateDetail = function ($product) use ($__calcDetailTwoDate) {
+		$toDate = $product->getSpecialToDate();
+		$now = time();
+
+		return $__calcDetailTwoDate($now, $toDate);
+	};
+endif; /* special_countdown is enabled */
+
+$imageSize = $this->getImageSize();
+$imageWidth = 170;
+$imageHeight = 170;
+
+if(!empty($imageSize)) {
+	list($_width, $_height) = explode(',', $imageSize);
+
+	if(!(empty($_width) && empty($_height))) {
+		$_width = empty($_width) ? $_height : $_width;
+		$_height = empty($_height) ? $_width : $_height;
+		$imageWidth = intval($_width);
+		$imageHeight = intval($_height);
+	}
+}
+
+Mage::unregister('current_category');
+?>
+
+
+<?php $canShowMsrp = $customerHelper->getIsGuidePageCustomer() || $customerHelper->isLoginAsWholesales() ?>
+
+<div class="ave40_wrapper">
+<?php if (!$vars['only_list']): ?>
+<ul class="product-items home-list product_item_wrap clearfix">
+<?php endif; ?>
+<?php $first = true; ?>
+<?php foreach ($_productCollection as $_product): ?>
+
+    <?php $hasMsrp = $_product->getMsrp()?>
+
+    <?php if($first): ?>
+        <?php $first = false; ?>
+        <li class="item product_item_box  <?php echo $customerHelper->isGuideGuest()?'no_verification_item':'' ?>" product_id="<?php echo $_product->getId()?>" product_type="<?php echo $_product->getTypeId() ?>" >
+
+            <div class="product_item_card ">
+                <?php if($vars['special_countdown'] && !$__isOutOfSpecialDate($_product)): ?><?php /* 特价结束日期倒计时 */ ?>
+                    <?php
+                    $specialDateDetail = $__getProductSpecialDateDetail($_product);
+                    $countdownId = sha1(uniqid('ctdid', true));
+                    $countdownSctiptParamDay = "#$countdownId .deal-day";
+                    $countdownSctiptParamHour = "#$countdownId .deal-hour";
+                    $countdownSctiptParamMinute = "#$countdownId .deal-minute";
+                    $countdownSctiptParamSecond = "#$countdownId .deal-second";
+                    ?>
+                    <div class="countdown-time"
+                         data-cdt-start-time="<?php echo $specialDateDetail['start_time'] ?>"
+                         data-cdt-end-time="<?php echo $specialDateDetail['end_time'] ?>">
+                        <i class="countdown-icon"></i>
+                        <span class="limit-deal-time">
+				<span class="status-title">Ends In:</span>
+				<span id="<?php echo $countdownId ?>" class="js-limitDealTime">
+					<span class="deal-day"><?php echo $specialDateDetail['days'] ?></span>
+					<span><?php echo Mage::helper("Ave40_Translate")->__('Day') ?></span>
+					<span class="deal-hour"><?php echo $specialDateDetail['hours'] ?></span>:
+					<span class="deal-minute"><?php echo $specialDateDetail['minutes'] ?></span>:
+					<span class="deal-second"><?php echo $specialDateDetail['seconds'] ?></span>
+				</span>
+			</span>
+                    </div>
+                    <script>
+                        countDown("<?php echo $_product->getSpecialToDate() ?>",
+                            "<?php echo $countdownSctiptParamDay ?>",
+                            "<?php echo $countdownSctiptParamHour ?>",
+                            "<?php echo $countdownSctiptParamMinute ?>",
+                            "<?php echo $countdownSctiptParamSecond ?>"
+                        );
+                    </script>
+                <?php endif; ?>
+
+                <div class="product_card_img">
+                    <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+                        <img class="lazy" data-original="/media/wysiwyg/topic/labor-sale/labor_07.png"
+                             src="<?php echo $this->getData('only_list') ?
+                                 $this->helper('catalog/image')->init($_product, 'small_image')->resize($imageWidth, $imageHeight) :
+                                 $this->getSkinUrl('images/loader.gif'); ?>"
+                             srcset="/media/wysiwyg/topic/labor-sale/labor_07.png"
+                             alt="<?php echo $this->htmlEscape($_product->getName()) ?>" />
+                    </a>
+                </div>
+                <div class="product_card_other_info">
+                    <?php if($vars['mouse_over_tools']): ?>
+                        <?php Mage::unregister('ave40_instance_product_items_block'); ?>
+                        <?php Mage::register('ave40_instance_product_items_block', $this); ?>
+                        <?php echo $this->getReviewsSummaryHtml($_product, 'short', true) ?>
+                        <?php Mage::unregister('ave40_instance_product_items_block'); ?>
+                    <?php endif; ?>
+                    <h2 class="product_card_name">
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+                            <p>SMPO OS</p>
+                            <p>Pod System Kit</p>
+                        </a>
+                    </h2>
+
+                    <div class="product_card_price <?php echo $hasMsrp && $canShowMsrp ? 'show_msrp_price clearfix' : '' ?>">
+                        <?php echo $this->getPriceHtml($_product, $vars['display_aslowas_price'], $this->getPriceSuffix()) ?>
+
+                        <?php if($canShowMsrp): ?>
+                            <?php if($_product->getMsrp()): ?>
+                                <div class="msrp-price">MSRP<span><?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() ?><?php echo sprintf('%.2f', round($_product->getMsrp(), 2)) ?></span></div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <?php if($customerHelper->isGuideGuest()): ?>
+                            <!-- no_verification 中间页未认证价格变成whosesale -->
+                            <span class="no_verification_wholesale_tips">wholesale</span>
+                        <?php endif; ?>
+                    </div>
+
+                    <!--<div class="proadd-cart">ADD TO CART</div>-->
+
+                    <div class="clear"></div>
+                </div>
+
+
+
+
+                <?php if($customerHelper->isGuideGuest()): ?>
+                    <!-- no_verification 未认证引导模块 -->
+                    <div class="no_verification_template">
+                        <div class="no_verification_info">
+                            <p>Please check after authentication</p>
+                            <?php if($customerHelper->isLoginned()): ?>
+                                <a href="javascript:;" class="no_verification_submit">Submit</a>
+                            <?php else: ?>
+                                <a href="/customer/account/login" class="no_verification_submit_login">Submit</a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+
+        </li>
+
+    <?php else: ?>
+	    <li class="item product_item_box  <?php echo $customerHelper->isGuideGuest()?'no_verification_item':'' ?>" product_id="<?php echo $_product->getId()?>" product_type="<?php echo $_product->getTypeId() ?>" >
+
+		<div class="product_item_card ">
+            <?php if($vars['special_countdown'] && !$__isOutOfSpecialDate($_product)): ?><?php /* 特价结束日期倒计时 */ ?>
+                <?php
+                $specialDateDetail = $__getProductSpecialDateDetail($_product);
+                $countdownId = sha1(uniqid('ctdid', true));
+                $countdownSctiptParamDay = "#$countdownId .deal-day";
+                $countdownSctiptParamHour = "#$countdownId .deal-hour";
+                $countdownSctiptParamMinute = "#$countdownId .deal-minute";
+                $countdownSctiptParamSecond = "#$countdownId .deal-second";
+                ?>
+                <div class="countdown-time"
+                     data-cdt-start-time="<?php echo $specialDateDetail['start_time'] ?>"
+                     data-cdt-end-time="<?php echo $specialDateDetail['end_time'] ?>">
+                    <i class="countdown-icon"></i>
+                    <span class="limit-deal-time">
+				<span class="status-title">Ends In:</span>
+				<span id="<?php echo $countdownId ?>" class="js-limitDealTime">
+					<span class="deal-day"><?php echo $specialDateDetail['days'] ?></span>
+					<span><?php echo Mage::helper("Ave40_Translate")->__('Day') ?></span>
+					<span class="deal-hour"><?php echo $specialDateDetail['hours'] ?></span>:
+					<span class="deal-minute"><?php echo $specialDateDetail['minutes'] ?></span>:
+					<span class="deal-second"><?php echo $specialDateDetail['seconds'] ?></span>
+				</span>
+			</span>
+                </div>
+                <script>
+                    countDown("<?php echo $_product->getSpecialToDate() ?>",
+                        "<?php echo $countdownSctiptParamDay ?>",
+                        "<?php echo $countdownSctiptParamHour ?>",
+                        "<?php echo $countdownSctiptParamMinute ?>",
+                        "<?php echo $countdownSctiptParamSecond ?>"
+                    );
+                </script>
+            <?php endif; ?>
+
+            <div class="product_card_img">
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+                    <img class="lazy" data-original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize($imageWidth, $imageHeight) ?>"
+                         src="<?php echo $this->getData('only_list') ?
+                             $this->helper('catalog/image')->init($_product, 'small_image')->resize($imageWidth, $imageHeight) :
+                             $this->getSkinUrl('images/loader.gif'); ?>"
+                         srcset="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize($imageWidth * 2, $imageHeight * 2) ?> 2x"
+                         width="<?php echo $imageWidth ?>"
+                         height="<?php echo $imageHeight ?>"
+                         alt="<?php echo $this->htmlEscape($_product->getName()) ?>" />
+                </a>
+            </div>
+            <div class="product_card_other_info">
+                <?php if($vars['mouse_over_tools']): ?>
+                    <?php Mage::unregister('ave40_instance_product_items_block'); ?>
+                    <?php Mage::register('ave40_instance_product_items_block', $this); ?>
+                    <?php echo $this->getReviewsSummaryHtml($_product, 'short', true) ?>
+                    <?php Mage::unregister('ave40_instance_product_items_block'); ?>
+                <?php endif; ?>
+                <h2 class="product_card_name">
+                    <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+                        <?php echo $this->htmlEscape($_product->getName()) ?>
+                    </a>
+                </h2>
+
+                <div class="product_card_price ">
+                    <?php echo $this->getPriceHtml($_product, $vars['display_aslowas_price'], $this->getPriceSuffix()) ?>
+
+                    <?php if($canShowMsrp): ?>
+                        <?php if($_product->getMsrp()): ?>
+                            <div class="msrp-price">MSRP<span><?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() ?><?php echo sprintf('%.2f', round($_product->getMsrp(), 2)) ?></span></div>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
+                    <?php if($customerHelper->isGuideGuest()): ?>
+                        <!-- no_verification 中间页未认证价格变成whosesale -->
+                        <span class="no_verification_wholesale_tips">wholesale</span>
+                    <?php endif; ?>
+                </div>
+
+                <!--<div class="proadd-cart">ADD TO CART</div>-->
+
+                <div class="clear"></div>
+            </div>
+
+
+
+
+            <?php if($customerHelper->isGuideGuest()): ?>
+                <!-- no_verification 未认证引导模块 -->
+                <div class="no_verification_template">
+                    <div class="no_verification_info">
+                        <p>Please check after authentication</p>
+                        <?php if($customerHelper->isLoginned()): ?>
+                            <a href="javascript:;" class="no_verification_submit">Submit</a>
+                        <?php else: ?>
+                            <a href="/customer/account/login" class="no_verification_submit_login">Submit</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+
+
+	</li>
+    <?php endif ?>
+<?php endforeach; ?>
+
+<?php if (!$vars['only_list']): ?>
+</ul>
+<?php endif; ?>
+</div>
+
+
+<?php if($vars['enable_pagination']): ?>
+	<?php
+		/* @var Ave40_Widget_Block_Pagination	$block */
+		$block = Mage::app()->getLayout()->createBlock('ave40_widget/pagination');
+		$urlPageKey = $this->getPaginationUrlKey() ? $this->getPaginationUrlKey() : 'page';
+		$block->setUrlQueryKey($urlPageKey);
+		$block->setCurrentPage($_GET[$urlPageKey] <= 0 ? 1 : $_GET[$urlPageKey]);
+		$block->setLastPage($_productCollection->getLastPageNumber());
+		$block->outputHtml();
+	?>
+<?php endif; ?>
+
+
+

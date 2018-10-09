@@ -1,0 +1,104 @@
+.b2c_content {
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+
+.b2c_content .home-brands{
+    margin-top: 30px;
+}
+
+.showcase-box ul {
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-between;
+}
+
+.showcase-box ul li {
+    position: relative;
+}
+
+.showcase-title {
+    position: absolute;
+    text-transform: uppercase;
+    font-size: 0.28rem;
+    color: #fdfcf1;
+    font-family: opensans-bold;
+    bottom: 0;
+    text-align: center;
+    padding: 0.15rem;
+}
+
+.showcase-title span {
+    display: inline-block;
+    padding: 0.2rem 0.35rem;
+    text-shadow: 0px 1px 1px rgba(46, 46, 46, 0.4);
+}
+
+.showcase-classify-banner .showcase-title{
+    right: 0;
+}
+
+.showcase-product-banner .showcase-title{
+    right: 0;
+    padding: 0.15rem 0.14rem;
+}
+
+.showcase-classify-banner li:first-child{
+    width: 62.1666666%;
+}
+
+.showcase-classify-banner li:last-child{
+    width: 35.0833333%;
+}
+
+
+.floor-ad-box, .showcase-box ul, .home-brands, .home-about-us {
+    margin-bottom: 0.4rem;
+}
+
+.home-about-us {
+    width: 100%;
+    height: 436px;
+    background: url("../../images/v2/about-bg.png") no-repeat center;
+}
+
+.home-about-us-info {
+    width: 50%;
+    height: 100%;
+    background-color: rgba(222, 222, 222, 0.94);
+    color: #454549;
+    overflow: hidden;
+    text-align: center;
+}
+
+.home-about-us-info h2 {
+    font-size: 37px;
+    font-family: opensans-bold;
+    position: relative;
+    margin-bottom: 0.15rem;
+}
+
+.home-about-us-info .title-line {
+    display: inline-block;
+    background: #454549;
+    width: 23px;
+    height: 5px;
+}
+
+.home-about-us-title {
+    margin: 0.8rem 0 0.5rem;
+}
+
+.home-about-us-text {
+    padding: 0 13.3%;
+    line-height: 1.786;
+}
+
+.about-us-more-link {
+    margin-top: 0.55rem;
+}
+
+.showcase-product-banner li {
+    width: calc((100% - 20px) / 2);
+}
+

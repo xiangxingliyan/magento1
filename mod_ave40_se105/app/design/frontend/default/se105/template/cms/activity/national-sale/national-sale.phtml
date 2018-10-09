@@ -1,0 +1,169 @@
+<style>
+    .indep-page {
+        overflow: hidden;
+    }
+
+    .indep-login-box {
+        position: absolute;
+        left: 50%;
+        margin-left: -150px;
+        top: 47%;
+        line-height: normal;
+        font-size: 16px;
+        letter-spacing: 1px;
+        color: #485777;
+    }
+
+    .indep-login-box a {
+        color: #5681e3;
+        text-decoration: underline;
+    }
+
+    .indep-main{
+        background: #5101ba url("/media/wysiwyg/topic/national-sale/national-04.jpg") no-repeat fixed  center center;
+        padding-bottom: 40px;
+    }
+
+    .indep-p-title{
+        text-align: center;
+        padding: 0.8rem 0 0.25rem;
+		font-family: Arial;
+		font-size: 38px;
+		color: #f2f2f2;
+		font-weight: 600;
+    }
+
+    .more-link {
+        display: block;
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+    .more-link a{
+        color: #fff;
+        font-size: 16px;
+    }
+
+    .more-link a:hover{
+        color: #e10b0b;
+
+    }
+
+    .more-link i{
+        display: inline-block;
+        vertical-align: middle;
+        margin-top: -1px;
+    }
+
+    .mb{
+        display: none;
+    }
+
+    @media screen and (max-width: 1150px){
+        .more-link {
+            padding-right: 20px;
+        }
+
+    }
+
+    @media screen and (max-width: 767px){
+        .indep-p-title{
+            font-size: 18px;
+        }
+
+        .pc{
+            display: none;
+        }
+
+        .mb{
+            display: block;
+        }
+
+        .indep-login-box {
+            position: static;
+            margin-left: 0;
+            text-align: center;
+            background-color: #202024;
+            color: #fff;
+            padding: 0.2rem 0;
+        }
+
+        .indep-login-box a {
+            color: #4589f3;
+        }
+
+    }
+
+</style>
+
+<div class="indep-page">
+    <div class="indep-banner imgCenterPosition">
+        <img src="/media/wysiwyg/topic/national-sale/national-01.jpg" alt="" >
+        <img src="/media/wysiwyg/topic/national-sale/national-02.jpg" alt="" >
+    </div>
+
+    <div class="indep-main">
+        <div class="indep-main-wrapper w-1200">
+
+			<!-- CLEARANCE -->
+			<div class="indep-exclusive-col">
+				<div class="indep-p-title">
+					CLEARANCE
+				</div>
+				<div class="summer-featured-content">
+					<div class="more-link">
+						<a href="/clearance" title="More" target="_blank">More <i>>></i></a>
+					</div>
+                    <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                        ->setTemplate('cms/activity/national-sale/national-sale-product-items.phtml')
+                        ->setData('categories', '1061')
+                        ->setData('sort', 'position desc')
+                        ->setData('item_limit', '10')
+                        ->setData('image_size', '200,200')
+                        ->setData('mouse_over_tools', '0')
+                        ->toHtml() ?>
+				</div>
+			</div>
+            <!-- best seller -->
+            <div class="indep-best-col">
+                <div class="indep-p-title">
+					BEST SELLER
+                </div>
+                <div class="summer-featured-content">
+                    <div class="more-link">
+                        <a href="/24hrs" title="More" target="_blank">More <i>>></i></a>
+                    </div>
+                    <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                        ->setTemplate('cms/activity/national-sale/national-sale-product-items.phtml')
+                        ->setData('categories', '1062')
+                        ->setData('sort', 'position desc')
+                        ->setData('item_limit', '10')
+                        ->setData('image_size', '200,200')
+                        ->setData('mouse_over_tools', '0')
+                        ->toHtml() ?>
+                </div>
+            </div>
+
+			<!-- new arrival -->
+			<div class="indep-new-col">
+				<div class="indep-p-title">
+					NEW ARRIVAL
+				</div>
+				<div class="summer-featured-content">
+					<div class="more-link">
+						<a href="/new-arrival" title="More" target="_blank">More <i>>></i></a>
+					</div>
+                    <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                        ->setTemplate('cms/activity/national-sale/national-sale-product-items.phtml')
+                        ->setData('categories', '1064')
+                        ->setData('sort', 'position desc')
+                        ->setData('item_limit', '10')
+                        ->setData('image_size', '200,200')
+                        ->setData('mouse_over_tools', '0')
+                        ->toHtml() ?>
+				</div>
+			</div>
+
+        </div>
+    </div>
+</div>

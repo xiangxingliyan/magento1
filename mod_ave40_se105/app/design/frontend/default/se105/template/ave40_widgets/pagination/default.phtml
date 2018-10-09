@@ -1,0 +1,136 @@
+<?php
+/**
+ * 分页组件前端模板
+ * @var Ave40_Widget_Block_Pagination $this
+ */
+$_pageurlNoparem = $this->getBaseUrl().ltrim(Mage::app()->getRequest()->getOriginalPathInfo(),"/");
+?>
+<style>
+
+</style>
+<?php if($this->isPaginationAvailable()): ?>
+<div class="pagination-common clearfix" style="<?php echo $this->getCustomTopSpaceCss() ?>">
+	<div class="pagination-button">
+		<?php //首页 ?>
+		<?php if($this->enableFLButton()): ?>
+		<a class="num-item pagination-page-item <?php echo $this->getFirstBtnClass() ?>" data-page-value="1" href="<?php echo $this->enableUrl() && $this->isFirstBtnAvailabel() ? $this->getPageUrl(1) : 'javascript:;' ?>"
+		   data-url="<?php echo $this->getPageUrl(1) ?>" <?php echo $this->getFirstBtnClass() ?>>
+			<span class="pagination-common-btn first-btn page-btn-left  <?php echo $this->getFirstBtnClass() ?>"
+			<?php echo $this->getFirstBtnClass() ?>><?php echo Mage::helper("Ave40_Translate")->__('FIRST') ?>
+			</span>
+			<div></div>
+		</a>
+		<?php endif; ?>
+		<?php //上一页 ?>
+		<?php if($this->enablePNButton()): ?>
+		<?php $currenturl = ($this->getCurrentPage() == 2)? $_pageurlNoparem : $this->getPageUrl($this->getCurrentPage()-1);  ?>
+		<a rel="nofollow" class="num-item pagination-page-item <?php echo $this->getPrevBtnClass() ?>" data-page-value="<?php echo $this->getCurrentPage()-1 ?>" href="<?php echo $this->enableUrl() && $this->isPrevBtnAvailabel() ? $currenturl : 'javascript:;' ?>"
+		   data-url="<?php echo $this->getPageUrl($this->getCurrentPage()-1) ?>" <?php echo $this->getPrevBtnClass() ?>>
+			<span class="pagination-common-btn prev-btn page-btn-left iconfont icon-jiantou-left <?php echo $this->getPrevBtnClass() ?>"
+			<?php echo $this->getPrevBtnClass() ?>>
+			</span>
+		</a>
+		<?php endif; ?>
+
+		<?php //数字链接 ?>
+		<?php if($this->enableLinks()): ?>
+		<ul class="pagination-common-num">
+			<?php if($this->enableFLNumberButton() && $this->getMinPage() >= 3): ?>
+			<li class="num-item pagination-page-item" data-page-value="1" data-url="<?php echo $this->getPageUrl(1) ?>">
+				<a href="<?php echo $this->enableUrl() ? $this->getPageUrl(1) : 'javascript:;' ?>"><?php echo 1 ?></a>
+			</li>
+			<li class="num-item pagination-page-item" data-page-value="<?php echo $this->getCurrentPage()-1 ?>" data-url="<?php echo $this->getPageUrl($this->getCurrentPage()-1) ?>">
+				<a href="<?php echo $this->enableUrl() ? $this->getPageUrl($this->getMinPage()-1) : 'javascript:;' ?>">...</a>
+			</li>
+			<?php endif; ?>
+
+			<?php for($i=$this->getMinPage(), $max=$this->getMaxPage(); $i<=$max; $i++): ?>
+			<?php if($i == $this->getCurrentPage()): ?>
+			<?php /* 当前页 */ ?>
+			<li class="current-page"><?php echo $i ?></li>
+			<?php else: ?>
+            <?php $page_url = ($i == 1) ?   $this->getBaseUrl().ltrim(Mage::app()->getRequest()->getOriginalPathInfo(),"/") : $this->getPageUrl($i); ?>
+			<li class="num-item pagination-page-item" data-page-value="<?php echo $i ?>" data-url="<?php echo $this->getPageUrl($i) ?>">
+				<a href="<?php echo $this->enableUrl() ? $page_url : 'javascript:;' ?>"><?php echo $i ?></a>
+			</li>
+			<?php endif; ?>
+			<?php endfor; ?>
+
+			<?php if($this->enableFLNumberButton() && $this->getLastPage()-$this->getMaxPage()>=3): ?>
+			<li class="num-item pagination-page-item" data-page-value="<?php echo $this->getCurrentPage()+1 ?>" data-url="<?php echo $this->getPageUrl($this->getCurrentPage()+1) ?>">
+				<a href="<?php echo $this->enableUrl() ? $this->getPageUrl($this->getMaxPage()+1) : 'javascript:;' ?>">...</a>
+			</li>
+			<li class="num-item pagination-page-item" data-page-value="<?php echo $this->getLastPage() ?>" data-url="<?php echo $this->getPageUrl($this->getLastPage()) ?>">
+				<a href="<?php echo $this->enableUrl() ? $this->getPageUrl($this->getLastPage()) : 'javascript:;' ?>"><?php echo $this->
+					getLastPage() ?></a>
+			</li>
+			<?php endif; ?>
+		</ul>
+		<?php else:  ?>
+		<ul class="pagination-common-num">
+			<li class="pagination-page-current"><?php echo $this->getCurrentPage() ?></li>
+		</ul>
+		<?php endif; ?>
+
+		<?php //下一页 ?>
+		<?php if($this->enablePNButton()): ?>
+		<a rel="nofollow" class="num-item pagination-page-item <?php echo $this->getNextBtnClass() ?>" data-page-value="<?php echo $this->getCurrentPage()+1 ?>" href="<?php echo $this->enableUrl() && $this->isNextBtnAvailabel() ? $this->getPageUrl($this->getCurrentPage()+1) : 'javascript:;' ?>"
+		   data-url="<?php echo $this->getPageUrl($this->getCurrentPage()+1) ?>" <?php echo $this->getNextBtnClass() ?>>
+			<span class="pagination-common-btn next-btn page-btn-right iconfont icon-jiantou-right <?php echo $this->getNextBtnClass() ?>"
+			<?php echo $this->getNextBtnClass() ?>>
+			</span>
+		</a>
+		<?php endif; ?>
+
+		<?php //末页 ?>
+		<?php if($this->enableFLButton()): ?>
+		<a class="num-item pagination-page-item <?php echo $this->getLastBtnClass() ?>" data-page-value="<?php echo $this->getLastPage() ?>"
+		   href="<?php echo $this->enableUrl() && $this->isLastBtnAvailabel() ? $this->getPageUrl($this->getLastPage()) : 'javascript:;' ?>"
+		   data-url="<?php echo $this->getPageUrl($this->getLastPage()) ?>" <?php echo $this->getLastBtnClass() ?>>
+			<span class="pagination-common-btn last-btn page-btn-right <?php echo $this->getLastBtnClass() ?>"
+			<?php echo $this->getLastBtnClass() ?>><?php echo Mage::helper("Ave40_Translate")->__('LAST') ?>
+			</span>
+		</a>
+		<?php endif; ?>
+
+	</div>
+
+	<?php if($this->enableCustomInput()): ?>
+	<div class="page-go">
+		<span><?php echo Mage::helper("Ave40_Translate")->__('page') ?></span>
+		<input type="number" class="page-go-input" min="1" onkeyup="onlyNumberKeyup(this); if(event.keyCode == ave40.params.keyCode.enter) jQuery(this).siblings('.page-go-btn').click()"
+			   onafterpaste="onlyNumberAfterpaste(this)" onfocus="onlyNumberFocus(this)">
+		<span class="page-go-btn" data-url="<?php echo  $this->getPageUrl(null, '{{p}}') ?>"
+			  onclick="var val = jQuery(this).parent().find('.page-go-input').val();
+			  <?php if($this->enableUrl()): ?>
+			val.length>0?location.href='<?php echo $this->getPageUrl(null, '{{p}}') ?>'.replace('{{p}}', encodeURIComponent(val)):0;
+			  <?php endif; ?>
+					  ">
+			<?php echo $this->
+			__('GO') ?></span>
+	</div>
+	<?php endif; ?>
+</div>
+<?php endif; ?>
+
+<?php
+    /** add link to head meta **/
+    $headxBlock = Mage::app()->getLayout()->getBlock('headx');
+    if ($headxBlock) {
+        if ($this->getCurrentPage() == 1) {
+            $nexturl = $_pageurlNoparem.$this->getPageUrl($this->getCurrentPage()+1);
+            Mage::app()->getLayout()->getBlock('headx')->addHeadTag('link', ['rel' => 'next', 'href'=>$nexturl]);
+        }
+		elseif($this->getCurrentPage() == $this->getMaxPage()) {
+            $prevurl =  $_pageurlNoparem.$this->getPageUrl($this->getCurrentPage()-1);
+            Mage::app()->getLayout()->getBlock('headx')->addHeadTag('link', ['rel' => 'prev', 'href'=>$prevurl]);
+        }
+		elseif($this->getCurrentPage() != $this->getMaxPage()) {
+            $prevurl =  ($this->getCurrentPage() == 2) ? $_pageurlNoparem : $_pageurlNoparem.$this->getPageUrl($this->getCurrentPage()-1);
+            $nexturl =  $_pageurlNoparem.$this->getPageUrl($this->getCurrentPage()+1);
+            Mage::app()->getLayout()->getBlock('headx')->addHeadTag('link', ['rel' => 'prev', 'href'=>$prevurl]);
+            Mage::app()->getLayout()->getBlock('headx')->addHeadTag('link', ['rel' => 'next', 'href'=>$nexturl]);
+        }
+	}
+ 
+?>

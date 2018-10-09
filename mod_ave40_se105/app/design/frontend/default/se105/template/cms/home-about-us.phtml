@@ -1,0 +1,37 @@
+<div class="home-about-us">
+	<div class="home-about-us-content clearfix">
+		<div class="home-about-us-leftbar">
+			<img src="<?= $this->getSkinUrl('images/media/logo.png') ?>" />
+		</div>
+		<div class="home-about-us-rightbar">
+			<div class="home-about-us-first-column">
+				<h1>Our pass</h1>
+				<p>
+					<a href="?about-us" id="home-about-us-word-one" >xxxxxxxxxxhome-about-us-wordxxxxxxxxxxxxxxxxxxxxxxx
+						xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxhome-about-us-wordxxxxxxxxxxx
+						xxxxxxxxhome-about-us-wordxxxxxxxxxxxxxxxxxxxxxxx
+						xxhome-about-us-wordxxxxxxxxxxxxxxxxxxxhome-about-us-wordxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx111111111111111111</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	~function($){
+		$(function () {
+			/**
+			 * 省略号截取
+			 */
+			var oWrodOne = document.getElementById('home-about-us-word-one');
+			var oWrodTwo = document.getElementById('home-about-us-word-two');
+
+			var oHtml = oWrodOne.innerHTML.slice(0,300)+'...';
+			oWrodOne.innerHTML = oHtml;
+
+			var oHtmltwo = oWrodTwo.innerHTML.slice(0,300)+'...';
+			oWrodTwo.innerHTML = oHtmltwo;
+		})
+	}(jQuery)
+
+</script>

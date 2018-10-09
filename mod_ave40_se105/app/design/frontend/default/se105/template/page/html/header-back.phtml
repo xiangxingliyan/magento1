@@ -1,0 +1,266 @@
+<?php
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+
+<?php if (!$_COOKIE['top_ad_click']): ?>
+	<?= Mage::getModel('core/email_template_filter')->filter(Mage::getModel('cms/block')->setStoreId(Mage::app()->getStore()->getId())->load('top_ad')->getContent()) ?>
+
+<?php endif; ?>
+
+
+<div class="sticky">
+	<div class="sticky-container">
+		<div class="header-container">
+			<div class="header">
+				<div class="topbar">
+					<div class="topbar_content">
+						<div class="home-link">
+							<a>Welcome to Ave40</a>
+						</div>
+						<div class="header_right">
+							<ul>
+
+								<li class="sign-in-column">
+									<i class="sign-in-icon"></i>
+
+									<?php if(!Mage::getModel('customer/session')->isLoggedIn()): ?>
+									<a href="/customer/account/login" title="Sign in" class="sign-in-link">Sign In</a>
+									<?php else: ?>
+									<a href="/customer/account/" title="Sign in" class="sign-in-link">
+										<?php echo Mage::getModel('customer/session')->getCustomer()->getName() ?>
+									</a>
+									<?php endif; ?>
+
+									<?php if(!Mage::getModel('customer/session')->isLoggedIn()): ?>
+									<div class="login_pop">
+										<div class="sign_in">
+											<span> Welcome to <i class="ave-words">AVE40.com</i></span>
+											<a href="/customer/account/login">
+												<span class="sign_btn loginBtn">Sign In</span>
+											</a>
+											<?php if (Mage::getStoreConfig('ave40_login/global/enabled')): ?>
+												<div class="sign_way">
+													<span>Sign in with</span>
+
+													<?php if (Mage::getStoreConfig('ave40_login/facebook/enabled')): ?>
+														<a href="/login?platform=facebook&action=do_login" title="Facebook" class="icon facebook-icon"></a>
+													<?php endif ?>
+
+													<?php if (Mage::getStoreConfig('ave40_login/instagram/enabled')): ?>
+														<a href="/login?platform=instagram&action=do_login" title="Instagram" class="icon ins-icon"></a>
+													<?php endif ?>
+
+													<?php if (Mage::getStoreConfig('ave40_login/google/enabled')): ?>
+														<a href="/login?platform=google&action=do_login" title="Google" class="icon google-icon"></a>
+													<?php endif ?>
+
+													<?php if (Mage::getStoreConfig('ave40_login/vk/enabled')): ?>
+														<a href="/login?platform=vk&action=do_login" title="VK" class="icon vk-icon"></a>
+													<?php endif ?>
+
+													<?php if (Mage::getStoreConfig('ave40_login/twitter/enabled')): ?>
+														<a href="/login?platform=twitter&action=do_login" title="Twitter" class="icon twitter-icon"></a>
+													<?php endif ?>
+
+												</div>
+											<?php endif ?>
+										</div>
+										<div class="join_free">
+											<span class="newAver">New Customer?</span>
+											<a href="/customer/account/create"><span class="join_btn loginBtn">Join Free</span></a>
+										</div>
+									</div>
+									<?php endif; ?>
+								</li>
+
+								<?php if(Mage::getModel('customer/session')->isLoggedIn()): ?>
+								<li class="my-account">
+									<a href="/customer/account/" title="myaccount" class="myaccount-link">My Account</a>
+									<i class="topbar-arrow-icon"></i>
+									<div class="login_pop logined-login-pop">
+										<div class="information">
+											<ul>
+												<li><a href="/wishlist">My Wishlist</a></li>
+												<li><a href="/sales/order/history">My Orders</a></li>
+												<!--<li><a href="/ave40customer/coupons">My Coupons</a></li>-->
+												<!--<li><a href="?tracking_info">Tracking info</a></li>-->
+												<li><a href="/customer/account/logout" class="signIn">Logout</a></li>
+											</ul>
+										</div>
+									</div>
+								</li>
+								<?php endif; ?>
+
+								<li class="heder_help">
+									<div>
+										<span>Help</span>
+										<i class="topbar-arrow-icon"></i>
+										<div class="helpBox" style="z-index:10">
+											<ul>
+												<li><a rel="nofollow" href="/about-us.html">About AVE40</a></li>
+												<li><a rel="nofollow" href="http://archive.ave40.com/">Old site</a></li>
+
+											</ul>
+										</div>
+									</div>
+								</li>
+								<span class="line"></span>
+								<li>
+									<div>Languages</div>
+								</li>
+								<!--
+								<?php echo $this->getChildHtml('store_language'); ?>
+								-->
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div class="login_content">
+					<h5 class="logo">
+						<strong><?php echo $this->getLogoAlt() ?></strong>
+						<a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo">
+							<img src="<?= $this->getSkinUrl('images/media/logo.png') ?>" alt="<?php echo $this->getLogoAlt() ?>"/>
+						</a>
+					</h5>
+					<style>
+						a.simple-inquire-icon:hover {
+							color:white !important;
+						}
+					</style>
+					<div class="quick-access">
+						<div class="quick-access-left">
+
+							<?php echo $this->getChildHtml('topSearch') ?>
+							<?php echo $this->getChildHtml('searchTerm') ?>
+
+							<div class="inquire-service simple-inquire">
+								<a href="javascript:;" title="inquire now" class="simple-inquire-icon" ></a>
+							</div>
+
+						</div>
+
+						<?php echo $this->getChildHtml('top_cart') ?>
+
+					</div>
+					<div class="clear"></div>
+					<?php echo $this->getChildHtml('topContainer'); ?>
+				</div>
+
+				<div class="nav-column clearfix">
+
+
+					<div id="topnav" >
+
+						<ul>
+							<li class="top-link1">
+								<a href="/brands" ><span>BRANDS</span></a>
+								<div class="topnav-poplayer brands">
+									<div class="topnav-poplayer-main" style="padding: 10px 10px 10px 0px">
+										<ul class="topnav-main-product-list" >
+										<?php foreach(Mage::helper('ave40_brands')->getBrands()['brands_data'] as $brand): ?>
+											<li class="topnav-main-product-li">
+												<div class="topnav-main-title"><a style="font-weight:normal;" href="/<?php echo ltrim($brand->getUrlPath(), '/') ?>"><?php echo $brand->getName() ?></a></div>
+											</li>
+										<?php endforeach; ?>
+										</ul>
+									</div>
+								</div>
+							</li>
+
+							<?php //$categoryId = Mage::helper('ave40_api')->getCustomConfigValue('category_id/navigation'); ?>
+							<?php //$category = Mage::getModel('catalog/category')->load($categoryId) ?>
+							<?php //if($category->getId()): ?>
+							<?php foreach (Mage::helper('catalog/category')->getStoreCategories() as $categoryItem): ?>
+								<?php $categoryItem =  Mage::getModel('catalog/category')->load($categoryItem->getId()) ?>
+									<li class="top-link2" data-fill-parent="yes">
+									<a href="<?php echo $categoryItem->getUrlPath() ?>"><span><?php echo $categoryItem->getName() ?></span></a>
+									<div class="topnav-poplayer starterkits">
+									<div class="topnav-poplayer-head">
+										<ul data-fill-id="<?php echo ltrim($categoryItem->getUrlPath(), '/') ?>">
+											<li></li>
+										</ul>
+									</div>
+
+									<div class="topnav-poplayer-main">
+										<ul class="topnav-main-product-list">
+											<?php foreach ($categoryItem->getChildrenCategories() as $subCategory): ?>
+											<li class="topnav-main-product-li">
+												<div class="topnav-main-title"><?php echo $subCategory->getName() ?></div>
+												<ul class="topnav-main-sub-products">
+													<?php foreach ($subCategory->getChildrenCategories() as $threeCategory): ?>
+													<li>
+														<a href="<?php echo $threeCategory->getUrl() ?>">
+															<?php echo $this->escapeHtml($threeCategory->getName()) ?>
+														</a>
+													</li>
+													<?php endforeach; ?>
+												</ul>
+											</li>
+											<?php endforeach; ?>
+										</ul>
+									</div>
+								</div>
+								</li>
+							<?php endforeach; ?>
+
+							<?php echo Mage::app()->getLayout()->createBlock('cms/block')->setBlockId('new-navigation')->toHtml() ?>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<?php
+		$routeName = Mage::app()->getRequest()->getRouteName();
+		$identifier = Mage::getSingleton('cms/page')->getIdentifier();
+		?>
+		<?php /*if ($this->getIsHomePage() || ($routeName == 'cms' && $identifier == 'home') ):*/ ?><!--
+			<div class="show-menu-content">
+				<div class="show_menu"><?php /*echo $this->getChildHtml('topMenu') */ ?></div>
+			</div>
+		<?php /*else: */ ?>
+			<div class="show-menu-content">
+				<div class="hidden_menu"><?php /*echo $this->getChildHtml('topMenu') */ ?></div>
+			</div>
+		--><?php /*endif; */ ?>
+	</div>
+</div>
+<div id="header-placeholder-elm" style="width:0; height:0; magin:0;"></div>
+<?php
+echo Mage::app()->getLayout()->createBlock('core/template')->setTemplate('inquire/simple-form.phtml')->toHtml();
+?>
+<?php if (!$_COOKIE['18_jin_tip'] && !Mage::getStoreConfig('ave40_developer/show18notice/disabled')): ?>
+	<?php //if (true): ?>
+	<div class="ave-18notice">
+		<?php ob_start();
+		ob_flush(); ?>
+		<div class="ani-body">
+			<div class="ave40notice-tip">
+				<img src="<?= $this->getSkinUrl('images/homepage/ave18-tip.png') ?>" alt="">
+				<p><?php echo Mage::helper("Ave40_Translate")->__('The products on this website are intended for ADULTS only.') ?></p>
+				<p><?php echo Mage::helper("Ave40_Translate")->__('Please leave this page!') ?></p>
+				<span class="ave40-tip-close"><?php echo Mage::helper("Ave40_Translate")->__('CLOSE') ?></span>
+			</div>
+
+			<div class="ave-18notice-body">
+				<span class="ave18notice-btn ave-18notice-true"><?php echo Mage::helper("Ave40_Translate")->__('Yes') ?></span>
+				<span class="ave18notice-btn ave-18notice-flase"><?php echo Mage::helper("Ave40_Translate")->__('No') ?></span>
+				<img src="<?= $this->getSkinUrl('images/homepage/18notice-01.png') ?>" alt="">
+			</div>
+
+			<div class="ave-18notice-footer">
+				<img src="<?= $this->getSkinUrl('images/homepage/18notice-02.png') ?>" alt="">
+			</div>
+		</div>
+		<?php $obhtml = htmlspecialchars(ob_get_contents());
+		ob_end_clean();
+		echo $obhtml; ?>
+
+	</div>
+
+<?php endif; ?>
+

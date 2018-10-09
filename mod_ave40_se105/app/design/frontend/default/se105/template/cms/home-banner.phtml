@@ -1,0 +1,29 @@
+<div class="home-banner-main">
+	<div class="home-banner">
+		<div>
+			<a href=""><img src="<?= $this->getSkinUrl('images/topic/topic-1.png') ?>" alt=""> </a>
+		</div>
+		<div>
+			<a href=""> <img src="<?= $this->getSkinUrl('images/topic/topic-1.png') ?>" alt=""></a>
+		</div>
+		<div>
+			<a href=""> <img src="<?= $this->getSkinUrl('images/topic/topic-1.png') ?>" alt="" > </a>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+		$('.home-banner').bxSlider({
+			pause: 3000,
+			speed: 1000,
+			controls: false,
+			displaySlideQty:1,
+			moveSlideQty: 1,
+			auto: true,
+			autoHover: true
+		});
+
+	});
+</script>
+
+

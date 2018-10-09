@@ -1,0 +1,163 @@
+<div id="right-floor-wrap" class="rightFloorWrap" style="bottom:11px;z-index:10001;">
+	<div class="more_way">
+		<ul>
+			<li class="facebook">
+				<a href="javascript:;" title="">
+					<i class="icon-floor"></i>
+				</a>
+			</li>
+			<li class="ins">
+				<a href="javascript:;" title="">
+					<i class="icon-floor"></i>
+
+				</a>
+			</li>
+			<li class="twitter">
+				<a href="javascript:;" title="">
+					<i class="icon-floor"></i>
+				</a>
+			</li>
+			<li class="google">
+				<a href="javascript:;" title="">
+					<i class="icon-floor"></i>
+				</a>
+			</li>
+			<li class="v">
+				<a href="javascript:;" title="">
+					<i class="icon-floor"></i>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="floor_bottom" >
+		<ul>
+			<li class="floor-wholesale ">
+                <a href="javascript:;" class="floor-list inquireNow-popup-btn">
+                    <i class="floor-icon"></i>
+                    <span class="floor-text">Wholesale</span>
+                </a>
+                <!-- 询盘按钮提示 -->
+                <?php /*if (!$_COOKIE['simple-inquire-tip']): */?><!--
+                    <a href="javascript:;" class="simple-inquire-tip-close">
+                        <img class="simple-inquire-tip"
+                             src="<?/*= $this->getSkinUrl('images/homepage/simple-pop-tip.png') */?>"
+                             alt=""/>
+                    </a>
+
+                    <script type="text/javascript">
+                        ~function ($) {
+                            $(function () {
+
+                                var $floorWholesale = $('.floor-wholesale');
+                                var $inquire_tip_close = $('.simple-inquire-tip-close');
+
+
+                                $(window).resize(function () {
+                                    ave40.getOverlay($floorWholesale).css({
+                                        position: 'fixed',
+                                        left: 0,
+                                        zIndex: 10010,
+                                        top: 0,
+                                        width: jQuery('body').innerWidth(),
+                                        height: jQuery('body').innerHeight(),
+                                        cursor:'pointer'
+                                    });
+                                });
+
+                                ave40.getOverlay($floorWholesale).showOverlay();
+
+                                ave40.getOverlay($floorWholesale).css({
+                                    position: 'fixed',
+                                    left: 0,
+                                    zIndex: 10010,
+                                    top: 0,
+                                    width: jQuery('body').innerWidth(),
+                                    height: jQuery('body').innerHeight(),
+                                    cursor:'pointer'
+                                });
+
+                                $('.floor-wholesale .inquireNow-popup-btn').css({position: 'relative', zIndex: 10016});
+
+                                $inquire_tip_close.css({zIndex: 10015});
+
+                                $('.simple-inquire-tip').animateShow();
+                                console.log()
+
+                                $floorWholesale.click(function () {
+                                    ave40.setCookie('simple-inquire-tip', 1)
+                                    $('.simple-inquire-tip-close').remove();
+                                    ave40.getOverlay($floorWholesale).hideOverlay();
+                                    $('.floor-wholesale .inquireNow-popup-btn').css({zIndex: ''});
+
+                                    return false;
+                                });
+
+                                $('.floor_bottom .inquireNow-popup-btn').on('click',function () {
+                                    $floorWholesale.trigger('click');
+                                })
+                            })
+                        }(jQuery)
+
+
+                    </script>
+                --><?php /*endif; */?>
+			</li>
+
+
+			<li class="live-chat" >
+                <a href="javascript:;"  class="floor-list live-chat-btn" onclick="parent.LC_API.open_chat_window({source:'minimized'})">
+                    <i class="floor-icon"></i>
+                    <span class="floor-text">Chat Now</span>
+                </a>
+                <div class="live-chat-tipbox">
+                    <span><i style="font-size: 16px">Hi</i>, how can I help you?</span>
+                </div>
+            </li>
+			<li class="customer-feedback">
+                <a href="javascript:;"  class="floor-list feedback-submit">
+                    <i class="floor-icon"></i>
+                    <span class="floor-text">Feedback </span>
+                </a>
+            </li>
+            <li class="mb-wholesale inquireNow-popup-btn">
+                <a href="javascript:;"  class="floor-list">
+                    <i class="floor-icon"></i>
+                </a>
+            </li>
+			<li class="gotoTop" >
+                <a href="javascript:;" title="Top" class="floor-list goto-top">
+                    <i class="floor-icon"></i>
+                </a>
+            </li>
+		</ul>
+		<div class="feedback-popup esc-pop">
+			<div class="inquire-top" id="inquireNow-top">
+				<span><?= Mage::helper("Ave40_Translate")->__('User feedback') ?></span>
+				<span class="close-box"><i class="close"></i></span>
+			</div>
+			<div class="feedback-info">
+				<form class="input_form" id="feedback-form" success-msg="<?php echo Mage::helper("Ave40_Translate")->__('Thank you for your feedback, we will deal with as soon as possible') ?>">
+					<div class="info-name">
+						<span class="words"><?= Mage::helper("Ave40_Translate")->__('Name') ?>:</span>
+						<input type="text" name="name" required="required" >
+						<span class="asterisk">*</span>
+					</div>
+					<div class="info-email">
+						<span class="words"><?= Mage::helper("Ave40_Translate")->__('Email') ?>:</span>
+						<input type="email" name="email"  required="required" >
+						<span class="asterisk">*</span>
+					</div>
+					<div class="info-textarea">
+						<span class="words"><?= Mage::helper("Ave40_Translate")->__('Description') ?>:</span>
+						<textarea name="comment"  required="required" class="textarea"></textarea>
+					</div>
+					<button type="submit" class="feedback-btn submit-common"><?= Mage::helper("Ave40_Translate")->__('Submit') ?></button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

@@ -1,0 +1,342 @@
+<?php
+$orderInfo = $this->getOrderInfo();
+$paymentMethod = $orderInfo['paymentObj']['method'];
+?>
+<div class="payment">
+	<h3 class="pay-info-title"><span>Payment Method</span></h3>
+	<div class="payment-way cart-toggle-module" id="payment_partial">
+		<div id="payment-error" class="error"></div>
+		<fieldset>
+			<dl class="sp-methods" id="checkout-payment-method-load">
+				<div class="sp-methods-list paypal_express">
+					<dt>
+						<input <?php if($paymentMethod == "paypal_express") echo 'checked="checked"'; ?>  id="p_method_paypal_express" value="paypal_express" type="radio" name="payment[method]" title="PayPal Express Checkout" class="radio">
+						<label for="p_method_paypal_express">
+                            <img src="<?php echo $this->getSkinUrl('images/cart/paypal_w152_h41.png')?>" style="max-width: 100%"/>
+						</label>
+					</dt>
+					<dd>
+						<ul class="form-list" id="payment_form_paypal_express">
+							<li class="form-alt">You will be redirected to the PayPal website.</li>
+						</ul>
+					</dd>
+				</div>
+				
+				<div class="sp-methods-list payonlinecc_payment">
+					<dt>
+						<input <?php if($paymentMethod == "payonlinecc_payment") echo 'checked="checked"'; ?>  id="p_method_payonlinecc_payment" value="payonlinecc_payment" type="radio" name="payment[method]" title="Credit Card Payment Online" class="radio">
+						<label for="p_method_payonlinecc_payment"><img src="https://www.ave40.com/skin/frontend/default/default/images/payonlinecc/card.png"></label>
+					</dt>
+					<dd>
+						<div class="form-list">
+							<div class="payment-explain">
+								<ul id="payment_form_payonlinecc_payment">
+									<li class="cart-form-row">
+										<label for="payonlinecc_payment_cc_type">Credit Card Type</label>
+										<div class="input-box">
+											<select id="payonlinecc_payment_cc_type" name="payment[cc_type_sp]" title="Credit Card Type" class="card-input required-entry validate-cc-type-select" required>
+												<option value="">--Please Select--</option>
+												<option value="VI">Visa</option>
+												<option value="MC">MasterCard</option>
+												<option value="JCB">JCB</option>
+											</select>
+											<div for="payonlinecc_payment_cc_type" generated="true" class="mage-error">This is a required field.</div>
+										</div>
+									</li>
+									<li class="cart-form-row">
+										<label for="payonlinecc_payment_cc_number">Credit Card Number</label>
+										<div class="input-box">
+											<input type="text" id="payonlinecc_payment_cc_number" name="payment[cc_number_sp]" title="Credit Card Number" class="input-text validate-cc-number validate-cc-type card-input" value="" maxlength="16">
+											<div for="payonlinecc_payment_cc_number" generated="true" class="mage-error">Please enter a valid credit card number.</div>
+										</div>
+									</li>
+									<li class="cart-form-row">
+										<label for="payonlinecc_payment_expiration">Expiration Date</label>
+										<div class="input-box">
+											<div class="v-fix">
+												<select id="payonlinecc_payment_expiration" name="payment[cc_exp_month_sp]" class="card-input month validate-cc-exp required-entry">
+													<option value="" selected="selected">Month</option>
+													<option value="01">01 - January</option>
+													<option value="02">02 - February</option>
+													<option value="03">03 - March</option>
+													<option value="04">04 - April</option>
+													<option value="05">05 - May</option>
+													<option value="06">06 - June</option>
+													<option value="07">07 - July</option>
+													<option value="08">08 - August</option>
+													<option value="09">09 - September</option>
+													<option value="10">10 - October</option>
+													<option value="11">11 - November</option>
+													<option value="12">12 - December</option>
+												</select>
+												<div for="payonlinecc_payment_expiration" generated="true" class="mage-error">This is a required field.</div>
+											</div>
+											<div class="v-fix">
+												<select id="payonlinecc_payment_expiration_yr" name="payment[cc_exp_year_sp]" class="card-input year required-entry">
+													<option value="" selected="selected">Year</option>
+													<option value="2018">2018</option>
+													<option value="2019">2019</option>
+													<option value="2020">2020</option>
+													<option value="2021">2021</option>
+													<option value="2022">2022</option>
+													<option value="2023">2023</option>
+													<option value="2024">2024</option>
+													<option value="2025">2025</option>
+													<option value="2026">2026</option>
+													<option value="2027">2027</option>
+													<option value="2028">2028</option>
+												</select>
+												<div for="payonlinecc_payment_expiration_yr" generated="true" class="mage-error text-posi-left">This is a required field.</div>
+											</div>
+										</div>
+									</li>
+									<li class="payonlinecc_payment_cc_cid_box cart-form-row">
+										<label for="payonlinecc_payment_cc_cid">Cvv Number</label>
+										<a href="#" class="cvv-what-is-this mark-to-guide" title="What is this?">?</a>
+										<div class="input-box ">
+											<input type="text" title="Card Verification Number" class="card-input input-text cvv required-entry validate-cc-cvn" id="payonlinecc_payment_cc_cid" name="payment[cc_cid_sp]" value="" maxlength="3">
+											<div for="payonlinecc_payment_cc_cid" generated="true" class="mage-error">This is a required field.</div>
+										</div>
+									</li>
+									<li class="cart-form-row">
+										<div class="input-box ">
+											<input type="button" class="cart-button-sub payonlinecc_payment_submit_btn" value="submit">
+										</div>
+									</li>
+								</ul>
+								<div class="checkout-repay-close-btn ave40-common-close-style iconfont icon-remove"></div>
+							</div>
+
+						</div>
+					</dd>
+				</div>
+				<div class="sp-methods-list ave40_westernunion">
+					<dt>
+						<input id="p_method_ave40_westernunion" value="ave40_westernunion" type="radio" name="payment[method]" title="Western Union Payment" class="radio">
+						<label for="p_method_ave40_westernunion"><img src="https://www.ave40.com/skin/frontend/base/default/images/payment_westernunion.png" alt="Western Union Payment"></label>
+					</dt>
+					<dd>
+						<div class="form-list">
+							<div class="payment-explain">
+								<h3>Your payment request has been accepted.</h3>
+		    					<p>To complete your payment, wait for 24 hours and then visit <strong>Western Union</strong> website or money transfer outlet to make the transfer (<strong>in USD only</strong>). You may refer to the form sample here.</p>
+		    					<table class="pay-tables">
+		    						<tr>
+										<td>FIRST NAME</td>
+										<td>YAN</td>
+		    						</tr>
+		    						<tr>
+										<td>LAST NAME</td>
+										<td>CHEN</td>
+		    						</tr>
+		    						<tr>
+										<td>CITY</td>
+										<td>SHENZHEN</td>
+		    						</tr>
+		    						<tr>
+										<td>COUNTRY</td>
+										<td>CHINA</td>
+		    						</tr>
+		    					</table>
+		    					<p class="pay-fontred">Please offer your Payment Amount, Country, MTCN with Order Number to <a href="mailto:payment@ave40.com">payment@ave40.com</a> as soon as you complete the payment.</p>
+								<div class="checkout-repay-close-btn ave40-common-close-style iconfont icon-remove"></div>
+							</div>
+
+						</div>
+					</dd>
+				</div>
+				<div class="sp-methods-list banktransfer">
+					<dt>
+						<input id="p_method_banktransfer" value="banktransfer" type="radio" name="payment[method]" title="Bank Transfer Payment" class="radio">
+						<label for="p_method_banktransfer" style="text-indent: inherit;"></label>
+					</dt>
+					<dd>
+						<div class="form-list">
+							<div class="payment-explain">
+								<h3>Your payment request has been accepted.</h3>
+		    					<p>Please go to local banks to make the transfer (<strong>in USD only</strong>). After we receive the money, this payment will be finished.</p>
+		    					<table class="pay-tables">
+		    						<tr>
+										<td>BENEFICIARY NAME</td>
+										<td>AVENUE FORTY CO., LIMITED</td>
+		    						</tr>
+		    						<tr>
+										<td>BENEFICIARY BANK</td>
+										<td>HANG SENG BANK LIMITED</td>
+		    						</tr>
+		    						<tr>
+										<td>BENEFICIARY BANK ADDRESS</td>
+										<td>83 DES VOEUX ROAD CENTRAL, HONGKONG</td>
+		    						</tr>
+		    						<tr>
+										<td>SWIFT CODE</td>
+										<td>HASEHKHH</td>
+		    						</tr>
+		    						<tr>
+										<td>BENEFICIARY ACCOUNT NO</td>
+										<td>774-536403-883</td>
+		    						</tr>
+		    					</table>
+		    					<p class="pay-fontred">Please offer your payment record with order number to <a href="mailto:payment@ave40.com">payment@ave40.com</a> as soon as you complete the payment.</p>
+								<div class="checkout-repay-close-btn ave40-common-close-style iconfont icon-remove"></div>
+							</div>
+						</div>
+					</dd>
+				</div>
+			</dl>
+		</fieldset>
+	</div>
+</div>
+
+<script type="text/javascript">
+	~(function($){
+		$(document).ready(function(){
+
+            /**
+             *  选中的支付方式添加class
+             */
+            var checkedInput = $('#payment_partial').find("input[name='payment[method]']:checked");
+            if (checkedInput.length > 0) {
+                $(checkedInput).closest('.sp-methods-list').addClass('checked');
+            }
+
+            $('#payment_partial').on('click', 'input[name="payment[method]"]', function () {
+                $(this).closest('.sp-methods-list').addClass('checked').siblings('.sp-methods-list').removeClass('checked');
+            });
+
+			$(":radio").click(function() {
+				var currencyCode = "<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>";
+
+				if ($(this).is(':checked')) {
+					var popupElem = $(this).parent().next().find('.payment-explain');
+					if (popupElem.length > 0){
+                        popupElem.showAve40PopupBox();
+                    }
+				}
+				var id = $(this).attr("id");
+				var orderid = $('#incrementId').val();
+				$.ajax({
+					type : 'POST',
+					url : '/ave40checkout/index/additionalFees',
+					data : {id:id,orderid:orderid},
+					dataType : 'json',
+					beforeSend : function (XMLHttpRequest) {
+						ave40.showLoading();
+					},
+					success : function(data) {
+						var amount = 0;
+						var grandtotal = parseFloat($("#total_partial").attr("_value"));
+						var html = '';
+						for(var i=0;i<data.length;i++) {
+							console.log(data[i]['price']);
+							html += '<dl class="sp-methods summary-detail multifees-details-view" style="display:none">';
+							if(data[i]['type'] == 'percent') {
+								amount += grandtotal * (parseFloat(data[i]['price'])/100);
+								data[i]['title'] += '('+parseFloat(data[i]['price'])+'%)';
+								data[i]['price'] = grandtotal * (parseFloat(data[i]['price'])/100);
+							}else if(data[i]['type'] == 'fixed') {
+								amount += parseFloat(data[i]['price']);
+								data[i]['title'] = data[i]['title'];
+								data[i]['price'] = parseFloat(data[i]['price']);
+							}
+							html += '<dt>'+data[i]['title']+'</dt>';
+							html += '<dd class="pay-price-info-right"><ul><li class="clearfix"><span class="price_value" style="float:right;">';
+							html += currencyCode+data[i]['price'].toFixed(2)+'</span></li></ul></dd></dl>';
+							
+						}
+						$('.summary-detail').html('');
+						$(".additional-fees").removeClass("show-details");
+						var _grandtotal = grandtotal + amount;
+						$(".paypalfee .value").html(currencyCode+amount.toFixed(2));
+						$("#total_partial .price").html(currencyCode+_grandtotal.toFixed(2));
+						if (id == "p_method_paypal_express") {
+							$('.additional-fees').append(html);
+							$(".paypalfee").show();
+							$("#checkouturl").val("/ave40checkout/paypal/start");
+							$("#checkouttype").val("Paypal");
+							$("#lbonepage-place-order-btn").attr("disabled", false);
+							$("#lbonepage-place-order-btn").removeClass("disable-button");
+						}
+						else if(id == "p_method_payonlinecc_payment") {
+							$('.additional-fees').append(html);
+							$(".paypalfee").show();
+							$("#checkouturl").val("/ave40checkout/Fht/pay");
+							$("#checkouttype").val("Fht");
+							$("#lbonepage-place-order-btn").attr("disabled", false);
+							$("#lbonepage-place-order-btn").removeClass("disable-button");
+						}
+						else if(id == "p_method_banktransfer") {
+							$('.additional-fees').append(html);
+							$(".paypalfee").show();
+							$("#checkouturl").val("");
+							$("#checkouttype").val("");
+							$("#lbonepage-place-order-btn").attr("disabled", true);
+							$("#lbonepage-place-order-btn").addClass("disable-button");
+						}
+						else {
+							$("#total_partial .price").html(currencyCode+grandtotal.toFixed(2));
+							$(".paypalfee").hide();
+							$("#checkouturl").val("");
+							$("#checkouttype").val("");
+							$("#lbonepage-place-order-btn").attr("disabled", true);
+							$("#lbonepage-place-order-btn").addClass("disable-button");
+						}
+						ave40.closeLoading();
+					}
+				});
+			});
+			
+			$('.checkout-repay-close-btn').click(function(){
+				$(this).closest('.payment-explain').closeAve40PopupBox();
+			});
+			
+			$('.cart-button-sub').click(function(){
+				var _cvv = $("#payonlinecc_payment_cc_cid").val();
+				var _cardNo = $("#payonlinecc_payment_cc_number").val();
+				var _expMonth = $("#payonlinecc_payment_expiration").val();
+				var _expYear = $("#payonlinecc_payment_expiration_yr").val();
+				
+				if(_cvv != "" && _cardNo != "" && _expMonth != "" && _expYear != "") {
+                    $(this).closest('.payment-explain').closeAve40PopupBox();
+				}
+
+			});
+			
+			$("#payment_form_payonlinecc_payment li .card-input").change(function(){
+				 var val = $(this).val();
+				 var id = $(this).attr("id");
+				 if(id == "payonlinecc_payment_cc_number" && val != "") {
+					  var reNum=/^\d*$/;
+					  if(!reNum.test(val)) {
+						  $(this).parent().find(".mage-error").html("Please enter a valid credit card number..");
+						  $(this).parent().find(".mage-error").show();
+					  }
+					  else {
+						  $(this).parent().find(".mage-error").hide();
+					  }
+				 }
+				 if(id == "payonlinecc_payment_cc_cid" && val != "") {
+				 	 var reNum=/^\d*$/;
+				 	 if(!reNum.test(val) || val.length != 3) {
+						 $(this).parent().find(".mage-error").html("Please enter a correct number.");
+						 $(this).parent().find(".mage-error").show();
+					 }
+					 else {
+						 $(this).parent().find(".mage-error").hide();
+					 }
+				 }
+				 else if(val != "") {
+					 $(this).parent().find(".mage-error").hide();
+				 }
+				 else {
+					 $(this).parent().find(".mage-error").html("This is a required field.");
+					 $(this).parent().find(".mage-error").show();
+				 }
+			});
+		});
+		
+		$("#p_method_paypal_express").click(function() {
+		
+		})
+	})(jQuery)
+</script>

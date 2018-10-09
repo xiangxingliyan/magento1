@@ -1,0 +1,63 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright   Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_shipment=$this->getShipment(); ?>
+<?php $_order=$this->getOrder(); ?>
+<?php $_queryurl=$this->getQueryurl(); ?>
+
+<?php
+   $shipping_type = array(0=>"EU Packet Shipping",1=>"HK DHL Express");
+?>
+
+
+
+<table cellspacing="0" cellpadding="0" border="0" width="650" style="border:none;margin-top: 20px" >
+    <thead>
+        <tr>
+            <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><?php echo $this->__('Shipped By') ?></th>
+            <th align="center" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><?php echo $this->__('Tracking Number') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php if ($_shipment && $_order && $_shipment->getAllTracks()): ?>
+    <tbody>
+    <?php $i=0; foreach ($_shipment->getAllTracks() as $_item): $i++ ?>
+        <tr>
+            <td align="left" valign="top" style="padding:3px 9px"><?php echo ($this->escapeHtml($_item->getTitle()) == "八达通") ? $shipping_type[0] : $shipping_type[1]; ?></td>
+            <td align="center" valign="top" style="color:#038fc7;padding:3px 9px"><a href="https://t.17track.net/en/#nums=<?php echo $_item->getNumber() ?>"><?php echo $this->escapeHtml($_item->getNumber()) ?></a></td>
+        </tr>
+    <?php endforeach ?>
+    </tbody>
+    <?php else: ?>
+        <tbody>
+            <tr>
+                <td></td>
+                <td align="center" valign="top" style="padding:3px 9px">No tracking number</td>
+            </tr>
+        </tbody>
+    <?php endif; ?>
+</table>
+

@@ -1,0 +1,266 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<layout version="0.1.0">
+<!--
+Default layout, loads most of the pages
+-->
+
+    <default translate="label" module="page">
+        <label>All Pages</label>
+        <block type="page/html" name="root" output="toHtml" template="page/2columns-left.phtml">
+
+            <block type="page/html_head" name="head" as="head">
+                <block type="ave40_widget/headx" name="headx" />
+			    <action method="addItem"><type>skin_js</type><name>js/jquery-1.7.2.min.js</name></action>
+                <action method="addItem"><type>skin_js</type><name>js/chosen.jquery.min.js</name></action>
+                <action method="addItem"><type>skin_js</type><name>js/jquery.bxslider.min.js</name></action>
+                <action method="addItem"><type>skin_js</type><name>js/mobile/swiper.jquery.min.js</name></action>
+
+                <action method="addItem"><type>skin_js</type><name>js/jquery-ui.min.js</name></action>
+                <action method="addItem"><type>skin_js</type><name>onestepcheckout/jquery/jquery.validate.js</name></action>
+                <action method="addItem"><type>skin_js</type><name>js/jquery.mCustomScrollbar.concat.min.js</name></action>
+
+                <action method="addItem"><type>skin_js</type><name>js/common.js</name></action>
+
+			    <action method="addItem"><type>skin_js</type><name>js/process-compatibility.min.js</name></action>
+				<action method="addItem"><type>skin_js</type><name>js/jscript.min.js</name></action>
+				<action method="addItem"><type>skin_js</type><name>js/extra_js.min.js</name></action>
+				<action method="addItem"><type>skin_js</type><name>js/carousel.min.js</name></action>
+				<action method="addItem"><type>skin_js</type><name>js/stair.min.js</name></action>
+				<action method="addItem"><type>skin_js</type><name>js/jquery.jqzoom.min.js</name></action>
+				<action method="addItem"><type>skin_js</type><name>js/jquery.flexslider-min.js</name></action>
+                <action method="addItem"><type>skin_js</type><name>js/jquery.easydrag.min.js</name></action>
+
+                <action method="addJs"><script>se105_core/prototype/prototype.min.js</script></action>
+                <action method="addJs"><script>se105_core/lib/ccard.min.js</script></action>
+                <action method="addJs"><script>se105_core/prototype/validation.min.js</script></action>
+                <action method="addJs"><script>se105_core/scriptaculous/builder.min.js</script></action>
+                <action method="addJs"><script>se105_core/scriptaculous/effects.min.js</script></action>
+                <!-- <action method="addJs"><script>scriptaculous/dragdrop.js</script></action> -->
+                <action method="addJs"><script>se105_core/scriptaculous/controls.min.js</script></action>
+                <!-- <action method="addJs"><script>scriptaculous/slider.js</script></action> -->
+                <action method="addJs"><script>se105_core/varien/js.min.js</script></action>
+                <action method="addJs"><script>se105_core/varien/form.min.js</script></action>
+                <!-- <action method="addJs"><script>varien/menu.js</script></action> -->
+                <action method="addJs"><script>se105_core/mage/translate.min.js</script></action>
+                <action method="addJs"><script>se105_core/mage/cookies.min.js</script></action>
+
+                <action method="addItem"><type>skin_js</type><name>js/home/header.js</name></action>
+                <action method="addItem"><type>skin_js</type><name>js/footer/footer.js</name></action>
+                <action method="addItem"><type>skin_js</type><name>js/inquire/inquire.js</name></action>
+
+                <block type="page/js_cookie" name="js_cookies" template="page/js/cookie.phtml"/>
+
+                <!--<action method="addCss"><stylesheet>css/styles.min.css</stylesheet></action>-->
+                <action method="addCss"><stylesheet>onestepcheckout/css/jquery-ui.min.css</stylesheet></action>
+                <action method="addCss"><stylesheet>css/styles.css</stylesheet></action>
+                <action method="addItem"><type>skin_css</type><name>css/ave40.css</name></action>
+                <!--<action method="addItem"><type>skin_css</type><name>css/ave40.min.css</name></action>-->
+                <action method="addItem"><type>skin_css</type><name>css/mobile/swiper.min.css</name></action>
+                <action method="addItem"><type>skin_css</type><name>css/jquery.bxslider.min.css</name></action>
+
+                <action method="addCss"><stylesheet>css/flexslider.min.css</stylesheet></action>
+                <!--<action method="addCss"><stylesheet>css/topic/topic.min.css</stylesheet></action>-->
+				<action method="addCss"><stylesheet>css/topic/topic.css</stylesheet></action>
+
+                <action method="addItem"><type>skin_css</type><name>css/styles-ie.min.css</name><params/><if>lt IE 8</if></action>
+                <action method="addCss"><stylesheet>css/widgets.css</stylesheet></action>
+                <action method="addCss"><stylesheet>css/print.min.css</stylesheet><params>media="print"</params></action>
+
+                <action method="addItem"><type>skin_css</type><name>css/chosen.min.css</name></action>
+                <action method="addItem"><type>skin_css</type><name>css/jquery.slider.min.css</name></action>
+                <action method="addItem"><type>skin_css</type><name>css/jquery.mCustomScrollbar.min.css</name></action>
+                <action method="addItem"><type>skin_css</type><name>css/animate.min.css</name></action>
+                <!--<action method="addItem"><type>skin_css</type><name>bootstrap/css/bootstrap.min.css</name></action>-->
+
+                <action method="addCss"><stylesheet>css/mirasvit/searchautocomplete/amazon.css</stylesheet></action>
+                <action method="addCss"><stylesheet>onestepcheckout/css/onestepcheckout.css</stylesheet></action>
+
+                <action method="addItem"><type>skin_css</type><name>css/v2/common.css</name></action>
+                <!--<action method="addItem"><type>skin_css</type><name>css/mobile/mobile.min.css</name></action>-->
+                <action method="addItem"><type>skin_css</type><name>css/mobile/mobile.css</name></action>
+                <action method="addItem"><type>skin_css</type><name>css/phone.css</name></action>
+                <!--<action method="addItem"><type>skin_css</type><name>css/phone.min.css</name></action>-->
+
+
+                <action method="addItem"><type>js</type><name>se105_core/lib/ds-sleight.min.js</name><params/><if>lt IE 7</if></action>
+                <action method="addItem"><type>skin_js</type><name>js/ie6.min.js</name><params/><if>lt IE 7</if></action>
+                <!--<block type="ave40_base/message" name="checkReadedMessage" output="checkRead" />-->
+            </block>
+
+            <block type="core/text_list" name="after_body_start" as="after_body_start" translate="label">
+                <label>Page Top</label>
+            </block>
+
+            <block type="page/html_notices" name="global_notices" as="global_notices" template="page/html/notices.phtml" />
+
+            <block type="page/html_header" name="top_ad" >
+                <action method="setBlockId"><block_id>top_ad</block_id></action>
+            </block>
+
+            <block type="page/html_header" name="header" as="header">
+                <block type="core/template" name="jstranslate" template="translate/jstranslate.phtml" />
+                <block type="page/template_links" name="top.links" as="topLinks"/>
+                <block type="page/switch" name="store_language" as="store_language" template="page/switch/languages.phtml"/>
+				<block type="directory/currency" name="top_currency"  template="directory/currency.phtml"/>
+                <block type="customer/form_login" name="mini_login" template="customer/form/mini.login.phtml" />
+				<block type="core/text_list" name="top.menu" as="topMenu" translate="label">
+                    <label>Navigation Bar</label>
+                </block>
+                <block type="page/html_wrapper" name="top.container" as="topContainer" translate="label">
+                    <label>Page Header</label>
+                    <action method="setElementClass"><value>top-container</value></action>
+                </block>
+            </block>
+
+            <block type="inquire/captcha" name="inquire-captcha" template="inquire/captcha.phtml">
+                <reference name="head">
+                    <action method="addJs"><file>se105_core/mage/captcha.min.js</file></action>
+                </reference>
+                <action method="setFormId"><formId>inquire</formId></action>
+                <action method="setImgWidth"><width>100</width></action>
+                <action method="setImgHeight"><width>20</width></action>
+            </block>
+
+            <block type="page/html_breadcrumbs" name="breadcrumbs" as="breadcrumbs"/>
+
+            <block type="core/text_list" name="left" as="left" translate="label">
+                <label>Left Column</label>
+            </block>
+
+            <block type="core/messages" name="global_messages" as="global_messages"/>
+            <block type="core/messages" name="messages" as="messages"/>
+
+            <block type="core/text_list" name="content" as="content" translate="label">
+                <label>Main Content Area</label>
+                <block type="core/template" name="footer.share"  as="scroll_share" template="page/html/scroll_share.phtml"/>
+
+            </block>
+
+            <block type="core/text_list" name="right" as="right" translate="label">
+                <label>Right Column</label>
+            </block>
+
+            <block type="page/html_footer" name="footer" as="footer" template="page/html/footer.phtml">
+                <action method="setCacheLifetime">null</action>
+                <block type="page/html_wrapper" name="bottom.container" as="bottomContainer" translate="label">
+                    <label>Page Footer</label>
+                    <action method="setElementClass"><value>bottom-container</value></action>
+                </block>
+                <block type="page/switch" name="store_switcher" as="store_switcher" template="page/switch/stores.phtml"/>
+                <block type="page/template_links" name="footer_links" as="footer_links" template="page/template/links.phtml"/>
+                <block type="newsletter/subscribe" name="footer.subscribe" as="subscribe" template="cms/subscribe.phtml"/>
+                <block type="core/template" name="footer.simple" as="simple_footer" template="page/html/simple_footer.phtml"/>
+            </block>
+			<block type="core/text_list" name="before_footer" as="before_footer" translate="label">
+                <label>Before Footer</label>
+			</block>
+            <block type="core/text_list" name="before_body_end" as="before_body_end" translate="label">
+                <label>Page Bottom</label>
+            </block>
+        </block>
+
+        <block type="core/profiler" output="toHtml" name="core_profiler"/>
+    </default>
+
+    <print translate="label" module="page">
+        <label>All Pages (Print Version)</label>
+        <!-- Mage_Page -->
+        <block type="page/html" name="root" output="toHtml" template="page/print.phtml">
+
+            <block type="page/html_head" name="head" as="head">
+                <action method="addJs"><script>se105_core/prototype/prototype.min.js</script></action>
+                <action method="addJs"><script>se105_core/mage/translate.min.js</script></action>
+                <action method="addJs"><script>se105_core/lib/ccard.min.js</script></action>
+                <action method="addJs"><script>se105_core/prototype/validation.min.js</script></action>
+                <action method="addJs"><script>se105_core/varien/js.min.js</script></action>
+
+                <action method="addCss"><stylesheet>css/styles.min.css</stylesheet></action>
+                <action method="addItem"><type>skin_css</type><name>css/styles-ie.min.css</name><params/><if>lt IE 8</if></action>
+                <action method="addCss"><stylesheet>css/widgets.min.css</stylesheet></action>
+                <action method="addCss"><stylesheet>css/print.min.css</stylesheet><params>media="print"</params></action>
+
+                <action method="addItem"><type>js</type><name>se105_core/lib/ds-sleight.min.js</name><params/><if>lt IE 7</if></action>
+                <action method="addItem"><type>skin_js</type><name>js/ie6.js</name><params/><if>lt IE 7</if></action>
+
+            </block>
+
+            <block type="core/text_list" name="content" as="content" translate="label">
+                <label>Main Content Area</label>
+
+            </block>
+
+        </block>
+    </print>
+
+     <!-- Custom page layout handles -->
+    <page_empty translate="label">
+        <label>All Empty Layout Pages</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/empty.phtml</template></action>
+            <!-- Mark root page block that template is applied -->
+            <action method="setIsHandle"><applied>1</applied></action>
+        </reference>
+    </page_empty>
+
+    <page_one_column translate="label">
+        <label>All One-Column Layout Pages</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+            <!-- Mark root page block that template is applied -->
+            <action method="setIsHandle"><applied>1</applied></action>
+        </reference>
+    </page_one_column>
+
+    <page_two_columns_left translate="label">
+        <label>All Two-Column Layout Pages (Left Column)</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+            <!-- Mark root page block that template is applied -->
+            <action method="setIsHandle"><applied>1</applied></action>
+        </reference>
+    </page_two_columns_left>
+
+    <page_two_columns_right translate="label">
+        <label>All Two-Column Layout Pages (Right Column)</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+            <!-- Mark root page block that template is applied -->
+            <action method="setIsHandle"><applied>1</applied></action>
+        </reference>
+    </page_two_columns_right>
+
+    <page_three_columns translate="label">
+        <label>All Three-Column Layout Pages</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/3columns.phtml</template></action>
+            <!-- Mark root page block that template is applied -->
+            <action method="setIsHandle"><applied>1</applied></action>
+        </reference>
+    </page_three_columns>
+</layout>

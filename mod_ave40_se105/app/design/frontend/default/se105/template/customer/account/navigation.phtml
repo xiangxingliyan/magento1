@@ -1,0 +1,143 @@
+<?php
+/**
+ * @var Mage_Customer_Block_Account_Navigation $this
+ */
+
+/**
+ * @param null $name
+ * @param string $class
+ * @return string
+ */
+
+/* @var Mobile_Detect $deviceDetector */
+$deviceDetector = Mage::helper('ave40_widget')->getDeviceDetector();
+
+
+function checkOnClass($name = null, $class = 'on')
+{
+    if (!$name) {
+        return '';
+    }
+
+    $name = strtolower(preg_replace('#[/\\\\]+#', '_', trim($name, '/\\')));
+    $pathInfo = Mage::app()->getRequest()->getOriginalPathInfo();
+    $pathInfo = strtolower(preg_replace('#[/\\\\]+#', '/', trim($pathInfo, '/\\')));
+    $pathInfoAry = explode('/', $pathInfo, 4);
+    $pathInfoAry = array_filter($pathInfoAry);
+    array_splice($pathInfoAry,3);
+    $info = preg_replace('#(_index)+$#', '', implode('_', $pathInfoAry));
+    return in_array($name, [$info, $info . '_index', $info . '_index_index']) ? $class : '';
+}
+$points = Mage::getModel('customer/session')->getCustomer()->getData('points');
+$points = $points ? $points : 0;
+$rand = Mage::getModel('customer/session')->getData('avatar_rand');
+?>
+<style>
+	/*个人中心页公共样式调整*/
+	.col-main{
+		width: 1000px;
+	}
+
+    .col-left{
+        width: 180px;
+        margin-right: 20px;
+        position: absolute;
+        height: 100%;
+    }
+
+    .main{
+        position: relative;
+    }
+
+    @media screen and (max-width: 1252px) {
+        .col-main{
+            width: calc(100% - 200px);
+        }
+    }
+
+    @media screen and (max-width: 1023px) {
+        .col-main{
+            width: 100%;
+        }
+    }
+</style>
+
+<!-- moblie  -->
+<?php if(!Mage::app()->getRequest()->getParam('nodt') && $deviceDetector->isMobile() ): ?>
+    <style>
+        .phone-wid{
+            display: block;
+        }
+
+    </style>
+
+<?php endif; ?>
+
+
+<script>
+	//禁止头部固定
+	ave40.params.control.disableTopFloatMenuBar = true;
+</script>
+
+
+<div class="personal-aside phone-wid">
+	<input type="hidden" id="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+	<div class="user-info">
+		<div class="user-head-upload" >
+			<div class="user-head-img ">
+				<img src="<?php echo Ave40_Api_Helper_FilesUpload::getCustomerAvatar() . "?$rand" ?>"
+					 alt="">
+
+				<?php if (!empty(Mage::getModel('customer/session')->getCustomer()->getPhone())): ?>
+				<i class="certifie-icon icon" title="Verified Member"></i>
+				<?php endif; ?>
+			</div>
+		</div>
+
+		<div class="user-name">
+			<span class="user-firstname"><?php echo Mage::getSingleton('customer/session')->getCustomer()->getFirstname() ?></span>
+			<span class="user-lastname"><?php echo Mage::getSingleton('customer/session')->getCustomer()->getLastname() ?></span>
+		</div>
+		<div class="myPoints">
+			<span><?php echo Mage::helper("Ave40_Translate")->__(Mage::getModel('customer/group')->load(
+						Mage::getSingleton('customer/session')->getCustomer()->getGroupId()
+					)->getCustomerGroupCode()) ?></span>
+		</div>
+	</div>
+	<div class="aside-tab">
+	    <div class="hrxian"></div>
+		<ul>
+            <li class="account_current_aside">
+                <a class="<?php echo checkOnClass('customer/account') ?>"
+                   href="<?php echo $this->getUrl('customer/account/index/nodt/1') ?>"><img alt="Account" src="/skin/frontend/default/se105/images/personal/phone-gr.png" title="Account" /><?php echo Mage::helper("Ave40_Translate")->__('Account') ?><div class="right-pic person-btn right"></div></a>
+            </li>
+            <li class="order_current_aside">
+                <a class="<?php echo checkOnClass('sales/order/history') ?>"
+                   href="<?php echo $this->getUrl('sales/order/history') ?>"><img alt="Orders" src="/skin/frontend/default/se105/images/personal/phone-zx.png" title="Orders" /><?php echo Mage::helper("Ave40_Translate")->__('Orders') ?><div class="right-pic person-btn right"></div></a>
+            </li>
+            <li class="wishlist_current_aside">
+                <a class="<?php echo checkOnClass('wishlist') ?>"
+                   href="<?php echo $this->getUrl('wishlist') ?>"><img alt="Wishlist" src="/skin/frontend/default/se105/images/personal/phone-wish.png" title="Wishlist" /><?php echo Mage::helper("Ave40_Translate")->__('Wishlist') ?><div class="right-pic person-btn right"></div></a>
+            </li>
+
+			<!--
+			<li>
+				<a class="<?php /*echo checkOnClass('ave40customer/coupons') */?>"
+				   href="<?php /*echo $this->getUrl('ave40customer/coupons') */?>"><?php /*echo Mage::helper("Ave40_Translate")->__('Coupons') */?></a>
+			</li>
+			-->
+			<li class="review_current_aside">
+				<a class="<?php echo checkOnClass('review/customer') ?>"
+				   href="<?php echo $this->getUrl('review/customer') ?>"><img alt="Reviews" src="/skin/frontend/default/se105/images/personal/phone-zixun.png" title="Reviews" /><?php echo Mage::helper("Ave40_Translate")->__('Reviews') ?><div class="right-pic person-btn right"></div></a>
+			</li>
+			<a alt="Logout" href="/customer/account/logout" class="mobile-logout-btton" title="Logout"><input type="button" value="Logout" class="logout-btton"></a>
+			<!--
+			<li>
+				<a class="<?php /*echo checkOnClass('ave40customer/points') */?>"
+				   href="<?php /*echo $this->getUrl('ave40customer/points') */?>"><?php /*echo Mage::helper("Ave40_Translate")->__('Reward Points') */?></a>
+			</li>
+			-->
+		</ul>
+	</div>
+</div>
+

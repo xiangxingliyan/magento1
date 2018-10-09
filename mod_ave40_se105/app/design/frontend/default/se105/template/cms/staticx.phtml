@@ -1,0 +1,20 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2017-9-19
+ * Time: 下午 05:59
+ */
+/* @var $cmsblock Mage_Cms_Block_Block  */
+$cmsblock = Mage::app()->getLayout()->createBlock('cms/block');
+
+$cmsblock->setData('block_id', $this->getData('block_id'));
+$cmsblock->setData('cache_lifetime', $this->getData('cache_lifetime'));
+$cmsblock->setData('cache_key', $this->getData('cache_key'));
+$cmsblock->setData('cache_tags', $this->getData('cache_tags'));
+
+if($this->getNoCache()) {
+    $cmsblock->setCacheLifetime(null);
+}
+
+echo $cmsblock->toHtml();

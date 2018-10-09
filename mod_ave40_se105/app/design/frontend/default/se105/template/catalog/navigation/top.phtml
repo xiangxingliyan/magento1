@@ -1,0 +1,31 @@
+<?php $_categories = $this->getStoreCategories() ?>
+<?php if(count($_categories)): ?>
+<div class="nav-container">
+	<div id="sidenav">
+		<div id="sidenav_header">
+			<span id="sidenav-title" >CATEGORIES</span>
+		</div>
+		<div id="custommenu" class="force">
+			<?php foreach ($_categories as $_category): ?>
+				<?=$this->drawCustomMenuItem($_category) ?>
+			<?php endforeach ?>
+			<div class ="clearBoth"></div>
+		</div>
+	</div>
+	<div id="topnav">
+		<?=$this->getLayout()->createBlock('cms/block')->setBlockId('top-nav')->toHtml() ?>
+	</div>
+</div>
+<script type="text/javascript">
+	var CUSTOMMENU_POPUP_WIDTH = <?=(int)Mage::getStoreConfig('custom_menu/popup/width')?>;
+	var CUSTOMMENU_POPUP_TOP_OFFSET = <?=(int)Mage::getStoreConfig('custom_menu/popup/top_offset')?>;
+	var CUSTOMMENU_POPUP_RIGHT_OFFSET_MIN = <?=(int)Mage::getStoreConfig('custom_menu/popup/right_offset_min')?>;
+
+	jQuery('#sidenav').hover(function() {
+		jQuery('#custommenu').addClass('nav-hover');
+	}, function() {
+		jQuery('#custommenu').removeClass('nav-hover');
+	});
+
+</script>
+<?php endif ?>

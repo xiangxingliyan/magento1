@@ -1,0 +1,49 @@
+<?php if (($_products = $this->getProductCollection()) && $count = $_products->getSize()): ?>
+	<?php $products = $_products->getItems() ?>
+
+	<?php if ($count > 0): ?>
+	<?php $product = current($products) ?>
+	<div class="topic-first-column" product_id="<?=$product->getId()?>">
+		<a href="<?=$product->getProductUrl()?>">
+
+			<img src="/media/wysiwyg/topic/topic-1.png" alt="<?=$product->getName()?>"
+				 style="width: 100%">
+		</a>
+		<div class="addthis_share">
+			<span class="topic-share-now spec-buy-now-btn  addthis_share_button" data-service="facebook"
+				  data-url="<?php echo $this->getRequest()->getScheme() . '://' . $this->getRequest()->getHttpHost() . '/' . $this->getRequest()->getRequestUri() ?>" title="share now">SHARE NOW</span>
+		</div>
+	</div>
+	<?php endif ?>
+
+	<?php if ($count > 1): ?>
+	<?php $product = next($products) ?>
+	<div class="topic-second-column" product_id="<?=$product->getId()?>">
+			<img src="/media/wysiwyg/topic/topic-2.png" alt="<?=$product->getName()?>"
+				 style="width: 100%">
+		<a href="<?=$product->getProductUrl()?>" class="spec-buy-now-btn red-buy-now-btn" title="buy now">BUY NOW</a>
+	</div>
+	<?php endif ?>
+
+	<?php if ($count > 3): ?>
+	<div class="topic-third-column">
+		<div class="topic-column-body topic-third-column-body clearfix">
+			<?php $product = next($products) ?>
+			<div class="topic-third-column-left" product_id="<?=$product->getId()?>">
+				<img src="/media/wysiwyg/topic/topic-3.png" alt="<?=$product->getName()?>"
+					 style="width: 100%">
+				<a href="<?=$product->getProductUrl()?>" class="spec-buy-now-btn yellow-buy-now-btn" title="buy now">BUY NOW</a>
+			</div>
+			<?php $product = next($products) ?>
+			<div class="topic-third-column-right" product_id="<?=$product->getId()?>">
+				<img src="/media/wysiwyg/topic/topic-4.png" alt="<?=$product->getName()?>"
+					 style="width: 100%">
+				<a href="<?=$product->getProductUrl()?>" class="spec-buy-now-btn yellow-buy-now-btn" title="buy now">BUY NOW</a>
+			</div>
+		</div>
+	</div>
+	<?php endif ?>
+
+<?php endif ?>
+
+

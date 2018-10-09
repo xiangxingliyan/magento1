@@ -1,0 +1,238 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+$_order = $this->getOrder();
+$productItems = $_order->getAllVisibleItems();
+$currency = Mage::app()->getLocale()->currency($_order->getCurrentCurrencyCode())->getSymbol();
+?>
+
+<div class=" ave40-cart-table">
+    <div style="overflow: auto">
+		<table id="my-orders-table" class="data-table cart-table ave40-cart-table-list">
+			<thead>
+			<tr>
+				<th width="10%" rowspan="<?php echo $mergedCells; ?>">Item</th>
+				<th rowspan="<?php echo $mergedCells; ?>"><span class="nobr"></span></th>
+				<th class="a-center" colspan="<?php echo $mergedCells; ?>"><span
+							class="nobr"><?php echo Mage::helper("Ave40_Translate")->__('Unit Price') ?></span></th>
+				<th rowspan="<?php echo $mergedCells; ?>"
+					class="a-center"><?php echo Mage::helper("Ave40_Translate")->__('Qty') ?></th>
+				<th class="a-center"
+					colspan="<?php echo $mergedCells; ?>"><?php echo Mage::helper("Ave40_Translate")->__('Subtotal') ?></th>
+			</tr>
+            <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+				<tr>
+					<th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+					<th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+					<th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+					<th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+				</tr>
+            <?php endif; ?>
+			</thead>
+			<tbody>
+
+            <?php foreach ($productItems as $product): ?>
+                <?php
+                $productName = $this->stripTags($product->getName());
+                $productAmount = intval($product->getData('qty_ordered'));
+                $productPrice = $product->getFinalPrice() ? $product->getFinalPrice() : $product->getPrice();
+                $optionsResult = [];
+                if ($options = $product->getProductOptions()) {
+                    if (isset($options['options'])) {
+                        $optionsResult = array_merge($optionsResult, $options['options']);
+                    }
+                    if (isset($options['additional_options'])) {
+                        $optionsResult = array_merge($optionsResult, $options['additional_options']);
+                    }
+                    if (isset($options['attributes_info'])) {
+                        $optionsResult = array_merge($optionsResult, $options['attributes_info']);
+                    }
+                }
+
+                $fullproduct = Mage::getModel('catalog/product')->load($product->getProductId());
+                $productImageUrl = $this->helper('catalog/image')->init($fullproduct, 'small_image')->resize(155, 120);
+                ?>
+				<tr class="tr_itemId_7330 first odd">
+					<td class="a-center">
+						<a href="http://xiangxing.lan.5jk.me/limitless-arms-race-200w-box-mod.html" class="product-image">
+							<img src="<?php echo $productImageUrl; ?>"></a>
+					</td>
+					<td>
+						<h2 class="product-name">
+							<a href="<?php echo $fullproduct->getProductUrl() ?>"
+							   target="_blank"><?php echo $productName; ?></a>
+							<ul class="product-option-list">
+                                <?php foreach ($optionsResult as $option): ?>
+									<li class="product-option-item"><span class="label"><?php echo $option['label']; ?>
+											:</span> <span class="value"><?php echo $option['value']; ?></span></li>
+                                <?php endforeach; ?>
+							</ul>
+						</h2>
+					</td>
+					<td class="a-center">
+                 <span class="cart-price">
+                     <span finalprice="69.9" class="originprice_7330 price">
+                         <span class="price"><?php echo $_order->formatPrice($product->getPrice() * 1); ?></span>
+                     </span>
+                 </span>
+					</td>
+					<!-- inclusive price starts here -->
+					<td class="a-center">
+						<span class="qty"><?php echo $productAmount; ?></span>
+					</td>
+
+					<!--Sub total starts here -->
+					<td class="a-center">
+                 <span class="cart-price cart-subtotal-price">
+                    <span rel="69.9"
+						  class="subtal_7330 price"><?php echo $_order->formatPrice($product->getRowTotal() * 1) ?></span>
+                 </span>
+					</td>
+				</tr>
+            <?php endforeach; ?>
+
+			</tbody>
+		</table>
+	</div>
+    <div class="quoteDetail ">
+        <div class="quoteDetail-list clearfix">
+            <div class="qty"><span class="label">Qty :</span><span
+                        class="value"><?php echo (int)$_order->getTotalQtyOrdered(); ?></span></div>
+            <div class="weight"><span class="label">Weight :</span><span
+                        class="value"><?php echo number_format($_order->getWeight(), 2) . 'kg'; ?></span></div>
+            <div class="subtal"><span class="label">Subtal :</span><span
+                        class="value"><?php echo $currency . number_format($_order->getSubtotal(), 2); ?></span></div>
+            <div class="shipping"><span class="label">Shipping Table Rates:</span><span
+                        class="value"><?php echo $currency . number_format($_order->getShippingAmount(), 2); ?></span>
+            </div>
+            <div class="coupon"><span class="label">Coupon <i
+                            class="order-details-coupon-code">[<?php echo !empty($_order->getCouponCode()) ? $_order->getCouponCode() : Mage::helper("Ave40_Translate")->__('No Coupon'); ?>
+                        ]</i>:</span><span
+                        class="value"><?php echo $currency . number_format($_order->getBaseDiscountAmount(), 2) ?></span>
+            </div>
+            <div class="additional-fees"><span class="label">Additional Fees:</span><span
+                        class="value"><?php echo $currency . number_format($_order->getMultifeesAmount(), 2); ?></span>
+            </div>
+        </div>
+        <div class="total"><span class="label">Total:</span><span
+                    class="value"><?php echo $currency . number_format($_order->getGrandTotal(), 2); ?></span></div>
+
+    </div>
+    <script type="text/javascript">decorateTable('my-orders-table')</script>
+</div>
+
+
+<!-- 支付方式 -->
+
+<div class="order-details-payment-table order-details-table">
+
+    <div class="order-details-sub-title margin-b-15">
+        <span>Order Payment</span>
+    </div>
+
+    <table cellpadding="0" cellspacing="1">
+        <tr>
+            <td>Payment Method</td>
+            <td>
+                <?php $_payment = $_order->getPayment() ?>
+                <?php echo $_payment->getMethod() ?>
+            </td>
+        <tr>
+            <td>Shipping Information</td>
+            <td><?php echo $_order->getShippingAddress()->format('html') ?></td>
+        </tr>
+    </table>
+</div>
+
+<div class="order-details-pay-box">
+    <a href="#" class="order-reorder-btn order-details-pay-btn" data-order-id="<?php echo $_order->getId();?>">Re-order</a>
+
+    <?php if($_order->getState() == Mage_Sales_Model_Order::STATE_NEW): ?>
+	<a href="<?php echo Mage::getUrl('ave40checkout/index/repay/orderid/' . $_order->getIncrementId()) ?>" class="order-details-repay-btn order-details-pay-btn" >Repay</a>
+    <?php endif; ?>
+
+</div>
+<script type="text/javascript">
+    ~function ($) {
+        /* re-order */
+        $('.order-reorder-btn').click(function () {
+            $orderId = $(this).data('orderId');
+            ave40.showLoading('Adding to the cart').ajaxPost('/ave40api/shoppingcart/addorders', {orders: [$orderId]}, function () {
+                if (this.ok) {
+                    ave40.getLoading().setAlertText('Going to checkout');
+                    ave40.gotoCheckoutPage();
+                } else {
+                    alert(this.message);
+                    ave40.closeLoading();
+                }
+            })
+        });
+    }(jQuery)
+</script>
+
+<!--<table class="data-table" id="my-orders-table" summary="<?php /*echo Mage::helper("Ave40_Translate")->__('Items Ordered') */ ?>">
+    <col />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <thead>
+        <tr>
+            <th><?php /*echo Mage::helper("Ave40_Translate")->__('Product Name') */ ?></th>
+            <th><?php /*echo Mage::helper("Ave40_Translate")->__('SKU') */ ?></th>
+            <th class="a-right"><?php /*echo Mage::helper("Ave40_Translate")->__('Price') */ ?></th>
+            <th class="a-center"><?php /*echo Mage::helper("Ave40_Translate")->__('Qty') */ ?></th>
+            <th class="a-right"><?php /*echo Mage::helper("Ave40_Translate")->__('Subtotal') */ ?></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <?php /*echo $this->getChildHtml('order_totals') */ ?>
+    </tfoot>
+        <?php /*$_items = $_order->getItemsCollection(); */ ?>
+        <?php /*$_index = 0; */ ?>
+            <?php /*$_count = $_items->count(); */ ?>
+        <?php /*foreach ($_items as $_item): */ ?>
+        <?php /*if ($_item->getParentItem()) continue; */ ?>
+        <tbody class="123">
+            <?php /*echo $this->getItemHtml($_item) */ ?>
+            <?php /*if($this->helper('giftmessage/message')->getIsMessagesAvailable('order_item', $_item) && $_item->getGiftMessageId()): */ ?>
+            <tr class="border<?php /*echo ($_index++ > $_count ?' last':'') */ ?>" id="order-item-gift-message-<?php /*echo $_item->getId() */ ?>" style="display:none;">
+                <?php /*$_giftMessage=$this->helper('giftmessage/message')->getGiftMessageForEntity($_item); */ ?>
+                <td class="gift-message-row" colspan="7">
+                    <a href="#" title="<?php /*echo Mage::helper("Ave40_Translate")->__('Close') */ ?>" onclick="return giftMessageToogle('<?php /*echo $_item->getId() */ ?>');" class="btn-close"><?php /*echo Mage::helper("Ave40_Translate")->__('Close') */ ?></a>
+                    <dl class="gift-message">
+                        <dt><strong><?php /*echo Mage::helper("Ave40_Translate")->__('From:') */ ?></strong> <?php /*echo $this->escapeHtml($_giftMessage->getRecipient()) */ ?></dt>
+                        <dt><strong><?php /*echo Mage::helper("Ave40_Translate")->__('To:') */ ?></strong> <?php /*echo $this->escapeHtml($_giftMessage->getSender()) */ ?></dt>
+                        <dd><?php /*echo $this->helper('giftmessage/message')->getEscapedGiftMessage($_item) */ ?></dd>
+                    </dl>
+                </td>
+            </tr>
+            <?php /*endif */ ?>
+        </tbody>
+        <?php /*endforeach; */ ?>
+</table>
+<script type="text/javascript">decorateTable('my-orders-table', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>-->

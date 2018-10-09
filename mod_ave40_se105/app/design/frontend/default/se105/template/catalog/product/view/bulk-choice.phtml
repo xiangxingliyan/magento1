@@ -1,0 +1,124 @@
+<?php
+/**
+ * 产品详情页面批发用户bulk choice
+ * @var Ave40_Catalog_Block_Product_View $thisBlock
+ * @var array $allProductInfo
+ */
+
+$products = $thisBlock->getProducts();
+?>
+
+<div class="bulk-choice-col" id="bulk_choice_frame">
+    <p class="words"><?php echo __t('Bulk Choice') ?>:</p>
+    <div class="bulk-choice-list">
+        <div class="table_mode">
+            <div class="table_header table_tr">
+                <div class="cell_1"><?php echo __t('Attribute') ?></div>
+                <div class="cell_2"><?php echo __t('Sku') ?></div>
+                <div class="cell_3"><?php echo __t('Price') ?></div>
+                <div class="cell_4"><?php echo __t('Quantity') ?></div>
+            </div>
+            
+            <div class="table_body " >
+                <?php foreach ($products as $productInfo): ?>
+				<?php $strkey = $productInfo['strkey']; ?>
+                    <?php $attrValues = $productInfo['attr_details']; ?>
+                    
+                    <div class="table_tr row <?php echo $productInfo['is_in_stock'] ? '' : 'out-of-stock' ?>" data-attr-strkey="<?php echo $strkey ?>" onmouseover='changePreviewImage(<?php echo json_encode($productInfo['img_attributes']) ?>)'>
+                        <div class="cell_1">
+                            <?php foreach($attrValues as $value): ?>
+                                <?php if('color' == $value['attr_code']): ?>
+                                    <?php $parentColorInfo = $thisBlock->getColorHelper()->getParentInfoBySons([$value['value_id']]) ?>
+                                    <?php $parentColorName = trim(strtolower($parentColorInfo[0]['label'])) ?>
+                                    <span class="attr_item attr_item_color">
+										<span style="<?php echo empty($parentColorName) ? '' : "background:$parentColorName;" ?>background:<?php echo strtolower($value['value_label']) ?>;"
+											  class="attr_item_color_block color_<?php echo $thisBlock->getAve40BaseHelper()->getColorHtmlClassName($value['value_label']); ?> othercolor"></span>
+										<span class="attr_item_color_words"><?php echo $value['value_label'] ?></span>
+									</span>
+                                <?php else: ?>
+                                    <span class="attr_item attr_item_version"><?php echo $value['value_label'] ?></span>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <div class="cell_2">
+                            <span><?php echo $productInfo['sku'] ?></span>
+                        </div>
+
+                        <div class="cell_3">
+                            <span class="price" data-type-id="price"><?php echo $thisBlock->getCoreHelper()->formatPrice($productInfo['price']) ?></span>
+                        </div>
+
+                        <div class="cell_4">
+                            <?php if($productInfo['is_in_stock']): ?>
+                                <input class="bulk_qty_input" data-type-id="qty_input" data-attr-strkey="<?php echo $strkey ?>"
+                                       data-super-attribute='<?php echo json_encode($productInfo['super_attributes']) ?>'
+                                       data-img-attributes='<?php echo json_encode($productInfo['img_attributes']) ?>'
+                                       data-product-id="<?php echo $thisBlock->getProduct()->getId() ?>">
+                                <?php if($productInfo['tag']['code'] == 'presale'): ?>
+                                    <br><span class="stock_status pre_order">pre-order</span>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <span class="stock_status out_of_stock">Out of stock</span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+    <div class="bulk-choice-operating clearfix">
+        <div class="bulk-choice-action">
+            <div class="bulk-add-to-cart">
+                <a href="javascript:"
+                   id="add-to-cart-btn"
+                   data-product-id="<?php echo $thisBlock->getProduct()->getId() ?>"
+                   class="add_to_cart_btn_style"> <?php echo Mage::helper("Ave40_Translate")->__('Add To Cart') ?></a>
+            
+            </div>
+            <div class="bulk-add-to-wishlist detail-To-Wish">
+                <div class="add-wish">
+                    <a class="<?php if ($thisBlock->getAve40CustomerHelper()->isLoginned()): ?>add-to-wishlist<?php endif; ?>"
+                        <?php if (!$thisBlock->getAve40CustomerHelper()->isLoginned()): ?>
+                            href="/customer/account/login"
+                        <?php else: ?>
+                            href="javascript:;"
+                        <?php endif; ?>
+
+                       data-url="/ave40api/wishlist/add/product/<?php echo $thisBlock->getProduct()->getId() ?>/form_key/<?php echo $thisBlock->getFormKey() ?>"
+                       title="">
+                        <span class="icon add-wish-icon"></span>
+                        <span><?php echo __t('Add To Wishlist') ?></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="bulk-choice-calc">
+            <div class="bulk-calc-left">
+                <div class="bulk-calc-qty">
+                    <span><?php echo __t('Quantity') ?>:</span>
+                    <span data-type-id="quantity">0</span>
+                </div>
+                <div class="bulk-calc-Current">
+                    <span><?php echo __t('Current Cart') ?>:</span>
+                    <span data-type-id="current_cart" data-amount="<?php echo $thisBlock->getShoppingCartHelper()->getTmpQuote()->getGrandTotal() ?>">
+                        <?php echo $thisBlock->getCoreHelper()->formatPrice($thisBlock->getShoppingCartHelper()->getTmpQuote()->getGrandTotal()) ?>
+                    </span>
+                </div>
+            </div>
+            <div class="bulk-calc-right">
+                <div class="bulk-calc-subtotal">
+                    <span><?php echo __t('Subtotal') ?>:</span>
+                    <span data-type-id="subtotal">$0.00</span>
+                </div>
+                <div class="bulk-calc-total">
+                    <span><?php echo __t('Estimated Cart') ?>:</span>
+                    <span data-type-id="estimated_cart">
+						<?php echo $thisBlock->getCoreHelper()->formatPrice($thisBlock->getShoppingCartHelper()->getTmpQuote()->getGrandTotal()) ?>
+					</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--bulk-choice-->
+<script type="text/javascript" src="<?php _insert_asset_url('js/product/wholesale-attributes.js') ?>"></script>

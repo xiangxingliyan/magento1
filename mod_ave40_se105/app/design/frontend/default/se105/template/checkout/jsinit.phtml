@@ -1,0 +1,114 @@
+<script>
+
+    ~function ($) {
+
+
+        window.ave40SelectDefaultPayment = function () {
+/*            $('.ave40-sp-methods-list').find('.ave40-sp-methods-items').removeClass('checked');
+            var isPaymentMethodChecked = $("input[name='payment[method]']:checked").val();
+            var ShippingFreeShipping = $('#s_method_amtable_amtable8');
+            var ShippingFreeShippingIsWholesale = $('#s_method_amtable_amtable10');
+            var ShippingEuPacket = $('#s_method_amtable_amtable4');
+
+            console.log(ShippingFreeShipping.length);
+            if (ShippingFreeShipping.length > 0) {
+                ShippingFreeShipping.attr("checked", true).closest('.ave40-sp-methods-items').addClass('checked');
+                ShippingFreeShipping.click();
+            } else if (ShippingFreeShippingIsWholesale.length > 0) {
+                ShippingFreeShippingIsWholesale.attr("checked", true).closest('.ave40-sp-methods-items').addClass('checked');
+                ShippingFreeShippingIsWholesale.click();
+
+            } else{
+                ShippingEuPacket.attr("checked", true).closest('.ave40-sp-methods-items').addClass('checked');
+                ShippingEuPacket.click();
+
+            }*/
+            /*} else if($("#s_method_amtable_amtable8").length > 0 ){
+                $("#s_method_amtable_amtable8").attr("checked",true);
+                $("#checkout_form").find('#s_method_amtable_amtable8').click();
+            } else{
+                $("#s_method_amtable_amtable6").attr("checked",true);
+                $("#checkout_form").find('#s_method_amtable_amtable6').click();
+            }*/
+
+            /*if (window.ave40CurrentPayment) {
+                $('#' + window.ave40CurrentPayment).click();
+                return;
+            }
+
+            if (isPaymentMethodChecked) {
+                return false;
+            } else {
+                $("#p_method_paypal_express").attr("checked", true);
+                $("#checkout_form").find('#p_method_paypal_express').click();
+            }*/
+
+
+        };
+
+        window.addEventListener('load', function () {
+            /**
+             *  选中的支付方式添加class
+             */
+            var checkedInput = $('#payment_partial').find("input[name='payment[method]']:checked");
+            if (checkedInput.length > 0) {
+                $(checkedInput).closest('.sp-methods-list').addClass('checked');
+            }
+
+            $('#payment_partial').on('click', 'input[name="payment[method]"]', function () {
+
+                $(this).closest('.sp-methods-list').addClass('checked').siblings('.sp-methods-list').removeClass('checked');
+            });
+
+            /*var currentPayment = $('#payment_partial').find('[name="payment[method]"]').filter('input:radio:checked');*/
+            $('#payment_partial').on('click', '.payment_popup_btn', function () {
+                ave40$('#p_method_payonlinecc_payment').trigger('click');
+                ave40$('#payment_form_payonlinecc_payment').showAve40PopupBox();
+            });
+
+
+
+            $('#payment_partial').on('click', '.payonlinecc_payment_close_btn', function () {
+                /*validator.resetForm();*/
+                /*if (currentPayment){
+                    ave40$(currentPayment).trigger('click');
+                }*/
+                ave40$('#payment_form_payonlinecc_payment').closeAve40PopupBox();
+
+            });
+
+            var validator = $("#checkout_form").validation();
+            $('#payment_partial').on('click', '.payonlinecc_payment_submit_btn', function () {
+                var cc_type_valid = $.validator.validateElement("#payonlinecc_payment_cc_type");
+                var cc_number_valid = $.validator.validateElement("#payonlinecc_payment_cc_number");
+                var cc_expiration_valid = $.validator.validateElement("#payonlinecc_payment_expiration");
+                var cc_expiration_yr_valid = $.validator.validateElement("#payonlinecc_payment_expiration_yr");
+                var cc_cid_valid = $.validator.validateElement("#payonlinecc_payment_cc_cid");
+                if ( cc_type_valid && cc_number_valid && cc_expiration_valid && cc_expiration_yr_valid && cc_cid_valid){
+
+                    ave40$('#payment_form_payonlinecc_payment').closeAve40PopupBox();
+                }
+            });
+
+
+
+
+            /**
+             * 记录已点击但未保存的payment_method按钮
+             */
+            /*window.ave40CurrentPayment = '';
+
+            $('#payment_partial').on('click', 'input[name]', function () {
+                var checkedInput = $('#payment_partial').find("input[name='payment[method]']:checked");
+                if (checkedInput.length > 0) {
+                    window.ave40CurrentPayment = checkedInput.attr('id');
+                }
+
+            });
+
+            ave40SelectDefaultPayment();*/
+
+        });
+
+    }(jQuery);
+</script>

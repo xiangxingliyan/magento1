@@ -1,0 +1,468 @@
+<?php
+/* @var Ave40_Sales_Block_Order_History_Subpage $this */
+$stateLabel = [
+    Mage_Sales_Model_Order::STATE_NEW => Mage::helper("Ave40_Translate")->__('Pending'),
+    Mage_Sales_Model_Order::STATE_CLOSED => Mage::helper("Ave40_Translate")->__('Closed'),
+    Mage_Sales_Model_Order::STATE_COMPLETE => Mage::helper("Ave40_Translate")->__('Complete'),
+    Mage_Sales_Model_Order::STATE_CANCELED => Mage::helper("Ave40_Translate")->__('Canceled'),
+    Mage_Sales_Model_Order::STATE_HOLDED => Mage::helper("Ave40_Translate")->__('Holded'),
+    Mage_Sales_Model_Order::STATE_PROCESSING => Mage::helper("Ave40_Translate")->__('Processing'),
+    Mage_Sales_Model_Order::STATE_PENDING_PAYMENT => Mage::helper("Ave40_Translate")->__('Pending'),
+    Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW => Mage::helper("Ave40_Translate")->__('Payment Review')
+];
+?>
+
+<link rel="stylesheet" href="http://cache.addthiscdn.com/icons/v1/sprites/services.css" type="text/css"/>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-58fefb0c3bbf5bfe"></script>
+<style>
+    .order-product-info .order-share-icon {
+        transition: opacity .3s;
+        position: absolute;
+        right: 5px;
+        opacity: 0;
+        display: none;
+        z-index: 10;
+    }
+
+    .order-product-info:hover .order-share-icon {
+        opacity: 1;
+        display: block;
+    }
+
+    .order-product-info .order-share-icon ul {
+        transition: opacity .3s;
+        display: none;
+        opacity: 0;
+        z-index: 100;
+        position: absolute;
+        right: 25px;
+        white-space: nowrap;
+    }
+
+    .order-product-info .order-share-icon ul li {
+        display: inline-block;
+        margin: 0;
+    }
+
+    .order-product-info .order-share-icon:hover ul {
+        display: block;
+        opacity: 1;
+    }
+</style>
+<!---->
+<!--<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">-->
+<div class="tab-main-content overview">
+    <div class="filter-conditions bg-f6 margin-b-15">
+        <div class="filter-search clearfix">
+                <div class="filter-choose-date">
+                    <label for="">Choose Date</label>
+                    <input type="text" id="datepicker-begin" value="<?php echo !empty($_GET['start']) ? date('m/d/Y', strtotime($_GET['start'])) : '';?>">
+                    <span>-</span>
+                    <input type="text" id="datepicker-end"  value="<?php echo !empty($_GET['end']) ? date('m/d/Y', strtotime($_GET['end'])) : '';?>">
+                </div>
+
+                <div class="filter-right">
+                    <label for="">Order Id</label>
+                    <input type="text" id="search-order-id" value="<?php echo $_GET['searchId'];?>">
+                    <div class="filter-operate-box">
+                        <input type="submit" value="Search" class="filter-search-btn filter-btn">
+                        <input type="reset" value="Clear" class="filter-clear-btn filter-btn">
+                    </div>
+                </div>
+        </div>
+
+        <div class="filter-operating">
+            <div class="Operation-bar">
+                <?php if ('open' != $_GET['sp']): ?>
+                    <label><input type="checkbox"
+                                  id="order-select-all"/><span><?php echo Mage::helper("Ave40_Translate")->__('Select All') ?></span></label>
+                <?php endif; ?>
+ <!--               <button type="button" class="buy-again" disabled="disabled"
+                        data-tag="buy-again"><?php /*echo Mage::helper("Ave40_Translate")->__('Buy again') */?></button>-->
+                <button class="select-add-wish-btn iconfont icon-lovetaoxin" disabled="disabled" data-tag="wishlist"></button>
+                <?php if ('open' != $_GET['sp']): ?>
+                    <button class="select-del-btn iconfont icon-shanchu " disabled="disabled"></button>
+                <?php endif; ?>
+            </div>
+        </div>
+
+    </div>
+
+    <?php if ($this->getOrders()->getSize() == 0): ?>
+        <?php echo $this->getLayout()->createBlock('core/template')->setTemplate('customer/empty-list.phtml')->toHtml() ?>
+    <?php else: ?>
+        <div class="overview-order-tab bg-f6 margin-b-15">
+            <ul class="overview-order-tab-ul  clearfix ">
+                <li class="order-check"></li>
+                <li class="tab-order-details"><?php echo Mage::helper("Ave40_Translate")->__('Order Details') ?></li>
+                <li class="tab-total"><?php echo Mage::helper("Ave40_Translate")->__('Total') ?></li>
+                <li class="tab-recipicent"><?php echo Mage::helper("Ave40_Translate")->__('Shipping Method') ?></li>
+                <li class="tab-shipping"><?php echo Mage::helper("Ave40_Translate")->__('Tracking Number') ?></li>
+                <li class="tab-status"><?php echo Mage::helper("Ave40_Translate")->__('Status') ?></li>
+                <li class="tab-status"><?php echo Mage::helper("Ave40_Translate")->__('Action') ?></li>
+            </ul>
+        </div>
+        <div class="order-deal-list">
+            <?php $currentProductState = ''?>
+
+            <?php foreach ($this->getOrders() as $order): ?>
+                <?php
+
+                /** @var Mage_Sales_Model_Order $order */
+                $tardingTme = date('Y-m-d H:i:s', strtotime($order->getCreatedAt()));
+                $state = strtolower($order->getState());
+                $status = $order->getStatus();
+                $stateText = empty($status) ? $stateLabel[$state] : ucfirst($status);
+                $baseGrandTotal = $order->getBaseGrandTotal() > $order->getGrandTotal() ? $order->formatPrice($order->getBaseGrandTotal()) : '';
+                $countryName = Mage::app()->getLocale()->getCountryTranslation($order->getData('country_id'));
+                $address = $order->getData('street') . ', ' . $order->getData('city') . ', ' . $countryName;
+                $shippingName = implode(' ', array_filter([$order->getData('firstname'), $order->getData('middlename'), $order->getData('lastname')]));
+                $telephone = $order->getData('telephone');
+                $postCode = $order->getData('postcode');
+                $trackNumbers = $order->getTracksCollection();
+                // $productItems = $order->getAllItems();
+                $productItems = $order->getAllVisibleItems();
+                $erpOrderInfo = Mage::getModel('ave40_base/erp_orderinfo');
+                $erpOrderInfo->loadByOrderIncrementId($order->getIncrementId());
+                if ($erpOrderInfo->getLogisticsProvider() == '豪速通') {
+                    $trackNo =  !empty($erpOrderInfo->getTransferNo()) ? $erpOrderInfo->getTransferNo() : '';
+                } else {
+                    $trackNo =  !empty($erpOrderInfo->getExpressNo()) ? $erpOrderInfo->getExpressNo() : '';
+                }
+                ?>
+                <!-- 订单项 -->
+                <div class="order-deal-box" id="order-<?php echo $order->getId() ?>">
+                    <ul class="order-deal-info clearfix">
+                        <li class="order-check">
+                            <input type="checkbox" data-tag="orderid" data-order-id="<?php echo $order->getId() ?>"/>
+                        </li>
+                        <li class="order-head-info">
+                            <p class="order-no"><label
+                                        for="order-checkbox-<?php echo $order->getIncrementId() ?>"><?php echo Mage::helper("Ave40_Translate")->__('Order ') ?>
+                                    <a href="/sales/order/view/order_id/<?php echo $order->getId() ?>" title="Order details"
+                                       id="order-no">No. <?php echo $order->getIncrementId() ?></a></label></p>
+                            <p class="trading-time"><?php echo $tardingTme ?></p>
+                        </li>
+
+                        <li class="overview-total">
+                            <span class="special-total special-price"><span
+                                        class="price"><?php echo $formatedPrice = Mage::helper('core')->currency($order->getGrandTotal(), true, false); ?></span></span>
+                            <?php if ($baseGrandTotal): ?><p><span class="old-total old-price"><span
+                                            class="price"><?php echo $formatedPrice = Mage::helper('core')->currency($baseGrandTotal, true, false); ?></span></span>
+                                </p><?php endif; ?>
+                        </li>
+
+                        <li class="overview-shipping-method">
+                            <?php if ($order->getShippingDescription()): ?>
+                                <?php
+                                $shippingMethodName = explode('-', $order->getShippingDescription());
+                                echo $this->escapeHtml(end($shippingMethodName));
+                                ?>
+                            <?php else: ?>
+                                <p><?php echo $this->helper('sales')->__('No shipping information available'); ?></p>
+                            <?php endif; ?>
+                        </li>
+                        <li class="overview-shipping-number">
+                            <span>
+                                <p><a target="_blank" href="<?php echo $this->getUrl('ave40_base/logistics/index/infoid/' . $erpOrderInfo->getId() . '/seno/' . md5($erpOrderInfo->getId() . 'ave40' . $erpOrderInfo->getExpressNo())); ?>">
+                                        <?php echo $trackNo; ?></a></p>
+                              &nbsp;
+                            </span>
+
+                        </li>
+                        <li class="overview-status" data-order-id="<?php echo $order->getId() ?>">
+                            <?php if (in_array($state, [
+                                Mage_Sales_Model_Order::STATE_NEW,
+                                Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
+                                Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW
+                            ])):?>
+                            <p class="logistics-status"><?php echo Mage::helper("Ave40_Translate")->__('Pending') ?></p>
+                            <?php else:?>
+                            <p class="logistics-status"><?php echo Mage::helper("Ave40_Translate")->__($stateText) ?></p>
+                            <?php endif;?>
+                        </li>
+
+                        <li class="overview-completed" data-order-id="<?php echo $order->getId() ?>">
+                                <a href="javascript:void;" class="re-order a-blue-under"><?php echo Mage::helper("Ave40_Translate")->__('Re-order') ?></a>
+                            <?php /* shipped */ ?>
+                            <?php if (in_array($state, [
+                                    Mage_Sales_Model_Order::STATE_PROCESSING,
+                                ]) && $status == Ave40_Sales_Model_Order::STATUS_SHIPPED): ?>
+
+                                <a href="javascript:void" title=""
+                                   class="review a-blue-under set-order-complete"><?php echo Mage::helper("Ave40_Translate")->__('Complete') ?></a>
+                            <?php endif; ?>
+                            <?php if (in_array($state, [
+                                Mage_Sales_Model_Order::STATE_COMPLETE,
+                                Mage_Sales_Model_Order::STATE_CLOSED,
+                                Mage_Sales_Model_Order::STATE_CANCELED,
+                                Mage_Sales_Model_Order::STATE_NEW,
+                                Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
+                                Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW
+                            ])): ?>
+								
+									<?php if($state == Mage_Sales_Model_Order::STATE_NEW): ?>
+										<a class="a-blue-under" href="<?php echo Mage::getUrl('ave40checkout/index/repay/orderid/' . $order->getIncrementId()) ?>">Repay</a>
+									<?php endif; ?>
+<!--                                <a href="javascript:void;" title="" class="review a-blue-under set-order-close">--><?php //echo Mage::helper("Ave40_Translate")->__('Close') ?><!--</a>-->
+                                <a href="javascript:void;" title="" class="review a-blue-under single-del-btn"><?php echo Mage::helper("Ave40_Translate")->__('Delete') ?></a>
+                            <?php endif; ?>
+                            <a href="javascript:void;" title="" class="review a-blue-under add-order-to-wishlist"><?php echo Mage::helper("Ave40_Translate")->__('Add to Wishlist') ?></a>
+                        </li>
+                    </ul>
+
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+</div>
+
+<script type="text/javascript">
+    /*全选或全不选*/
+    jQuery("#order-select-all").click(function () {
+        if (this.checked) {
+            jQuery(".order-deal-box :checkbox").prop("checked", true);
+        } else {
+            jQuery(".order-deal-box  :checkbox").prop("checked", false);
+        }
+    });
+    jQuery(".order-deal-box :checkbox").click(function () {
+        allchk();
+    });
+
+    jQuery(".filter-clear-btn").click(function () {
+        jQuery("#search-order-id").val('');
+        jQuery("#datepicker-begin").val('');
+        jQuery("#datepicker-end").val('');
+    });
+    jQuery(".filter-search-btn").click(function () {
+        var searchId = jQuery("#search-order-id").val();
+        var start = jQuery("#datepicker-begin").val();
+        var end = jQuery("#datepicker-end").val();
+        window.location.href = "<?php echo Mage::getUrl("sales/order/history") . '?sp=' .$_GET['sp'];?>&searchId="+searchId + "&start=" + start + '&end=' + end;
+    });
+    // 检测全选框应该是选中状态还是未选中状态的
+    function allchk() {
+        var chknum = jQuery(".order-deal-box :checkbox").size();
+        var chk = 0;
+        jQuery(".order-deal-box :checkbox").each(function () {
+            if (jQuery(this).prop("checked") == true) {
+                chk++;
+            }
+        });
+        if (chknum == chk) {
+            jQuery("#order-select-all").prop("checked", true);
+        } else {
+            jQuery("#order-select-all").prop("checked", false);
+        }
+        if (chknum == 0) {
+            jQuery("#order-select-all").prop("checked", false);
+        }
+    }
+
+    ~function ($) {
+
+        $(function() {
+            $( "#datepicker-begin" ).datepicker({
+                changeMonth: true,
+                changeYear: true,
+                onClose: function( selectedDate ) {
+                    $( "#datepicker-end" ).datepicker( "option", "minDate", selectedDate );
+                }
+            });
+
+            $( "#datepicker-end" ).datepicker({
+                changeMonth: true,
+                changeYear: true,
+                onClose: function( selectedDate ) {
+                    $( "#datepicker-begin" ).datepicker( "option", "maxDate", selectedDate );
+                }
+            });
+
+
+        });
+
+
+        function getCheckedOrder() {
+            var ids = [];
+
+            jQuery('.tab-main-content input[data-tag=orderid]:checked').each(function () {
+                ids.push($(this).data('orderId'));
+            });
+
+            return ids;
+        }
+
+        var $mainContent = $('.tab-main-content');
+
+        $('.tab-main-content input[data-tag=orderid],#order-select-all').click(function () {
+
+            if (getCheckedOrder().length > 0) {
+                $('button[data-tag=buy-again],button[data-tag=wishlist],button.select-del-btn').removeAttr('disabled');
+            }else{
+                $('button[data-tag=buy-again],button[data-tag=wishlist],button.select-del-btn').attr('disabled','disabled');
+            }
+        });
+
+        /* 再次购买 */
+        $mainContent.find('button[data-tag=buy-again]').click(function () {
+                ave40.showLoading('Adding to the cart').ajaxPost('/ave40api/shoppingcart/addorders', {orders: getCheckedOrder()}, function () {
+                    if (this.ok) {
+                        ave40.getLoading().setAlertText('Going to checkout');
+                        ave40.gotoCheckoutPage();
+                    } else {
+                        alert(this.message);
+                        ave40.closeLoading();
+                    }
+                });
+
+
+        });
+
+
+        /* 添加多个单个到wishlist */
+        $mainContent.find('button[data-tag=wishlist]').click(function () {
+            if (getCheckedOrder().length > 0) {
+                ave40.showLoading('Add to wishlist')
+                    .ajaxPost('/ave40api/wishlist/addorders', {orders: getCheckedOrder()}, function () {
+                        if (this.ok) {
+                            Ave40MessageBox.alertSuccess(this.message ? this.message : 'Success');
+                            ave40.closeLoading();
+                        } else {
+                            alert(this.message);
+                            ave40.closeLoading();
+                        }
+                    });
+            }
+        });
+
+        /* 添加单个订单到心愿单 */
+        $('.add-order-to-wishlist').click(function () {
+            $orderId = $(this).parent().data('orderId');
+
+            if (!$orderId) {
+                Ave40MessageBox.alertError('Empty Order');
+                return;
+            }
+
+            ave40.showLoading('Add to wishlist')
+                .ajaxPost('/ave40api/wishlist/addorders', {orders: $orderId}, function () {
+                    if (this.ok) {
+                        Ave40MessageBox.alertSuccess(this.message ? this.message : 'Success');
+                        ave40.closeLoading();
+                    } else {
+                        alert(this.message);
+                        ave40.closeLoading();
+                    }
+                });
+        });
+
+        /* 订单确认收货 */
+        $('.set-order-complete').click(function () {
+            $orderId = $(this).parent().data('orderId');
+
+            if (!$orderId) {
+                Ave40MessageBox.alertError('Empty Order');
+                return;
+            }
+            if (confirm('Are you sure to complete order?')) {
+                ave40.showLoading('complete order')
+                    .ajaxPost('/ave40api/order/setordercomplete', {orders: $orderId}, function () {
+                        if (this.ok) {
+                            Ave40MessageBox.alertSuccess(this.message ? this.message : 'You have confirmed receipt, the order status changed to completed.');
+                            location.reload();
+                        } else {
+                            alert(this.message);
+                            ave40.closeLoading();
+                        }
+                    });
+            }
+        });
+
+        /* re-order */
+        $('.re-order').click(function () {
+            $orderId = $(this).parent().data('orderId');
+            ave40.showLoading('Adding to the cart').ajaxPost('/ave40api/shoppingcart/addorders', {orders: [$orderId]}, function () {
+            if (this.ok) {
+                ave40.getLoading().setAlertText('Going to checkout');
+                ave40.gotoCheckoutPage();
+            } else {
+                alert(this.message);
+                ave40.closeLoading();
+            }
+        })
+        });
+
+
+        /* 关闭订单 */
+        $('.set-order-close').click(function () {
+            $orderId = $(this).parent().data('orderId');
+
+            if (!$orderId) {
+                Ave40MessageBox.alertError('Empty Order');
+                return;
+            }
+            if (confirm('Are you sure to close order?')) {
+                ave40.showLoading('Close order')
+                    .ajaxPost('/ave40api/order/setorderclose', {orders: $orderId}, function () {
+                        if (this.ok) {
+                            Ave40MessageBox.alertSuccess(this.message ? this.message : 'Success');
+                            location.reload();
+                        } else {
+                            alert(this.message);
+                            ave40.closeLoading();
+                        }
+                    });
+            }
+        });
+        //单个删除
+        $mainContent.find('.single-del-btn').click(function () {
+            var orders = [$(this).parent().data('orderId')];
+            if (orders.length > 0 && confirm('Are you sure to delete order?')) {
+                ave40.showLoading('Delete orders')
+                    .ajaxPost('/ave40api/order/delete', {orders: orders}, function () {
+                        if (this.ok) {
+                            // ave40.closeLoading();
+                            location.reload();
+                        } else {
+                            Ave40MessageBox.alertError(this.message);
+                            ave40.closeLoading();
+                            location.reload();
+                        }
+                    });
+            }
+
+            // $('.order-product-info').on('mouseover', function () {
+            // 	$(this).find('.order-share-icon').show().stop().animate({opacity:1}, 300);
+            // }).on('mouseout', function () {
+            // 	$(this).find('.order-share-icon').show().stop().animate({opacity:0}, 300, null, function () {
+            // 		$(this).hide();
+            // 	});
+        });
+        $mainContent.find('.select-del-btn').click(function () {
+            var orders = getCheckedOrder();
+            if (orders.length > 0 && confirm('Are you sure to delete orders?')) {
+                ave40.showLoading('Delete orders')
+                    .ajaxPost('/ave40api/order/delete', {orders: getCheckedOrder()}, function () {
+                        if (this.ok) {
+                            // ave40.closeLoading();
+                            location.reload();
+                        } else {
+                            Ave40MessageBox.alertError(this.message);
+                            ave40.closeLoading();
+                            location.reload();
+                        }
+                    });
+            }
+
+            // $('.order-product-info').on('mouseover', function () {
+            // 	$(this).find('.order-share-icon').show().stop().animate({opacity:1}, 300);
+            // }).on('mouseout', function () {
+            // 	$(this).find('.order-share-icon').show().stop().animate({opacity:0}, 300, null, function () {
+            // 		$(this).hide();
+            // 	});
+        });
+
+
+        }(jQuery)
+</script>

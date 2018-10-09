@@ -1,0 +1,6 @@
+
+<layout version="1.0.0">
+    <ave40widget_disabled_action>
+        <update handle="cms_index_noroute"/>
+    </ave40widget_disabled_action>
+</layout>

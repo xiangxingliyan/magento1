@@ -1,0 +1,193 @@
+<?php $_items = $this->getReviewsCollection()->getItems(); ?>
+<?php if ($_items): ?>
+	<?php
+		$rating = $this->getProductData()->getRatingSummary();
+		$ratingSummary = $rating ? $rating->getRatingSummary() : 0;
+		$reviewCount = $rating ? $rating->getReviewsCount() : 0;
+		$ownReview = [];
+		foreach ($_items as $key=>$item) {
+		    $nickname = Mage::getSingleton('customer/session')->getCustomer()->getFirstname();
+		    if (empty($nickname)) {
+                $nickname = Mage::app()->getCache()->load('review:' . session_id());
+            }
+		    if (!empty($nickname) && $nickname == $item->getNickname()) {
+                array_unshift($ownReview, $item);
+            } else {
+		        $ownReview[] = $item;
+            }
+        }
+	?>
+	<div class="average-rating">
+		<div class="rating-box">
+			<div class="rating" style="width:<?= $ratingSummary ?>%"></div>
+		</div>
+		<div class="average-box">
+			<span>Average Rating:</span>
+			<span class="num"><?= number_format($ratingSummary / 20, 1) ?> out of 5</span>
+			<span>(<?= $reviewCount ?> review)</span>
+		</div>
+		<div class="right">
+			<button class="gray-border-button">Write a Review</button>
+		</div>
+	</div>
+    <!--前有评论列表，已换后面-->
+	<style>
+		.busying {
+			cursor:wait;
+		}
+
+		.busying *{
+			cursor:wait;
+		}
+	</style>
+	<div class="pagination hidden">
+		<?php
+		/**
+		 * @var Ave40_Widget_Block_Pagination $block
+		 */
+		$block = $this->getLayout()->createBlock('ave40_widget/pagination');
+		$block->setLastPage($this->getReviewsCollection()->getLastPageNumber())
+			->setUrl('/ave40api/review/getproductreviews?page={{page}}&product_id='.$this->getProduct()->getId())->enableUrl(false);
+		$block->enableCustomInput(false);
+		$block->outputHtml();
+		?>
+		<!--<span class="pagination-btn pagination-left"></span>-->
+		<!--<span class="page-num">1</span>-->
+		<!--<span class="pagination-btn pagination-right"></span>-->
+	</div>
+	
+<?php else: ?>
+<div class="average-rating">
+	<div class="rating-box">
+		<div class="rating" style="width:0%"></div>
+	</div>
+	<span class="no-comment average-box"><?php echo Mage::helper("Ave40_Translate")->__('No comment record !') ?></span>
+	<div class="right">
+		<button class="gray-border-button">Write a Review</button>
+	</div>
+</div>
+<?php endif; ?>
+    <?php echo $this->getChildHtml('review_form') ?>
+<?php if($_GET['debug'] == 'aveav404'): ?>
+	<?php echo $this->getChildHtml('reviews') ?>
+	<?php //echo $this->getChildHtml('toolbar') ?>
+<?php endif ?>
+<div class="comment-list">
+    <div class="append-new-review"></div>
+    <?php foreach ($ownReview as $_review): ?>
+        <dl class="comment-info">
+            <dt class="head-portrait">
+                <img src="<?php echo Ave40_Api_Helper_FilesUpload::getCustomerAvatar() . "?$rand"; ?>" />
+
+                <span class="username"><?= $this->htmlEscape($_review->getNickname()) ?></span>
+            </dt>
+            <dd>
+                <div class="rating-box">
+                    <?php $_votes = $_review->getRatingVotes(); ?>
+                    <?php if (count($_votes)): ?>
+                        <?php foreach ($_votes as $_vote): ?>
+                            <div class="rating" title="<?= $this->escapeHtml($_vote->getRatingCode()) ?>"
+                                 style="width:<?= $_vote->getPercent() ?>%"></div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+
+                <div class="comment-top">
+                    <span class="comment-date"><?= date('j M Y', strtotime($_review->getCreatedAt())) ?></span>
+                </div>
+                <div class="clearfix"></div>
+
+                <p class="comment-text">
+                    <?= nl2br($this->htmlEscape($_review->getDetail())) ?>
+                </p>
+
+                <!--
+                <div class="comment-img">
+                    <div class="color-list">
+                        <span class="listBox">
+                            <img src="/skin/frontend/default/se105/images/details/color-list.png">
+                        </span>
+                        <span class="listBox">
+                            <img src="/skin/frontend/default/se105/images/details/color-list.png">
+                        </span>
+                    </div>
+                </div>
+                -->
+            </dd>
+        </dl>
+    <?php endforeach ?>
+</div>
+<!--<div class="reviews-pagination">
+    <div class="pagination-common clearfix" style="">
+        <div class="pagination-button">
+            <a rel="nofollow" class="num-item pagination-page-item disabled" data-page-value="0" href="javascript:;" data-url="?page=" disabled="">
+                <span class="pagination-common-btn prev-btn page-btn-left iconfont icon-jiantou-left disabled" disabled=""></span>
+            </a>
+            <ul class="pagination-common-num">
+                <li class="current-page">1</li>
+                <li class="num-item pagination-page-item" data-page-value="2" data-url="?page=2"><a href="?page=2">2</a></li>
+            </ul>
+            <a rel="nofollow" class="num-item pagination-page-item " data-page-value="2" href="?page=2" data-url="?page=2">
+                <span class="pagination-common-btn next-btn page-btn-right iconfont icon-jiantou-right "></span>
+            </a>          
+        </div>
+    </div>
+</div>-->
+
+<script type="text/javascript">
+	~function ($) {
+	    $(function () {
+	        $(".gray-border-button").on('click', function () {
+                $('.product-review-form').css('display','block');
+            });
+	        $(".review-button").on('click', function () {
+//                $("#review-form").submit();//review/product/post
+                ave40.showLoading('review')
+                    .ajaxPost('/review/product/post', $("#review-form").serialize(), function () {
+                        if (this.ok) {
+                            Ave40MessageBox.alertSuccess(this.message ? this.message : 'success');
+                            ave40.closeLoading();
+                            $('.product-review-form').css('display','none');
+                            //评价后立即显示
+//                            var tpl = $('#new_review_append').html();
+//                            var tem = template(tpl, {"data": this.data.new_review});
+//                            $('.append-new-review').html(tem);
+                            $("textarea[name='detail']").val('');
+                            $('.reviews-rating li').removeClass('hover');
+                        } else {
+                            alert(this.message);
+                            ave40.closeLoading();
+                        }
+                    });
+            });
+
+	   });
+	}(jQuery)
+</script>
+
+<script id="new_review_append" type="text/html">
+    <dl class="comment-info">
+        <dt class="head-portrait">
+            <img src="<%:=data['head_img']%>" />
+
+            <span class="username"><%:=data['nickname']%></span>
+        </dt>
+        <dd>
+            <div class="rating-box">
+
+                <%if(data['votes'].length > 0) {%>
+                <%for (var i = 0; i < data['votes'].length; i++) {%>
+                <div class="rating" title="<%:=data['votes'][i]['code']%>" style="width:<%:=data['votes'][i]['percent']%>%"></div>
+                <%}%>
+                <%}%>
+            </div>
+            <p class="comment-text">
+                <%:=data['detail']%>
+            </p>
+
+            <div class="comment-top">
+                <span class="comment-date"><%:=data['create_at']%></span>
+            </div>
+        </dd>
+    </dl>
+</script>

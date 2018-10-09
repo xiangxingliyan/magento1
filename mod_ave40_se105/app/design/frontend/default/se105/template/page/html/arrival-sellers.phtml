@@ -1,0 +1,106 @@
+<?php
+/** @var Ave40_Base_Helper_Customer $customerHelper */
+$customerHelper = Mage::helper('ave40_base/customer');
+?>
+<div class="ari-banner-main swiper-container swiper-container-ari-banner top-slide-show">
+    <ul class="swiper-wrapper">
+
+        <?php foreach (ave40_sitedata('new_arrival/slide_show') as $row): ?>
+
+            <li class="swiper-slide" data-swiper-autoplay="">
+                <a href="<?php echo $row['url'] ?>" title="<?php echo htmlentities($row['title']) ?>">
+                    <img alt="<?php echo htmlentities($row['title']) ?>"
+                         src="<?php echo $row['image'] ?>"/>
+                </a>
+            </li>
+
+        <?php endforeach; ?>
+    </ul>
+
+    <div class="swiper-pagination banner-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+</div>
+<div class="topic-newarrival-page ">
+   <div class="topic-new-fourth-column topic-product">
+        <div class="topic-product-title">
+            <h1 class="topic-new-title">NEW ARRIVAL</h1>
+        </div>
+        <div class="left arrival-banner">
+			<a href="<?php echo ave40_sitedata('new_arrival/picture_01/url') ?>"><img src="<?= ave40_sitedata('new_arrival/picture_01/src',  $this->getSkinUrl('images/clearance/clearance-brands.png')) ?>" alt=""></a>
+		</div>
+        <div class="right arrival-product arrival-product-banner ">
+            <div class="swiper-container swiper-container-arrival-product">
+                <div class="swiper-wrapper product_item_new_arrival_template">
+
+					<?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/arrival-product-items.phtml')
+						->setData('categories', ave40_sitedata('new_arrival/category_id_01'))
+						->setData('sort', 'position desc, entity_id desc')
+						->setData('image_size', '190,190')
+						->setData('item_limit', 90)
+						->setData('mouse_over_tools', '0')->toHtml() ?>
+                </div>
+            </div>
+            <div class="swiper-pagination swiper-pagination-arrival-product"></div>
+            <div class="swiper-button-prev swiper-arrival-product-prev"><img src="<?= $this->getSkinUrl('images/details/prodetails-left.png') ?>" alt=""></div>
+            <div class="swiper-button-next swiper-arrival-product-next"><img src="<?= $this->getSkinUrl('images/details/prodetails-right.png') ?>" alt=""></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <a href="<?php echo ave40_sitedata('new_arrival/picture_02/url') ?>">
+		<img class="clearance-bannerimg" src="<?= ave40_sitedata('new_arrival/picture_02/src',  $this->getSkinUrl('images/clearance/clearancebanner01.png')) ?>" alt="">
+	</a>
+    <div class="topic-new-fifth-column topic-product">
+        <div class="topic-product-title" style="margin-top: 0;">
+            <h1 class="topic-new-title">BEST SELLERS</h1>
+        </div>
+        <div class="left arrival-banner">
+			<a href="<?php echo ave40_sitedata('new_arrival/picture_03/url') ?>"><img src="<?= ave40_sitedata('new_arrival/picture_03/src', $this->getSkinUrl('images/clearance/clearance-brands.png')) ?>" alt=""></a>
+		</div>
+        <div class="right arrival-product sellers-product sellers-product-banner">
+            <div class=" swiper-container swiper-container-sellers-product">
+                <div class="swiper-wrapper product_item_new_arrival_template">
+					<?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/arrival-product-items_5pro.phtml')
+						->setData('categories', ave40_sitedata('new_arrival/category_id_02'))
+						->setData('sort', 'position desc, entity_id desc')
+						->setData('item_limit', '5')
+						->setData('image_size', '200,200')
+						->setData('mouse_over_tools', '0')
+						->toHtml();
+					?>
+    
+					<?php
+                    
+                    $arrivalblock = Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/arrival-product-items.phtml')
+                        ->setData('categories', ave40_sitedata('new_arrival/category_id_02'))
+                        ->setData('sort', 'position desc, entity_id desc')
+                        ->setData('item_limit', '5,89')
+                        ->setData('image_size', '200,200')
+                        ->setData('mouse_over_tools', '0');
+                    
+                    $arrivalCollection = $arrivalblock->getProductCollection();
+                    $items = array_keys($arrivalCollection->getItems());
+                    array_splice($items, 5);
+                    
+                    foreach($items as $key => $item) {
+                    	$arrivalCollection->removeItemByKey($key);
+					}
+					
+					echo $arrivalblock->toHtml();
+					?>
+                </div>
+            </div>
+            <div class="swiper-pagination swiper-pagination-arrival-product"></div>
+            <div class="swiper-button-prev swiper-sellers-product-prev"><img src="<?= $this->getSkinUrl('images/details/prodetails-left.png') ?>" alt=""></div>
+            <div class="swiper-button-next swiper-sellers-product-next"><img src="<?= $this->getSkinUrl('images/details/prodetails-right.png') ?>" alt=""></div>
+        </div>
+    </div>
+    <div class="clearfix" style="margin-bottom: 80px;"></div>
+</div>
+
+
+
+
+

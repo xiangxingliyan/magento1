@@ -1,0 +1,57 @@
+<?php
+/**
+ * 货币符号
+ */
+$currencyCode = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
+
+/**
+ * 获取优惠券的优惠金额
+ * @var Mage_Sales_Model_Quote $cartQuote
+ */
+$cartQuote = $this->getQuote();
+$totals = $cartQuote->getTotals();
+$discountTotal = $totals['discount'];
+$couponDiscountAmount = 0;
+
+if($discountTotal) {
+    $couponDiscountAmount = $discountTotal->getValue();
+}
+
+$couponDiscountAmountString = sprintf("{$currencyCode}%.2f", abs($couponDiscountAmount));
+
+if($couponDiscountAmount < 0) {
+	$couponDiscountAmountString = '-' . $couponDiscountAmountString;
+}
+
+?>
+
+<div class="discount">
+    <div class="discount-form clearfix">
+        <div class="coupon-code-box">
+            <label for="coupon_code"><?php echo Mage::helper("Ave40_Translate")->__('Coupon code:') ?></label>
+            <input type="hidden" name="remove" id="remove-coupone" value="0" />
+            <div class="input-box promo-code-input">
+                <input class="input-text promo-input" id="coupon_code" name="coupon_code"  value="<?php echo $this->htmlEscape($this->getCouponCode()) ?>" />
+
+                <div class="coupon-code-price-box">
+                    <div class="lt-buttons-set">
+                        <button id="apply_coupon_btn" type="button" title="<?php echo Mage::helper("Ave40_Translate")->__('Redeem') ?>" class=" button disabled apply-btn" disabled="disabled"  value="<?php echo Mage::helper("Ave40_Translate")->__('Redeem') ?>"><span><span><?php echo Mage::helper("Ave40_Translate")->__('Redeem') ?></span></span></button>
+                        &nbsp;
+                        <button id="cancel_coupon_btn" type="button" title="<?php echo Mage::helper("Ave40_Translate")->__('Cancel') ?>" class="button <?= $this->getCouponCode() ? '' : 'hidden'?>"  value="<?php echo Mage::helper("Ave40_Translate")->__('Cancel') ?>"><span><span><?php echo Mage::helper("Ave40_Translate")->__('Cancel') ?></span></span></button>
+
+                    </div>
+                    <span class="pay-price-info-right coupon-cost-price" id="coupon_discount_partial">
+                            <?php echo $couponDiscountAmountString ?>
+                    </span>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div style="float: left;">
+            <div id="coupon-success-msg" class="sucesss tip-info"></div>
+            <div id="coupon-error-msg" class="error tip-info"></div>
+        </div>
+    </div>
+</div>

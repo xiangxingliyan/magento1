@@ -1,0 +1,694 @@
+<?php
+
+/* @var Mobile_Detect $deviceDetector */
+$deviceDetector = Mage::helper('ave40_widget')->getDeviceDetector();
+
+?>
+
+<?php $customer = Mage::getSingleton('customer/session')->getCustomer(); ?>
+
+
+<?php if(Mage::app()->getRequest()->getParam('nodt') || !$deviceDetector->isMobile()): ?>
+<div class="personal-main ">
+	<div class="main-right account-main">
+		<div class="main-tab">
+			<ul class="tab">
+                <li hash="security" class="active"><a><span><?php echo Mage::helper("Ave40_Translate")->__('Account Information') ?></span></a></li>
+				<li hash="address"><a><span><?php echo Mage::helper("Ave40_Translate")->__('Shipping Address') ?></span></a></li>
+                <li hash="verfication" ><a><span><?php echo Mage::helper("Ave40_Translate")->__('Verfication') ?></span></a></li>
+			</ul>
+		</div>
+        <div class="tab-main-content account-info" style="display: block;">
+            <div class="secu-main">
+
+                <?php
+                $points = Mage::getModel('customer/session')->getCustomer()->getData('points');
+                $points = $points ? $points : 0;
+                $rand = Mage::getModel('customer/session')->getData('avatar_rand');
+                ?>
+
+                <!-- v2.0修改头像 -->
+                <div  id="crop-avatar">
+                    <input type="hidden" id="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+                    <div class="user-info">
+                        <div class="user-head-upload" >
+                            <span>My Photo :</span>
+                            <img src="<?php echo Ave40_Api_Helper_FilesUpload::getCustomerAvatar() . "?$rand" ?>" alt="" class="person-my-avatar">
+                            <div class="change-avatar-btn avatar-view" data-original-title="" title="" id="change-avatar-btn">
+                                <?php echo Mage::helper("Ave40_Translate")->__('Change the image') ?>
+                            </div>
+                            <!-- rename popup box-->
+                            <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label"
+                                 role="dialog" tabindex="-1">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <form class="avatar-form" action="<?php echo '/ave40api/customer/uploadavatar/' ?>"
+                                              enctype="multipart/form-data" method="post">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">×</button>
+                                                <h4 class="modal-title" id="avatar-modal-label"><?php echo Mage::helper("Ave40_Translate")->__('Change Avatar') ?></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="avatar-body">
+                                                    <div class="avatar-upload">
+                                                        <input type="hidden" class="avatar-src" name="avatar_src">
+                                                        <input type="hidden" class="avatar-data" name="avatar_data">
+                                                        <label for="avatarInput"><?php echo Mage::helper("Ave40_Translate")->__('Local upload') ?></label>
+                                                        <input type="file" class="avatar-input" id="avatarInput" name="avatar_file">
+                                                        <span class="label label-warning ave40-error-msg"><?php echo Mage::helper("Ave40_Translate")->__('The upload file size can not be greater than 2M bytes') ?></span>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-9">
+                                                            <div class="avatar-wrapper"></div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="avatar-preview preview-lg"></div>
+                                                            <div class="avatar-preview preview-md"></div>
+                                                            <div class="avatar-preview preview-sm"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row avatar-btns">
+                                                        <div class="col-md-9">
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-primary rotate-left-btn iconfont icon-zuoxuanzhuan" data-method="rotate"
+                                                                        data-option="45" title="Rotate 45 degrees"></button>
+                                                            </div>
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-primary rotate-right-btn iconfont icon-youxuanzhuan" data-method="rotate"
+                                                                        data-option="-45" title="Rotate -45 degrees"></button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <button type="submit" class="btn btn-primary btn-block avatar-save"><?php echo Mage::helper("Ave40_Translate")->__('Done') ?>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo Mage::helper("Ave40_Translate")->__('Close') ?></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--  修改name email password  -->
+
+                <form action="" id="change-account-info-form">
+                    <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>">
+                    <div class="change-account-information">
+                        <div class="account-user-name">
+                            <p>Name:</p>
+                            <span class="account-user-firstname"><?php echo Mage::getSingleton('customer/session')->getCustomer()->getFirstname() ?></span>
+                            <span class="account-user-lastname"><?php echo Mage::getSingleton('customer/session')->getCustomer()->getLastname() ?></span>
+                            <i  class="toggle-title-btn change-user-name iconfont icon-bianji"></i>
+                            <div class="account-username-input-box toggle-module hide-item">
+                                <input type="text" data-name="firstname" class="change-firstname"  maxlength="10" value="<?php echo Mage::getSingleton('customer/session')->getCustomer()->getFirstname() ?>"  />
+                                <input type="text"  data-name="lastname" class="change-lastname" maxlength="10" value="<?php echo Mage::getSingleton('customer/session')->getCustomer()->getLastname() ?>" />
+                            </div>
+                        </div>
+                        <div class="account-user-email">
+                            <p>Email:</p>
+                            <div>
+                                <span><?= $customer->getData('email') ?></span>
+                            </div>
+                        </div>
+                        <div class="account-user-password">
+                            <p>Change Password:</p>
+                            <span>******</span>
+                            <i  class="toggle-title-btn  change-user-email iconfont icon-bianji"></i>
+                            <div class=" account-password-input-box toggle-module  current_password_is_show hide-item">
+                                <div class="change-input-box secu-input-box">
+                                    <input type="password"  data-name="password" placeholder="<?php echo Mage::helper("Ave40_Translate")->__('Set New Password') ?>" minlength="6" id="password"  >
+                                    <div class="input-tip-info"></div>
+                                    <input type="password"  data-name="confirmation" placeholder="<?php echo Mage::helper("Ave40_Translate")->__('Confirm Password') ?>" minlength="6">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="current_password-box hide">
+                            <h5>Please enter the current password:</h5>
+                            <input type="password"  data-name="current_password" placeholder="<?php echo Mage::helper("Ave40_Translate")->__('Your Current Password') ?>" minlength="6" >
+                        </div>
+                        <button type="button" class="change-account-info-save-btn hide">Save</button>
+                    </div>
+                </form>
+
+
+
+
+                <?php /*if ($customer->getData('phone')): */?><!--
+                    <div class="secu-phone ">
+                        <div class="curr-phone secu-change-main">
+                            <div class="secu-word"><?php /*echo Mage::helper("Ave40_Translate")->__('Phone') */?>:</div>
+                            <div class="curr-phone-info ">
+                                <span class="curr-phone-num currently"><?/*= $customer->getData('phone') */?></span>
+                                <a href="/customer/account" class="modify-btn on person-btn"></a>
+                            </div>
+                        </div>
+
+                    </div>
+                --><?php /*endif */?>
+            </div>
+
+        </div>
+		<div class="tab-main-content shipping-address-total hide" style="display: none;">
+			<div class="ship-address personal-ship-list">
+				<ul class="ship-address-list ave40-ship-list clearfix">
+					<?php $address_list = $customer->getAddressesCollection()->getItems(); ?>
+					<?php $primary_address = $customer->getPrimaryShippingAddress(); ?>
+					<?php $default_shipping_id = $primary_address ? $primary_address->getId() : null; ?>
+					<?php foreach ($address_list as $address_id => $address): ?>
+						<?php $address_id = $address->getId(); ?>
+
+                        <li class="person-ship-address-li ave40-ship-address-items ave40-default-address <?= $address_id == $default_shipping_id ? 'active' : '' ?> ave40-ship-item">
+                            <div class="ave40-ship-item-info">
+                                <div class="ave40-ship-item-top">
+                                    <span class="ave40-ship-item-name"><?= $address->getData('firstname') ?> <?= $address->getData('lastname') ?></span>
+                                    <span class="ave40-ship-item-action">
+                                        <input type="radio" <?= $address_id == $default_shipping_id ? 'checked="checked"' : '' ?>
+                                               name="address-radio-group" value="<?= $address_id ?>" class="address-radio" id="set-default-btn-<?= $address_id ?>">
+                                        <label for="set-default-btn-<?= $address_id ?>">
+                                            <i class="ship-default-select-icon iconfont icon-qizi_icon <?= $address_id == $default_shipping_id ? 'default-show' : '' ?>"
+                                               title="<?= $address_id == $default_shipping_id ? 'Your default address' : 'Set as the default address' ?>"></i>
+                                        </label>
+                                        <i class="ship-default-triangle-icon" style="<?= $address_id == $default_shipping_id ? 'display:block' : 'display:none' ?>" ></i>
+                                       <a href="?id=<?= $address_id ?>#address" class="edit ship-modify-btn iconfont icon-bianji" title="Edit"
+                                          address_id=<?= $address_id ?>></a>
+                                        <a href="javascript:" class="iconfont icon-shanchu del" title="Delete" address_id=<?= $address_id ?>>
+                                            <?php echo Mage::helper("Ave40_Translate")->__('') ?>
+                                        </a>
+
+                                        
+                                    </span>
+                                </div>
+                                <div class="ave40-ship-item-bottom">
+                                    <span>
+                                         T: <?php echo $address->getTelephone() ?><br>
+                                        <?php echo $address->getCity() ?>,<?php echo $address->getRegion() ?><br>
+                                        <?php echo implode("\n", $address->getStreet()) ?><br>
+                                        <?php echo $address->getPostcode() ?><br>
+
+                                    </span>
+                                </div>
+                            </div>
+
+                        </li>
+
+						<!--<li class="ship-address-li clearfix">
+							<div class="ship-address-box">
+								<label>
+									<span class="default-address <?/*= $address_id == $default_shipping_id ? 'default-on' : '' */?>">Default</span>
+									<input type="radio" <?/*= $address_id == $default_shipping_id ? 'checked="checked"' : '' */?>
+										   name="address-radio-group" value="<?/*= $address_id */?>" class="address-radio">
+									<span class="address-words">
+
+							</span>
+								</label>
+							</div>
+							<div class="ship-zip-box">
+								<p class="ship-zip-code"><?/*= $address->getData('postcode') */?></p>
+
+							</div>
+							<div class="ship-name-box">
+								<span class="ship-name"><?/*= $address->getData('firstname') */?> <?/*= $address->getData('lastname') */?></span>
+							</div>
+							<div class="ship-phone-box">
+								<p class="ship-phone"><?/*= $address->getData('telephone') */?></p>
+							</div>
+							<div class="operation-list">
+								<a href="?id=<?/*= $address_id */?>#address" class="edit" title="Edit"
+								   address_id=<?/*= $address_id */?>><span>Edit</span></a>
+								<a href="javascript:" class="del" title="Delete" address_id=<?/*= $address_id */?>><span><?php /*echo Mage::helper("Ave40_Translate")->__('Delete') */?></span></a>
+							</div>
+						</li>-->
+					<?php endforeach ?>
+
+				<?php if (empty($_GET['id'])): ?>
+
+                    <li class="add-address-btn ave40-ship-add-new-address ave40-ship-address-items ave40-ship-operate ave40-ship-item" data-value="">
+                        <div class="ave40-ship-add-new-address-btn ">
+                            <i class="iconfont icon-add"></i>
+                            <span>New Address</span>
+                        </div>
+                    </li>
+
+				<?php endif ?>
+                </ul>
+
+				<?= $this->getChildHtml('customer_address_edit') ?>
+			</div>
+		</div>
+        <div class="tab-main-content verification hide" style="display: none;">
+			<?php
+				/** @var Ave40_Base_Helper_Customer  $ave40CustomerHelper */
+				$ave40CustomerHelper = Mage::helper('ave40_base/customer')
+			?>
+            <?php if (!$ave40CustomerHelper->isWholesaleUser()): ?>
+
+                <!-- 未验证手机号 begin -->
+                <div class="verif-box unverified " >
+                    <div class="verif-one-way">
+                        <div class="verif-way-title">
+                            <span class=""><?php echo Mage::helper("Ave40_Translate")->__('Verify your Phone Number and enjoy our wholesale membership') ?></span>
+                            <a href="/new-user-guide.html" title="More questions? Click here! " class="mark-to-guide">?</a>
+                        </div>
+                        <div class="verifi-info">
+                            <form action="">
+                                <div class="location-box">
+                                    <label class="verifi-head-word"><?php echo Mage::helper("Ave40_Translate")->__('Select your location') ?></label>
+                                    <select name="country_id" id="verify_phone_country_id" class="verfi-location-select"
+                                            onchange="javascript:document.getElementById('phone_number').value=this.value;">
+                                        <?php $countryCollection = Mage::getModel('directory/country')->getCollection(); ?>
+                                        <?php foreach ($countryCollection as $country): ?>
+                                            <?php if (!$country->getPhonePrefix()) {
+                                                continue;
+                                            } ?>
+                                            <option value="+<?= $country->getPhonePrefix() ?>"><?= $country->getId() ?>
+                                                (+<?= $country->getPhonePrefix() ?>)  <?= $country->getName() ? ('-'.$country->getName()) : '' ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                                <div class="mobile-box clearfix">
+                                    <label class="verifi-head-word"><?php echo Mage::helper("Ave40_Translate")->__('Mobile Phone No.') ?></label>
+                                    <div class="verifi-send-verify">
+                                        <input type="tel" class="verfi-mobile-input" placeholder="Phone Number"
+                                               required="required" id="phone_number" minlength="5" value="<?= $customer->getPhone() ?>">
+                                        <div class="send-code">
+                                            <input type="text" id="phone_verify_code" placeholder="<?php echo Mage::helper("Ave40_Translate")->__('Verification Code') ?>"
+                                                   class="verifi-code-input">
+                                            <button type="button" class="verifi-btn send" data-sending-text="Sending" data-text="Send" data-time-unit="s" id="send_phone_code">
+                                                <?php echo Mage::helper("Ave40_Translate")->__('Send') ?>
+                                            </button>
+                                        </div>
+                                        <button type="button" id="phone_verify_btn" class="verifi-btn verify disable"
+                                                disabled="disabled"><?php echo Mage::helper("Ave40_Translate")->__('Verify') ?>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <p class="person-inquire-btn"><?php echo Mage::helper("Ave40_Translate")->__('Didn\'t receive the SMS') ?>? <a href="javascript:;" class="inquireNow-popup-btn"><?php echo Mage::helper("Ave40_Translate")->__('Click here') ?></a></p>
+                <!-- 未验证手机号 end -->
+            <?php else: ?>
+                <!-- 已验证手机号 begin -->
+                <div class="verified">
+
+                    <div class="verified-content">
+                        <img class="verified-banner" src="<?= $this->getSkinUrl('images/personal/verified.png') ?>" alt="">
+                        <div class="verified-info">
+                            <p >Up to $80 Off Your First Order</p>
+                            <p>Treat yourself to huge savings when you shop this special offer from Ave40!</p>
+                            <p>You will have the chance to win a <span style="font-family: opensans-semibold;">VIP Membership</span> and get the <span style="font-family: opensans-semibold">lowest Wholesale Price</span>.</p>
+                            <ul class="verified-coupon">
+                                <li>
+                                    <p><span>$16</span> OFF</p>
+                                    <p>OVER $200</p>
+                                    <p>CODE: <span class="verified-coupon-code">16OFFWS</span></p>
+                                </li>
+                                <li>
+                                    <p><span>$35</span> OFF</p>
+                                    <p>OVER $500</p>
+                                    <p>CODE: <span class="verified-coupon-code">35OFLS</span></p>
+                                </li>
+                                <li>
+                                    <p><span>$80</span> OFF</p>
+                                    <p>OVER $800</p>
+                                    <p>CODE: <span class="verified-coupon-code">80OFFSL</span></p>
+                                </li>
+                            </ul>
+                            <a href="https://www.ave40.com" title="SHOP NOW" class="ave40-yellow-btn">SHOP NOW</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 已验证手机号 end -->
+
+            <?php endif; ?>
+
+        </div>
+
+	</div>
+</div>
+
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery-1.12.1.min.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/cropper.min.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/bootstrap.min.js') ?>"></script>
+<script>
+    window.jq12 = $.noConflict(true);
+</script>
+<!-- 头像上传插件依赖bootstrap tooltip -->
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/personalCenter.js') ?>"></script>
+<script>
+    ~function () {
+        //释放$
+        // var jq12 = $.noConflict(true);
+        jQuery(function () {
+
+            (function (factory) {
+                if (typeof define === 'function' && define.amd) {
+                    // AMD. Register as anonymous module.
+                    define(['jquery'], factory);
+                } else if (typeof exports === 'object') {
+                    // Node / CommonJS
+                    factory(require('jquery'));
+                } else {
+                    // Browser globals.
+                    factory(jq12);
+                }
+            })(function ($) {
+
+                'use strict';
+
+                var console = window.console || {
+                    log: function () {
+                    }
+                };
+
+                function CropAvatar($element) {
+                    this.$container = $element;
+
+                    this.$avatarView = this.$container.find('.avatar-view');
+                    this.$avatar = this.$avatarView.siblings('img');
+                    this.$avatarModal = this.$container.find('#avatar-modal');
+                    this.$loading = this.$container.find('.loading');
+
+                    this.$avatarForm = this.$avatarModal.find('.avatar-form');
+                    this.$avatarUpload = this.$avatarForm.find('.avatar-upload');
+                    this.$avatarSrc = this.$avatarForm.find('.avatar-src');
+                    this.$avatarData = this.$avatarForm.find('.avatar-data');
+                    this.$avatarInput = this.$avatarForm.find('.avatar-input');
+                    this.$avatarSave = this.$avatarForm.find('.avatar-save');
+                    this.$avatarBtns = this.$avatarForm.find('.avatar-btns');
+
+                    this.$avatarWrapper = this.$avatarModal.find('.avatar-wrapper');
+                    this.$avatarPreview = this.$avatarModal.find('.avatar-preview');
+
+                    this.init();
+                }
+
+                CropAvatar.prototype = {
+                    constructor: CropAvatar,
+
+                    support: {
+                        fileList: !!$('<input type="file">').prop('files'),
+                        blobURLs: !!window.URL && URL.createObjectURL,
+                        formData: !!window.FormData
+                    },
+
+                    init: function () {
+                        this.support.datauri = this.support.fileList && this.support.blobURLs;
+
+                        if (!this.support.formData) {
+                            this.initIframe();
+                        }
+
+                        this.initTooltip();
+                        this.initModal();
+                        this.addListener();
+                    },
+
+                    addListener: function () {
+                        this.$avatarView.on('click', $.proxy(this.click, this));
+                        this.$avatarInput.on('change', $.proxy(this.change, this));
+                        this.$avatarForm.on('submit', $.proxy(this.submit, this));
+                        this.$avatarBtns.on('click', $.proxy(this.rotate, this));
+                    },
+
+                    initTooltip: function () {
+                        // this.$avatarView.tooltip({
+                        // 	placement: 'bottom'
+                        // });
+                    },
+
+                    initModal: function () {
+                        this.$avatarModal.modal({
+                            show: false
+                        });
+                    },
+
+                    initPreview: function () {
+                        var url = this.$avatar.attr('src');
+
+                        this.$avatarPreview.html('<img src="' + url + '">');
+                    },
+
+                    initIframe: function () {
+                        var target = 'upload-iframe-' + (new Date()).getTime();
+                        var $iframe = $('<iframe>').attr({
+                            name: target,
+                            src: ''
+                        });
+                        var _this = this;
+
+                        // Ready ifrmae
+                        $iframe.one('load', function () {
+
+                            // respond response
+                            $iframe.on('load', function () {
+                                var data;
+
+                                try {
+                                    data = $(this).contents().find('body').text();
+                                } catch (e) {
+                                    console.log(e.message);
+                                }
+
+                                if (data) {
+                                    try {
+                                        data = $.parseJSON(data);
+                                    } catch (e) {
+                                        console.log(e.message);
+                                    }
+
+                                    _this.submitDone(data);
+                                } else {
+                                    _this.submitFail('Image upload failed!');
+                                }
+
+                                _this.submitEnd();
+
+                            });
+                        });
+
+                        this.$iframe = $iframe;
+                        this.$avatarForm.attr('target', target).after($iframe.hide());
+                    },
+
+                    click: function () {
+                        this.$avatarModal.modal('show');
+                        this.initPreview();
+                    },
+
+                    change: function () {
+                        var files;
+                        var file;
+
+                        if (this.support.datauri) {
+                            files = this.$avatarInput.prop('files');
+
+                            if (files.length > 0) {
+                                file = files[0];
+
+                                if (this.isImageFile(file)) {
+                                    if (this.url) {
+                                        URL.revokeObjectURL(this.url); // Revoke the old one
+                                    }
+
+                                    this.url = URL.createObjectURL(file);
+                                    this.startCropper();
+                                }
+                            }
+                        } else {
+                            file = this.$avatarInput.val();
+
+                            if (this.isImageFile(file)) {
+                                this.syncUpload();
+                            }
+                        }
+                    },
+
+                    submit: function () {
+                        if (!this.$avatarSrc.val() && !this.$avatarInput.val()) {
+                            return false;
+                        }
+
+                        if (this.support.formData) {
+                            this.ajaxUpload();
+                            return false;
+                        }
+                    },
+
+                    rotate: function (e) {
+                        var data;
+
+                        if (this.active) {
+                            data = $(e.target).data();
+
+                            if (data.method) {
+                                this.$img.cropper(data.method, data.option);
+                            }
+                        }
+                    },
+
+                    isImageFile: function (file) {
+                        if (file.type) {
+                            return /^image\/\w+$/.test(file.type);
+                        } else {
+                            return /\.(jpg|jpeg|png|gif)$/.test(file);
+                        }
+                    },
+
+                    startCropper: function () {
+                        var _this = this;
+
+                        if (this.active) {
+                            this.$img.cropper('replace', this.url);
+                        } else {
+                            this.$img = $('<img src="' + this.url + '">');
+                            this.$avatarWrapper.empty().html(this.$img);
+                            this.$img.cropper({
+                                aspectRatio: 1,
+                                preview: this.$avatarPreview.selector,
+                                crop: function (e) {
+                                    var json = [
+                                        '{"x":' + e.x,
+                                        '"y":' + e.y,
+                                        '"height":' + e.height,
+                                        '"width":' + e.width,
+                                        '"rotate":' + e.rotate + '}'
+                                    ].join();
+
+                                    _this.$avatarData.val(json);
+                                }
+                            });
+
+                            this.active = true;
+                        }
+
+                        this.$avatarModal.one('hidden.bs.modal', function () {
+                            _this.$avatarPreview.empty();
+                            _this.stopCropper();
+                        });
+                    },
+
+                    stopCropper: function () {
+                        if (this.active) {
+                            this.$img.cropper('destroy');
+                            this.$img.remove();
+                            this.active = false;
+                        }
+                    },
+
+                    ajaxUpload: function () {
+                        var url = this.$avatarForm.attr('action');
+                        var data = new FormData(this.$avatarForm[0]);
+                        var _this = this;
+
+                        try {
+                            if(this.$avatarInput[0].files[0].size > 2*1024*1024) {
+                                Ave40MessageBox.alertWarning(this.$avatarModal.find('.ave40-error-msg').html(), {autoClose:true});
+                                return false;
+                            }
+                        } catch(e) {}
+
+
+                        $.ajax(url, {
+                            type: 'post',
+                            data: data,
+                            dataType: 'json',
+                            processData: false,
+                            contentType: false,
+
+                            beforeSend: function () {
+                                _this.submitStart();
+                            },
+
+                            success: function (data) {
+                                _this.submitDone(data);
+                            },
+
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                _this.submitFail(textStatus || errorThrown);
+                            },
+
+                            complete: function () {
+                                _this.submitEnd();
+                            }
+                        });
+                    },
+
+                    syncUpload: function () {
+                        this.$avatarSave.click();
+                    },
+
+                    submitStart: function () {
+                        this.$loading.fadeIn();
+                    },
+
+                    submitDone: function (json) {
+                        if (json.error) {
+                            Ave40MessageBox.alertError(json.message ? json.message : 'Failed to response');
+                        } else {
+                            this.uploaded = true;
+                            this.$avatarSrc.val(json.message);
+                            this.$avatarForm.get(0).reset();
+                            this.$avatar.attr('src', json.data.avatar);
+                            $('.user-head-img img').attr('src', json.data.avatar);
+                            this.cropDone();
+                            $('.user-head-upload .ensure-btn').click();
+                        }
+                    },
+
+                    submitFail: function (msg) {
+                        Ave40MessageBox.alertError(msg);
+                    },
+
+                    submitEnd: function () {
+                        this.$loading.fadeOut();
+                    },
+
+                    cropDone: function () {
+                        // this.$avatarForm.get(0).reset();
+                        // this.$avatar.attr('src', this.url);
+                        this.stopCropper();
+                        this.$avatarModal.modal('hide');
+                    },
+
+                    alert: function (msg) {
+                        var $alert = [
+                            '<div class="alert alert-danger avatar-alert alert-dismissable">',
+                            '<button type="button" class="close" data-dismiss="alert">&times;</button>',
+                            msg,
+                            '</div>'
+                        ].join('');
+
+                        this.$avatarUpload.after($alert);
+                    }
+                };
+
+                $(function () {
+                    return new CropAvatar($('#crop-avatar'));
+                });
+
+            });
+        });
+
+//		jQuery('.up-load-icon').off('mouseout');
+    }();
+    /*up load head img*/
+</script>
+
+
+<?php endif; ?>

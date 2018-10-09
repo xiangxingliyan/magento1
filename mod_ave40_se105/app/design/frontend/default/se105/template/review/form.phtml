@@ -1,0 +1,125 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="form-add product-review-form">
+    <div><?php echo Mage::helper("Ave40_Translate")->__('Write a Review') ?></div>
+    <?php if ($this->getAllowWriteReviewFlag()): ?>
+        <form action="<?php echo $this->getAction()?>" type="post" id="review-form">
+            <?php echo $this->getBlockHtml('formkey'); ?>
+        <fieldset>
+            <?php echo $this->getChildHtml('form_fields_before')?>
+            <?php if( $this->getRatings() && $this->getRatings()->getSize()): ?>
+                <span id="input-message-box"></span>
+                <div class="left">Score: </div>
+                <ul class="reviews-rating">
+                    <li class="" title="one star" data-star="1"></li>
+                    <li class="" title="two star" data-star="2"></li>
+                    <li class="" title="three star" data-star="3"></li>
+                    <li class="" title="four star" data-star="4"></li>
+                    <li class="" title="five star" data-star="5"></li>
+                </ul>
+                <script type="text/javascript">
+                    ~function ($) {
+                        $(function () {
+                            $('.reviews-rating li').click(function(){
+                                if($(this).hasClass('hover')){
+                                    if ($(this).data('star') > 1) {
+                                        $(".validate-rating").val($(this).data('star')-1);
+                                        $(this).removeClass('hover');
+                                    } else {
+                                        $(".validate-rating").val(1);
+                                    }
+                                        $(this).nextAll().removeClass('hover');
+                                }
+                                else{
+                                    $(".validate-rating").val($(this).data('star'));
+                                    $(this).prevAll().addClass("hover");
+                                    $(this).addClass("hover");
+                                }
+                            });
+                        });
+                    }(jQuery)
+                </script>
+                <div class="clearfix"></div>
+                <input type="hidden" name="id"  value="<?php echo $this->getProductInfo()->getId();?>" />
+                <input type="hidden" name="ratings[4]" class="validate-rating" value="" />
+                <input type="text" name="nickname" id="nickname_field" class="input-text required-entry" value="<?php echo $this->escapeHtml($data->getNickname()) ?>" hidden/>
+                <script type="text/javascript">decorateTable('product-review-table')</script>
+            <?php endif; ?>
+                <ul class="form-list">
+                    <li>
+                        <div>Review: </div>
+                        <div class="input-box">
+                            <textarea name="detail" id="review_field" cols="5" rows="3" class="required-entry" maxlength="200"> </textarea>
+                        </div>
+                    </li>
+                </ul>
+            </fieldset>
+            <div class="buttons-set">
+                <label title="<?php echo Mage::helper("Ave40_Translate")->__('Submit Review') ?>" class="gray-border-button right review-button"><span><span><?php echo Mage::helper("Ave40_Translate")->__('Submit') ?></span></span></label>
+            </div>
+    </form>
+    <script type="text/javascript">
+
+    //<![CDATA[
+        var dataForm = new VarienForm('review-form');
+        Validation.addAllThese(
+        [
+               ['validate-rating', '<?php echo Mage::helper("Ave40_Translate")->__('Please select one of each of the ratings above') ?>', function(v) {
+                    var trs = $('product-review-table').select('tr');
+                    var inputs;
+                    var error = 1;
+
+                    for( var j=0; j < trs.length; j++ ) {
+                        var tr = trs[j];
+                        if( j > 0 ) {
+                            inputs = tr.select('input');
+
+                            for( i in inputs ) {
+                                if( inputs[i].checked == true ) {
+                                    error = 0;
+                                }
+                            }
+
+                            if( error == 1 ) {
+                                return false;
+                            } else {
+                                error = 1;
+                            }
+                        }
+                    }
+                    return true;
+                }]
+        ]
+        );
+    //]]>
+    </script>
+    <?php else: ?>
+    <p class="review-nologged" id="review-form">
+        <?php echo Mage::helper("Ave40_Translate")->__('Only registered users can write reviews. Please, <a href="%s">log in</a> or <a href="%s">register</a>', $this->getLoginLink(), Mage::helper('customer')->getRegisterUrl()) ?>
+    </p>
+    <?php endif ?>
+</div>

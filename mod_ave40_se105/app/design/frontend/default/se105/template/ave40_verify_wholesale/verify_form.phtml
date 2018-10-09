@@ -1,0 +1,219 @@
+<!--
+    未验证用户验证弹窗模块
+ -->
+
+<div class="verify-wholesale-user-modal ave40-common-modal esc-pop clearfix" id="verify-wholesale-user-modal">
+    <span class="ave40-common-close-btn iconfont icon-remove"></span>
+    <div class="verify-wholesale-l">
+        <div class="verify-w-info">
+            <h2 class="verify-w-title">Rapid authentication</h2>
+            <div class="verify-wholesale-enjoy">
+                <p>Verify your cell phone number</p>
+                <p>to become a wholesaler.</p>
+            </div>
+        </div>
+        <img src="<?= $this->getSkinUrl('images/v2/join.png') ?>" alt="">
+    </div>
+    <div class="verify-wholesale-r">
+        <div class="verify-wholesale-r-content verify-wholesale-module">
+            <h2 class="verify-w-title">Modify information</h2>
+            <div class="verify-wholesale-user-box">
+                <form id="verify-wholesale-user-form">
+                    <div class="location-box">
+                        <label class="verifi-head-word"><?php echo Mage::helper("Ave40_Translate")->__('Select your location :') ?></label>
+                        <select name="country_id" id="country" >
+                            <?php $countryCollection = Mage::getModel('directory/country')->getCollection(); ?>
+                            <?php foreach ($countryCollection as $country): ?>
+                                <?php if (!$country->getPhonePrefix()) {
+                                    continue;
+                                } ?>
+                                <option value="+<?= $country->getPhonePrefix() ?>"><?= $country->getId() ?>
+                                    (+<?= $country->getPhonePrefix() ?>
+                                    ) <?= $country->getName() ? ('-' . $country->getName()) : '' ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="mobile-box clearfix">
+                        <label class="verifi-head-word"><?php echo Mage::helper("Ave40_Translate")->__('Mobile Phone No :') ?></label>
+                        <div class="tel-send-box ave40-form-list">
+                            <input type="text" name="phone_subfix" id="phone"
+                                   required="required"
+                                   placeholder="<?php echo Mage::helper("Ave40_Translate")->__('') ?>"/>
+                            <input type="hidden" name="phone" id="phone_val"
+                                   placeholder="<?php echo Mage::helper("Ave40_Translate")->__('') ?>"/>
+                            <button type="button" data-sending-text="Sending" data-text="Send" data-time-unit="s"
+                                    class="send"
+                                    id="send_phone_code"><?php echo Mage::helper("Ave40_Translate")->__('Send') ?></button>
+                        </div>
+                        <div class="send-code-box ave40-form-list">
+                            <label class="verifi-head-word"><?php echo Mage::helper("Ave40_Translate")->__('Verification Code :') ?></label>
+                            <input type="text" id="phone_verify_code"
+                                   required="required"
+                                   class="verifi-code-input">
+                        </div>
+                        <div class="verify-btn-box ave40-form-list">
+                            <button type="submit" id="verify-wholesale-submit-btn" class="verify-wholesale-btn btn"
+                                    onclick="_gaq.push(['_trackEvent','CreateAccount_button','Click','CreateAccount_button']);">
+                                <?php if (isset($_GET['platform'])): ?>
+                                    <?php echo Mage::helper("Ave40_Translate")->__('Done') ?>
+                                <?php else: ?>
+                                    <?php echo Mage::helper("Ave40_Translate")->__('Click to Register') ?>
+                                <?php endif ?>
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+        ~function ($) {
+            $(function () {
+            	ave40.showWholesaleUserVerifyWindow = function() {
+					$('#verify-wholesale-user-modal').showAve40PopupBox();
+				};
+            	
+                $(".no_verification_submit").on('click', function () {
+                    $('#verify-wholesale-user-modal').showAve40PopupBox();
+                });
+
+                $('#verify-wholesale-user-form #phone').blur(function () {
+                    $('#phone_val').val(
+                        $('#country').val() + $('#phone').val()
+                    );
+                });
+
+                $('#verify-wholesale-user-form #country').change(function () {
+                    $('#phone_val').val(
+                        $('#country').val() + $('#phone').val()
+                    );
+                });
+
+                $('#verify-wholesale-user-form #send_phone_code').click(function () {
+                    var phoneval = $('#phone_val').val();
+                    var phone = $('#phone').val();
+
+                    if (phone.length == 0) {
+                        Ave40MessageBox.alertError('Phone number is required');
+                        return;
+                    }
+
+                    if (!/\+[0-9]+/.test(phoneval)) {
+                        Ave40MessageBox.alertError('Malformed phone number');
+                        return;
+                    }
+
+                    var thiselm = $(this);
+                    thiselm.attr('disabled', 'disabled').html(thiselm.data('sendingText'));
+
+                    if (thiselm[0].intervalTimer) {
+                        clearInterval(thiselm[0].intervalTimer);
+                    }
+
+                    ave40.ajaxGet('/ave40api/customer/sendSmsCode?phone=' + encodeURIComponent(phoneval), null, function () {
+                        if (this.ok) {
+                            thiselm[0].intervalTimer = setInterval((function (elm) {
+                                return function () {
+                                    if (!elm.timecount) {
+                                        elm.timecount = 1
+                                    } else {
+                                        elm.timecount++;
+                                    }
+
+                                    if (elm.timecount > 60) {
+                                        clearInterval(elm.intervalTimer);
+                                        elm.timecount = 0;
+                                        elm.intervalTimer = null;
+                                        $(elm).html($(elm).data('text')).removeAttr('disabled');
+                                        return;
+                                    }
+
+                                    $(elm).html((60 - elm.timecount) + $(elm).data('timeUnit'));
+                                }
+                            })(thiselm[0]), 1000);
+                            Ave40MessageBox.alertSuccess(this.message);
+                        } else {
+                            thiselm.removeAttr('disabled').html(thiselm.data('text'));
+                            Ave40MessageBox.alertError(this.message);
+                        }
+                    });
+                });
+
+                
+                $('#verify-wholesale-user-form').validate({
+                    onfocusout: false,
+                    errorClass: 'mess-error-tip',
+                    errorElement: "div",
+                    errorPlacement: function (error, element) {
+                        error.appendTo(element.next('.input-tip-info'));
+                    },
+                    submitHandler: function (form) {
+                        ave40.showLoading('Please wait...');
+                        $("#verify-wholesale-user-modal").closeAve40PopupBox();
+                        $.ajax({
+                            url: '/sms/index/save',
+                            type: 'post',
+                            data: {
+                                ajax: 1,
+                                phone_number: $('#phone_val').val(),
+                                code: $('#phone_verify_code').val()
+                            },
+                            dataType: 'json',
+                            success: function (result) {
+                                ave40.closeLoading();
+                                if (result.errno) {
+                                    Ave40MessageBox.alertError(result.errmsg);
+                                    $('#verify-wholesale-user-modal').showAve40PopupBox();
+                                } else {
+                                    $('#verify-wholesale-user-modal').closeAve40PopupBox();
+                                    var _message = Translator.translate('You can check our wholesale prices on product page now!');
+                                    Ave40MessageBox.alertSuccess(result.errmsg + _message);
+									location.reload();
+                                }
+
+                            },
+                            error: function () {
+                                ave40.closeLoading();
+                            }
+                        });
+                    }
+                });
+
+
+                /*$('#verify-wholesale-submit-btn').click(function () {
+                    ave40.showLoading('Please wait...');
+                    $("#verify-wholesale-user-modal").closeAve40PopupBox();
+                    $.ajax({
+                        url: '/sms/index/save',
+                        type: 'post',
+                        data: {
+                            ajax: 1,
+                            phone_number: $('#phone_val').val(),
+                            code: $('#phone_verify_code').val()
+                        },
+                        dataType: 'json',
+                        success: function (result) {
+                            ave40.closeLoading();
+                            if (result.errno) {
+                                Ave40MessageBox.alertError(result.errmsg);
+                                $('#verify-wholesale-user-modal').showAve40PopupBox();
+                            } else {
+                                var _message = Translator.translate('You can check our wholesale prices on product page now!');
+                                Ave40MessageBox.alertSuccess(result.errmsg + _message);
+
+                            }
+
+                        },
+                        error: function () {
+                            ave40.closeLoading();
+                        }
+                    });
+                });*/
+            });
+        }(jQuery)
+    </script>

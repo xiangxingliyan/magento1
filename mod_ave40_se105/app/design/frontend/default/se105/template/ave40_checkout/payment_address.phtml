@@ -1,0 +1,24 @@
+<?php
+    $orderInfo = $this->getOrderInfo();
+    $billingAddress = $orderInfo['billingAddress'];
+?>
+
+<div class="shipping-address">
+    <h3 class="pay-info-title"><span>Shipping Address</span></h3>
+    <fieldset class="ship-address-info-content cart-toggle-module">
+        <ul class="form-list ave40-ship-list">
+            <li class="ave40-ship-address-items active ave40-ship-item">
+                <div class="ave40-ship-item-top">
+                    <span><?php echo $billingAddress['firstname']; ?></span><span><?php echo $billingAddress['lastname']; ?></span>
+                </div>
+                <div class="ave40-ship-item-bottom">
+                    T:  <?php echo $billingAddress['telephone']; ?><br />
+                    <?php echo $billingAddress['city']; ?> <?php echo $billingAddress['region']; ?><br />
+                    <?php echo $billingAddress['country_id']; ?> <?php echo $billingAddress['street']; ?><br />
+                    <?php echo $billingAddress['postcode']; ?>
+
+                </div>
+            </li>
+        </ul>
+    </fieldset>
+</div>

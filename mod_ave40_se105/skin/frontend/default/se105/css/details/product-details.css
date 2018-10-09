@@ -1,0 +1,344 @@
+/*  Bulk choice */
+.attr_item_color_block {
+    width: 28px;
+    height: 28px;
+    border-radius: 2px;
+    border: solid 1px #5d5d5d;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.attr_item.attr_item_color {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.attr_item.attr_item_version, .attr_item.attr_item_mm {
+    padding: 5px 10px;
+    border: 1px solid #929292;
+    border-radius: 2px;
+    margin-right: 10px;
+}
+
+.bulk_qty_input {
+    width: 63px;
+    height: 32px;
+    border-radius: 4px;
+    border: solid 1px #5d5d5d;
+    text-align: center;
+    padding-left: 0;
+}
+
+.bulk-choice-col {
+    color: #5d5d5d;
+}
+
+.parameter .bulk-choice-col .words {
+    display: block;
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #bebebe;
+}
+
+.stock_status.out_of_stock {
+    color: #aaa;
+}
+
+.stock_status.pre_order {
+    color: #e10b0b;
+}
+
+.bulk-choice-col .table_mode .cell_3 {
+    text-align: center;
+    width: 13%;
+}
+
+.bulk-choice-col .table_mode .table_tr {
+    border-bottom: 1px solid #bebebe;
+}
+
+.bulk-choice-col .table_header.table_tr{
+    margin-right: 20px;
+}
+
+.bulk-choice-col .table_header [class*="cell_"] {
+    color: #000;
+    font-size: 18px;
+    padding: 14px 0 18px;
+}
+
+.bulk-choice-col .table_header .cell_1 {
+    text-indent: 15%;
+}
+
+.bulk-choice-col .table_mode .cell_1 {
+    width: 55%;
+    padding-left: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.bulk-choice-col .table_mode .cell_2 {
+    width: 18%;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.bulk-choice-col .table_mode .cell_3 {
+    width: 13%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.bulk-choice-col .table_mode .cell_4 {
+    text-align: center;
+    width: 14%;
+}
+
+.bulk-choice-col .table_tr:last-child {
+    border: none;
+}
+
+.bulk-choice-col .price {
+    color: #5d5d5d;
+}
+
+.bulk-choice-col .table_tr:hover:not(.table_header), .bulk-choice-col .table_tr.selected {
+    background-color: #ededed;
+
+}
+
+.bulk-choice-operating {
+    background-color: #ededed;
+    padding: 14px 20px;
+    margin-top: 15px;
+}
+
+.bulk-choice-calc {
+    font-size: 16px;
+    color: #000;
+}
+
+.bulk-choice-operating .bulk-choice-action {
+    float: left;
+    width: 32%;
+}
+
+.bulk-choice-operating .bulk-choice-calc {
+    float: left;
+    width: 68%;
+}
+
+.bulk-choice-calc > div {
+    float: left;
+    width: 50%;
+}
+
+.bulk-choice-calc > div > div {
+    height: 40px;
+    line-height: 40px;
+}
+
+.bulk-choice-operating .detail-To-Wish {
+    height: 40px;
+    line-height: 40px;
+    margin-top: 10px;
+}
+
+.bulk-add-to-wishlist a {
+    font-size: 14px;
+    color: #000;
+}
+
+.bulk-calc-Current, .bulk-calc-total {
+    margin-top: 10px;
+}
+
+.bulk-choice-col .table_mode .cell_1 > span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.detail-To-Wish .add-to-wishlist:hover span {
+    color: #e10b0b;
+}
+
+.bulk-choice-calc span:first-child {
+    margin-right: 10px;
+}
+
+.bulk-choice-col .table_body {
+    max-height: 284px;
+    overflow: auto;
+}
+
+.bulk-choice-list{
+    overflow: auto;
+}
+
+.parameter .wholesale-price .words, .wholesale-price-list {
+    float: left;
+}
+
+.wholesale-price-list {
+    width: calc(100% - 100px);
+}
+
+.wholesale-price-list .wholesale-price-info {
+    position: relative;
+    min-width: 25%;
+}
+
+.wholesale-price-content {
+    float: left;
+}
+
+.wholesale-price-box {
+    width: 61px;
+    height: 41px;
+    line-height: 39px;
+    display: block;
+    color: #333;
+    margin-bottom: 12px;
+    font-size: 14px;
+    background: url("../../images/details/wholesale-price-icon.png") no-repeat center bottom;
+}
+
+.wholesale-price-info .progress_bar {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #d5d5d5;
+    right: calc(100% - 33px);
+    top: 45px;
+}
+
+.wholesale-price-info .progress_bar:before {
+    content: '';
+    right: -3px;
+    position: absolute;
+    top: -2px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #d5d5d5;
+    z-index: 2;
+}
+
+.wholesale-price-info:last-child .progress_bar:after {
+    content: '';
+    right: -3px;
+    position: absolute;
+    top: -2px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    z-index: 2;
+    background-color: #d5d5d5;
+}
+
+.progress_bar .progress_bar_dots {
+    border-radius: 50%;
+    background-color: rgb(213, 213, 213);
+    opacity: 0.459;
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    right: -5px;
+    top: -4px;
+    z-index: 1;
+}
+
+.wholesale-price-list .wholesale-price-info:first-child .progress_bar {
+    width: 0;
+}
+
+.wholesale-price-info.on .progress_bar, .wholesale-price-info.on .progress_bar:after, .wholesale-price-info.on .progress_bar:before,
+.wholesale-price-info.path .progress_bar,.wholesale-price-info.path .progress_bar:after, .wholesale-price-info.path .progress_bar:before{
+    background: #f84949;
+}
+
+.wholesale-price-info.on .progress_bar .progress_bar_dots,.wholesale-price-info.path .progress_bar .progress_bar_dots {
+    background-color: rgba(248, 73, 73, 0.46);
+}
+
+.parameter .wholesale-price .words{
+    margin-top: 20px;
+}
+
+.wholesale-price {
+    margin-top: 5px;
+}
+
+.msrp-price-info{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.arrival-date-col .date-box{
+    font-size: 16px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.msrp-discount-percent{
+    margin-left: 30px;
+    font-size: 16px;
+    color: #000;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.msrp-discount-percent span:last-child{
+    font-family: opensans-bold;
+    color: #e10b0b;
+    margin-left: 10px;
+}
+
+.coming-soon-product-tips{
+    text-align: center;
+    margin-top: 0.8rem;
+}
+
+.coming-soon-product-tips h2{
+    font-size: 24px;
+    color: #e10b0b;
+    margin: 0.3rem 0 0.2rem;
+}
+
+.coming-soon-product-tips p{
+    font-size: 14px;
+    color: #777;
+}
+
+.simple-product-sku .text{
+    display: inline-block;
+    vertical-align: sub;
+    font-size: 15px;
+}
+
+.details_twenty_four_hours_label{
+    display: inline-block;
+    background: #3475eb;
+    font-family: opensans-semibold;
+    padding: 0 5px;
+    border-radius: 3px;
+    color: #fff;
+    margin-right: 5px;
+}
+
+.details_twenty_four_hours_label span{
+    font-size: 13px;
+}
+
+
+.goods-info .free_shipping_label{
+    margin-left: 20px;
+    vertical-align: sub;
+}

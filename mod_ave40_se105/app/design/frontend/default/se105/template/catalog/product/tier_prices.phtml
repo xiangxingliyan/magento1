@@ -1,0 +1,28 @@
+<?php
+$product = $this->getProduct();
+$tierPrices = $this->getTierPrices();
+/** @var Mage_Core_Helper_Data $core */
+$core = Mage::helper('core');
+?>
+
+<?php if(count($tierPrices) > 0): ?>
+<div class="wholesale-price clearfix">
+    <span class="words"><?php echo Mage::helper("Ave40_Translate")->__('Wholesale Prices:') ?></span>
+    <ul class="wholesale-price-list ">
+        <?php foreach ($tierPrices as $i => $price): ?>
+            <li class="wholesale-price-info">
+                <div class="wholesale-price-content">
+                    <span class="wholesale-price-box">
+                        $<span id="product_tier_price_value_<?php echo $price['price_id'] ?>"><?php echo round($price['price'], 2) ?></span>
+                    </span>
+                    <span class="wholesale-qty-box">
+                        <span><?php echo $price['price_qty'] ?></span>&nbsp;+<br />
+                    </span>
+                </div>
+                <span class="progress_bar"><i class="progress_bar_dots"></i></span>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+
+</div>
+<?php endif; ?>

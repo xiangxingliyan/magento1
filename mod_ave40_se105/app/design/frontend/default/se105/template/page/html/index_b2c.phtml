@@ -1,0 +1,120 @@
+<?php
+Mage::register('ave40_is_in_home_route', true);
+?>
+<div class="homepage-banner-box">
+    <div class="home-banner-main home-banner-b2c swiper-container swiper-container-home-banner top-slide-show">
+        <ul class="home-banner swiper-wrapper">
+            <?php foreach (ave40_sitedata('home/2c/slide_show') as $row): ?>
+
+                <li class="swiper-slide" data-swiper-autoplay="">
+                    <a href="<?php echo $row['url'] ?>" title="<?php echo htmlentities($row['title']) ?>">
+                        <img alt="<?php echo htmlentities($row['title']) ?>"
+                             src="<?php echo $row['image'] ?>"/>
+                    </a>
+                </li>
+
+            <?php endforeach; ?>
+        </ul>
+
+        <div class="swiper-pagination banner-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="<?= $this->getSkinUrl('css/v2/index_b2c_new.css') ?>">
+
+
+<div class="b2c_content w-1200">
+
+    <div class="showcase-box img-hover-opacity clearfix">
+        <ul class="showcase-classify-banner">
+            <li class="">
+                <a href="<?php echo ave40_sitedata('home/2c/image_link/pic01/url') ?>" onclick="_gaq.push(['_trackEvent','banner','Click','new-arrivals']);">
+                    <img src="<?php echo ave40_sitedata('home/2c/image_link/pic01/src', $this->getSkinUrl('images/v2/showcase-01.png') ) ?>" alt="<?php echo ave40_sitedata('home/2c/image_link/pic01/title') ?>">
+                    <p class="showcase-title"><span><?php echo ave40_sitedata('home/2c/image_link/pic01/button_text', 'Button Text') ?></span></p>
+                </a>
+            </li>
+            <li class="">
+				<a href="<?php echo ave40_sitedata('home/2c/image_link/pic02/url') ?>" onclick="_gaq.push(['_trackEvent','banner','Click','sales']);">
+					<img src="<?php echo ave40_sitedata('home/2c/image_link/pic02/src', $this->getSkinUrl('images/v2/showcase-02.png') ) ?>" alt="<?php echo ave40_sitedata('home/2c/image_link/pic02/title') ?>">
+					<p class="showcase-title"><span><?php echo ave40_sitedata('home/2c/image_link/pic02/button_text', 'Button Text') ?></span></p>
+				</a>
+            </li>
+
+        </ul>
+        <ul class="showcase-product-banner">
+            <li class="">
+				<a href="<?php echo ave40_sitedata('home/2c/image_link/pic03/url') ?>" onclick="_gaq.push(['_trackEvent','banner','Click','tpd-products']);">
+					<img src="<?php echo ave40_sitedata('home/2c/image_link/pic03/src', $this->getSkinUrl('images/v2/showcase-04.png') ) ?>" alt="<?php echo ave40_sitedata('home/2c/image_link/pic03/title') ?>">
+					<p class="showcase-title"><span><?php echo ave40_sitedata('home/2c/image_link/pic03/button_text', 'Button Text') ?></span></p>
+				</a>
+            </li>
+            <li class="">
+				<a href="<?php echo ave40_sitedata('home/2c/image_link/pic04/url') ?>" onclick="_gaq.push(['_trackEvent','banner','Click','exclusive ']);">
+					<img src="<?php echo ave40_sitedata('home/2c/image_link/pic04/src', $this->getSkinUrl('images/v2/showcase-05.png') ) ?>" alt="<?php echo ave40_sitedata('home/2c/image_link/pic04/title') ?>">
+					<p class="showcase-title"><span><?php echo ave40_sitedata('home/2c/image_link/pic04/button_text', 'Button Text') ?></span></p>
+				</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="floor-ad-box img-hover-opacity">
+        <a href="<?php echo ave40_sitedata('home/2c/ad/ad01/url') ?>">
+            <img src="<?php echo ave40_sitedata('home/2c/ad/ad01/src', $this->getSkinUrl('images/v2/floor-ad-01.png')) ?>" alt="<?php echo ave40_sitedata('home/2c/ad/ad01/title') ?>" pos="ad01">
+        </a>
+    </div>
+
+	<!-- B2c new Arrivals 楼层 -->
+	<div class="featured-products">
+        <h2 class="module-title"><span class="title"><?php echo ave40_sitedata('home/2c/f01/title', 'Feature Products') ?></span></h2>
+        <div class="featured-products-list">
+            <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                ->setTemplate('cms/product-items.phtml')
+                ->setData('categories',ave40_sitedata('home/2c/f01/category_id', 59))
+                ->setData('sort', 'e.entity_id desc')
+                ->setData('image_size', '230,230')
+                ->setData('item_limit', '8')
+                ->setData('mouse_over_tools', '0')->toHtml() ?>
+        </div>
+    </div>
+
+	<!-- B2c Hot Products 楼层 -->
+	<div class="home-best-seller">
+		<h2 class="module-title"><span class="title"><?php echo ave40_sitedata('home/2c/f02/title', 'Feature Products') ?></span></h2>
+		<div class="home-best-seller-content clearfix">
+			<div class="home-best-seller-banner">
+				<a href="<?php  echo ave40_sitedata('home/2c/f02/left_picture_url') ?>" title="<?php  echo ave40_sitedata('home/2c/f02/left_picture_title') ?>">
+					<img src="<?php echo ave40_sitedata('home/2c/f02/left_picture') ?>" alt="<?php  echo ave40_sitedata('home/2c/f02/left_picture_title') ?>"/>
+				</a>
+			</div>
+			<div class="homeb2b-best-seller-ad">
+				<a href="<?php echo ave40_sitedata('home/2c/f02/top_picture_url') ?>" title="<?php echo ave40_sitedata('home/2c/f02/top_picture_title') ?>">
+					<img src="<?php echo ave40_sitedata('home/2c/f02/top_picture') ?>" alt="<?php echo ave40_sitedata('home/2c/f02/top_picture_title') ?>"/>
+				</a>
+			</div>
+			<div class="home-best-seller-product ">
+                <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/product-items.phtml')->setData('categories', ave40_sitedata('home/2c/f02/category_id'))->setData('sort', 'e.entity_id desc')->setData('item_limit', '3')->setData('image_size', '230,230')->setData('mouse_over_tools', '0')->toHtml() ?>
+			</div>
+		</div>
+	</div>
+
+	<!-- B2c sale 楼层 -->
+	<div class="featured-products">
+		<h2 class="module-title"><span class="title"><?php echo ave40_sitedata('home/2c/f03/title', 'Feature Products') ?></span></h2>
+		<div class="featured-products-list">
+            <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                ->setTemplate('cms/product-items.phtml')
+                ->setData('categories',ave40_sitedata('home/2c/f03/category_id', 59))
+                ->setData('sort', 'e.entity_id desc')
+                ->setData('image_size', '230,230')
+                ->setData('item_limit', '8')
+                ->setData('mouse_over_tools', '0')->toHtml() ?>
+		</div>
+	</div>
+
+	<!-- 品牌轮播 -->
+    <?php echo Mage::app()->getLayout()->createBlock('core/template')->setTemplate('cms/home-brands-carousel.phtml')->toHtml() ?>
+
+</div>
+

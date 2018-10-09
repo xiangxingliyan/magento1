@@ -1,0 +1,120 @@
+<?php
+/**
+ * 产品详情页面批发用户bulk choice
+ * @var Ave40_Catalog_Block_Product_View $thisBlock
+ * @var Mage_Catalog_Model_Product $product;
+ */
+$product = $thisBlock->getProduct();
+?>
+<?php if ($thisBlock->isConfigurableProduct()): ?>
+    <?php $_attributes = $thisBlock->getProductAttributes(); ?>
+	<?php /** @var $_attribute */ ?>
+    <?php foreach ($_attributes as $_attribute): ?>
+		<div class="color clearfix attributeset" attribute="<?php echo $_attribute->getProductAttribute()->getAttributeCode() ?>">
+			<span class="words">
+				<?php echo $_attribute->getProductAttribute()->getFrontendLabel() ?>:
+			</span>
+			<div class="color-list">
+				<ul class="hidden">
+                    <?php foreach ($_attribute['prices'] as $price): ?>
+						<li class="color-list-data">
+							<span id="attrvalue_<?= $_attribute->getAttributeId() ?>_<?= $price['value_index'] ?>"
+								  data-label="<?php echo $_attribute->getId() . '_' . $price['value_index'] ?>"
+								  data-json='<?php echo json_encode($price) ?>'
+								  data-attribute-id='<?php echo $_attribute->getAttributeId() ?>'
+								  class="listBox"
+								  attribute_id="<?= $_attribute->getAttributeId() ?>"
+								  value="<?= $price['value_index'] ?>">
+								<?= $price['store_label'] ?>
+							</span>
+						</li>
+                    <?php endforeach ?>
+				</ul>
+				<select class="attribute-select-control" data-super-id="<?php echo $_attribute->getData('product_super_attribute_id') ?>"
+						data-attribute-id="<?= $_attribute->getAttributeId() ?>"
+						data-attribute-code="<?= $_attribute->getProductAttribute()->getAttributeCode() ?>">
+					<option value="">Choose an option..</option>
+                    <?php foreach ($_attribute['prices'] as $price): ?>
+						<option class="color-list-data"  value="<?= $price['value_index'] ?>"><?= $price['store_label'] ?></option>
+                    <?php endforeach ?>
+				</select>
+			</div>
+			<input type="hidden"
+				   id="product_attribute_<?= $_attribute->getProductAttribute()->getAttributeCode() ?>"
+				   name="super_attribute[<?= $_attribute->getAttributeId() ?>]"
+				   value="">
+		</div>
+    <?php endforeach ?>
+<?php endif; ?>
+
+<?php /*数量*/ ?>
+<div class="quantity">
+	<span class="words"><?php echo __t('Quantity') ?>:</span>
+	<div class="Quantity-num" unselectable="on" onselectstart="return false;"
+		 style="-moz-user-select:none;">
+		<i class="reduce icon"></i>
+		<input type="text" class="num" id="qty" value="1" name="qty" onchange="updateWholesalePriceLabel()" onkeyup="onlyNumberKeyup(this);updateWholesalePriceLabel();"add
+			   onafterpaste="onlyNumberAfterpaste(this)" onfocus="onlyNumberFocus(this)">
+		<i class="add icon"></i>
+	</div>
+
+    <?php
+    /** @var Ave40_Base_Helper_Customer $customerHelper */
+    $customerHelper = Mage::helper('ave40_base/customer');
+    ?>
+    <?php $canShowFreeShippingLabel = $customerHelper->getIsGuidePageCustomer() || $customerHelper->isLoginAsWholesales() ?>
+    <?php if(!$canShowFreeShippingLabel): ?>
+		<!-- free shipping 标签 -->
+		<span class="free_shipping_label" style="margin-left: 20px">FREE SHIPPING</span>
+    <?php endif; ?>
+</div>
+
+<div class="buyinfo">
+	<span class="whole-cart left inquireNow-popup-btn">
+		<div class="foot-icon whole-sale "></div>
+		<?php echo Mage::helper("Ave40_Translate")->__('Wholesale') ?>
+	</span>
+	
+	<a alt="shopping cart" href="/checkout/cart/" title="<?php echo Mage::helper("Ave40_Translate")->__('Shipping cart') ?>">
+		<span class="whole-cart left">
+			<span class="car_count"><?php echo round(Mage::getModel('checkout/cart')->getQuote()->getItemsQty()) ?></span>
+			<div class="foot-icon s-cart"></div><?php echo Mage::helper("Ave40_Translate")->__('Shipping cart') ?>
+		</span>
+	</a>
+	
+	<span class="buyNow <?php echo $thisBlock->isProductAvailable() ? '' : 'disable' ?> buy-now add-buy hidden"
+		  id="buy-now-btn"
+		  <?php if($thisBlock->isProductAvailable()): ?>
+		  onclick="productAddToCartForm.submit(this);_gaq.push(['_trackEvent','BuyNow_button','Click','BuyNow_button']);"
+          <?php endif; ?>>
+		<?php echo __t('Buy Now') ?>
+	</span>
+	
+	
+	<span class="addToCart add-cart add-buy">
+		<a href="javascript:"
+		   id="add-to-cart-btn"
+		   class="buyNow <?php echo $thisBlock->isProductAvailable() ? '' : 'disable' ?>"
+            <?php if($thisBlock->isProductAvailable()): ?>
+				onclick="productAddToCartForm.submit(this);_gaq.push(['_trackEvent','AddToCart_button','Click','AddToCart_button']);"
+            <?php endif; ?>>
+		    <?php echo __t('Add To Cart') ?>
+		</a>
+	</span>
+	<div class="detail-To-Wish">
+		<div class="add-wish">
+			<a class="<?php if ($thisBlock->getAve40CustomerHelper()->isLoginned()): ?>add-to-wishlist<?php endif; ?>"
+                <?php if (!$thisBlock->getAve40CustomerHelper()->isLoginned()): ?>
+					href="/customer/account/login" target="_parent"
+                <?php else: ?>
+					href="javascript:;"
+                <?php endif; ?>
+			   data-url="/ave40api/wishlist/add/product/<?php echo $thisBlock->getProduct()->getId() ?>/form_key/<?php echo $thisBlock->getFormKey() ?>"
+			   title="">
+				<span class="icon add-wish-icon"></span>
+			</a>
+		</div>
+	</div>
+</div>
+<span id="simple_product_tier_prices" style="display:none;" data-json='<?php echo json_encode($product->getTierPrice()) ?>'></span>
+<script type="text/javascript" src="<?php _insert_asset_url('js/product/normal-attributes.js') ?>"></script>

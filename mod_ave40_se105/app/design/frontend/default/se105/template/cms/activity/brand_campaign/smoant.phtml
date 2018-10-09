@@ -1,0 +1,121 @@
+<div class="campaign-page smoant">
+    <div class="campaign-banner imgCenterPosition">
+        <img src="/media/wysiwyg/topic/brand_campaign/smoant_01.jpg" alt="" />
+        <div class="campaign-product-banner">
+            <a href="/smoant-cylon-218w-tc-box-mod.html" target="_blank" title="smoant cylon 218w tc box mod">
+                <img src="/media/wysiwyg/topic/brand_campaign/smoant_02.jpg" alt="" />
+                <img src="/media/wysiwyg/topic/brand_campaign/smoant_03.jpg" alt="" />
+            </a>
+            <span title="Wholesale" class="campaign-banner-btn  inquireNow-popup-btn">Wholesale</span>
+            <a href="/smoant-cylon-218w-tc-box-mod.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+        </div>
+    </div>
+
+    <div class="campaign-main clearfix">
+        <div class="campaign-giveaways w-1200 clearfix">
+            <div class="giveaways-code a-col-6">
+                <a class="e-widget no-button" href="https://gleam.io/xzH4T/win-10-x-smoant-cylon-218w-tc-box-mod" rel="nofollow">Win 10 x  Smoant Cylon 218W TC Box Mod</a>
+                <script type="text/javascript" src="https://js.gleam.io/e.js" async="true"></script>
+            </div>
+            <div class="giveaways-info a-col-6">
+                <h2>Giveaway</h2>
+                <h5> Smoant Cylon 218W  TC Box Mod</h5>
+                <h4>10 WINNERS</h4>
+                <h6 class="giveaway-date">From 18<sup>TH</sup> to 22<sup>ND</sup> </h6>
+                <p>Together with Smoant we are giving away the following prizes: 10 x  Smoant Cylon 218W TC Box Mod Smoant Cylon 218W TC Box Mod Giveaway is a big boon for vapers.  We also are glad to share the new product with you- Smoant Cylon 218W TC Box Mod which is <img src="/media/wysiwyg/topic/brand_campaign/smoant_04.png" alt=""> specifically designed with an Updated Ant218 V2 chipset as well as rich functions.  The more entries you have, the more chance of winning!
+                </p>
+            </div>
+        </div>
+
+        <div class="campaign-recommend">
+            <div class="campaign-title">
+                <span class="campaign-recommend-coupon">
+                    <span>30% OFF CODE:</span>
+                    <span>SMOANT30</span>
+                </span>
+            </div>
+            <div class="campaign-recommend-product-list w-1200">
+                <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                    ->setTemplate('cms/activity/brand_campaign/brand-campaign-product-items.phtml')
+                    ->setData('categories', '434')
+//                    ->setData('categories', '513')
+                    ->setData('sort', 'e.entity_id desc')
+                    ->setData('item_limit', '16')
+                    ->setData('image_size', '200,200')
+                    ->setData('mouse_over_tools', '0')
+                    ->toHtml() ?>
+
+            </div>
+        </div>
+
+        <div class="campaign-wholesale w-1200">
+            <div class="campaign-ws-title">
+                <img src="/media/wysiwyg/topic/brand_campaign/smoant_06.png" alt="" />
+                <h3>HOW TO GET WHOLESALE PRICE AND OBTAIN DISCOUNT ?</h3>
+            </div>
+
+            <div class="campaign-ws-main clearfix">
+                <img src="/media/wysiwyg/topic/brand_campaign/smoant_08.png" alt="" class="campaign-ws-icon" />
+                <div class="campaign-ws-inquire">
+                    <form id="campaign-inquire" class="page-wholesale-form">
+                        <div class="wholesale-group wholesale-email">
+                            <input type="email" name="email" required="required" placeholder="Email"
+                                   class="wholesale-email-input">
+                        </div>
+                        <div class="form-tip"></div>
+                        <input type="hidden" name="name" value="-">
+                        <div class="wholesale-group wholesale-textarea">
+                                <textarea name="comment"
+                                          placeholder="Leave a message to get Wholesale Price and Discount"
+                                          required="required"
+                                          onkeydown="checkMaxInput(this,200)" onkeyup="checkMaxInput(this,200)"
+                                          onfocus="checkMaxInput(this,200)" onblur="checkMaxInput(this,200)"
+                                          class="wholesale-textarea-input"></textarea>
+                            <span class="remain-word">(<i class="Max_msg">0</i>/200)</span>
+                        </div>
+                        <div class="form-tip"></div>
+                        <?php if(Mage::getStoreConfig('inquire_setting/global/enabled')): ?>
+                            <div class="wholesale-group info-captcha" style="display: none">
+                                <span class="words"><?php echo $this->__('Captcha') ?></span>
+                                <?php echo Mage::app()->getLayout()->getBlock('inquire-captcha')->setFormId('campaign')->toHtml() ?>
+                                <span class="asterisk">*</span>
+                                <div class="input-tip-info"></div>
+                            </div>
+                        <?php endif ?>
+                        <div class="wholesale-submit">
+                            <button type="submit" value="" class="send"></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    ~function ($) {
+        $(function () {
+            $("#campaign-inquire").validate({
+                errorClass: 'mess',
+                errorElement: "div",
+                onfocusout: false,
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.closest('.wholesale-group').next('.form-tip'));
+                },
+                submitHandler: function (form) {
+                    var inquireFormData = $('#campaign-inquire').serialize();
+                    ave40.showLoading('Sending');
+                    ave40.ajaxPost('/inquire/index/axpost', inquireFormData, function () {
+                        if (this.ok) {
+                            ave40.closeLoading();
+                            Ave40MessageBox.alertSuccess('Your inquiry was submitted and will be responded to as soon as possible. Thank you for contacting us');
+                        } else {
+                            ave40.closeLoading();
+                            Ave40MessageBox.alertError(this.message);
+                        }
+                    });
+                    return false;
+                }
+            });
+        })
+    }(jQuery)
+</script>

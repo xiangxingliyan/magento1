@@ -1,0 +1,79 @@
+<?php
+/**
+ * 产品展示列表
+ * @var \Ave40_Catalog_Block_Product_List $this
+ * @var Mage_CatalogSearch_Model_Resource_Advanced_Collection $_productCollection
+ * @var Mage_Catalog_Helper_Output $_helper
+ */
+
+$_productCollection = $this->getLoadedProductCollection();
+$_helper = $this->helper('catalog/output');
+?>
+<div class="search-main-content">
+    <ul class="home-list">
+		<?php foreach ($_productCollection as $_product): ?>
+            <?php /* @var \Mage_Catalog_Model_Product $_product */
+			$productName = $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true);
+			$productImageUrl = $this->helper('catalog/image')->init($_product, 'small_image')->resize(155, 120);
+            ?>
+        <li class="item" product-id="<?= $_product->getId() ?>">
+            <div class="home-product-img">
+                <a width="155" height="120" href="<?= $_product->getProductUrl() ?>" title="<?= $productName ?>">
+                    <img class="lazy" data-original="<?= $productImageUrl ?>" src="<?= $this->getSkinUrl('images/loader.gif'); ?>"
+                         alt="<?= $productName ?>" width="155" style="">
+                </a>
+            </div>
+            <div class="product-other-info">
+                <h2 class="product-name"><a href="<?= $_product->getProductUrl() ?>" title="<?= $productName ?>"><?= $productName ?></a></h2>
+                <?= $this->getPriceHtml($_product, true) ?>
+
+                <div class="clear"></div>
+
+                <?= $this->getReviewsSummaryHtml($_product, 'multishort', true) ?>
+
+                <div class="search-countdown">
+                    <span id="js-limitDealTime-88" class="js-limitDealTime">
+                        <?php $specialDateInfo = $this->getSpecialDateInfo($_product) ?>
+                        <span style="<?= $specialDateInfo['available']?'':'opacity:0;' ?>">
+                            <span class="day"><?= $specialDateInfo['days'] ?></span><span><?= Mage::helper("Ave40_Translate")->__('Day') ?> </span>
+                            <span class="hour"><?= $specialDateInfo['hours'] ?></span>:<span class="minute"><?= $specialDateInfo['minus'] ?></span>:<span class="second"><?= $specialDateInfo['secs'] ?></span>
+                        </span>
+                    </span>
+                    <span class="search-product-cart add-to-cart" data-id="<?= $_product->getId() ?>"></span>
+                </div>
+            </div>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+
+    <?= $this->getPaginationHtml() ?>
+</div>
+
+<script>
+    ~function($) {
+
+        /**
+         * 添加到购物车
+         */
+        $('.add-to-cart').click(function () {
+            $.ajax({
+                url:'/ave40api/shoppingcart/add',
+                data: {product:$(this).data('id')},
+                dataType:'json',
+                type:'post',
+                success:function (result) {
+                    if(result.error) {
+                        alert('Error:' + result.message);
+                    } else {
+                        $('.topcart .car_count').html(result.data.total_count);
+                        alert(result.message);
+                    }
+
+                },
+                error: function (e) {
+                    alert('<?= Mage::helper("Ave40_Translate")->__('Failed to add!') ?>');
+                }
+            });
+        });
+    }(jQuery);
+</script>

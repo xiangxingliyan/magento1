@@ -1,0 +1,42 @@
+
+<?php if($this->helper('customer')->isLoggedIn()): ?>
+	<a class="top-logout-link" rel="nofollow" href="<?php echo Mage::helper('customer')->getLogoutUrl(); ?>"><?php echo Mage::helper("Ave40_Translate")->__('Logout') ?></a>
+<?php else: ?>
+<div class="block-login"  id="blocklogin">
+        <div class="top-links">
+	     <a class="top-login-link" rel="nofollow" href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>"><?php echo Mage::helper("Ave40_Translate")->__('Login') ?></a>
+	     <em>or</em>
+	     <a class="top-register-link" rel="nofollow" href="<?php echo Mage::helper('customer')->getRegisterUrl(); ?>"><?php echo Mage::helper("Ave40_Translate")->__('Register') ?></a>
+	</div>
+	<div class="col2-set drop-menu" style="display:none;" >
+	  <div class="col-1 registered-users">
+
+	    <div class="top-login-form ">
+		    <div class="login-title">
+			<span><?php echo Mage::helper("Ave40_Translate")->__('Login') ?></span>
+		    </div>
+		    <form action="<?php echo $this->getPostActionUrl() ?>" method="post">
+            <?php echo $this->getBlockHtml('formkey'); ?>
+			<div class="login-content">
+			    <label for="mini-login"><?php echo Mage::helper("Ave40_Translate")->__('Email:') ?></label><input type="text" name="login[username]" id="mini-login" class="input-text" />
+			    <label for="mini-password"><?php echo Mage::helper("Ave40_Translate")->__('Password:') ?></label><input type="password" name="login[password]" id="mini-password" class="input-text" />
+			    <div class="actions">
+				<button type="submit" class="button mini-login-btn"><span><span><?php echo Mage::helper("Ave40_Translate")->__('Login') ?></span></span></button>
+			    </div>
+			</div>
+		    </form>
+	     </div>
+	   </div>
+	   <div class="col-2 new-users">
+		  <div class="content">
+			    <h6><?php echo Mage::helper("Ave40_Translate")->__('New Customers') ?></h6>
+			    <p><?php echo Mage::helper("Ave40_Translate")->__('By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.') ?></p>
+		 </div>
+		 <div class="buttons-set">
+		      <button type="button" title="<?php echo Mage::helper("Ave40_Translate")->__('Create an Account') ?>" class="button" onclick="window.location='<?php echo $this->getCreateAccountUrl() ?>';"><span><span><?php echo Mage::helper("Ave40_Translate")->__('Create an Account') ?></span></span></button>
+		 </div>
+	   </div>
+      </div>
+ </div>
+
+ <?php endif; ?>

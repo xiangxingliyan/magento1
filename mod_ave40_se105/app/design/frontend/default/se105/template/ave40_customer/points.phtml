@@ -1,0 +1,143 @@
+<?php
+/**
+ * @var Ave40_Customer_Block_Points $this
+ */
+$points = Mage::getModel('customer/session')->getCustomer()->getData('points');
+$points = $points ? $points : 0;
+?>
+<div class="personal-main">
+	<div class="main-right myPoints-main">
+		<div class="main-tab">
+			<ul class="tab">
+				<li class="active"><a title=""><?= Mage::helper("Ave40_Translate")->__('Reward Points')?></a></li>
+			</ul>
+		</div>
+		<h1><?= Mage::helper("Ave40_Translate")->__('There’s more than just buying, here are other ways to earn Rewards Points:') ?></h1>
+		
+		<div class="point-overview clearfix">
+			<div class="total-points point-over-box">
+				<div class="total-point-info">
+					<i class="icon points-icon"></i>
+					<span class="total-point-num point-num"><?= $points ?></span>
+				</div>
+				<div class="po-over-info">
+					<span class="line"></span>
+					<span class="words"><?= Mage::helper("Ave40_Translate")->__('Available') ?></span>
+				</div>
+			</div>
+			
+			<div class="record-points point-over-box">
+				<div class="total-point-info">
+					<i class="icon points-icon"></i>
+					<span class="record-point-num point-num"><?= $this->getLastMonthEarnPoints() ? $this->getLastMonthEarnPoints() : 0 ?></span>
+					<span class="more-btn"><?= Mage::helper("Ave40_Translate")->__('more') ?> >></span>
+					<div class="esc-pop record-points-pop points-pop refund-pop ">
+						<div class="inquire-top">
+							<span class="close black-close"></span>
+						</div>
+						<table class="point-record-table" border="0" cellpadding="0" cellspacing="1">
+							<thead>
+							<tr>
+								<th><?= Mage::helper("Ave40_Translate")->__('Project') ?></th>
+								<th><?= Mage::helper("Ave40_Translate")->__('Integral source') ?></th>
+								<th><?= Mage::helper("Ave40_Translate")->__('Quantity') ?></th>
+								<th><?= Mage::helper("Ave40_Translate")->__('Receive time') ?></th>
+							</tr>
+							</thead>
+							<tbody>
+							
+							<?php if ($this->getLastMonthEarnCollection()->getSize() > 0): ?>
+								<?php foreach ($this->getLastMonthEarnCollection() as $item): ?>
+								<tr>
+									<td><?= Mage::helper("Ave40_Translate")->__('Earned') ?></td>
+									<td><?= $item->getData('point_source') ?></td>
+									<td><?= $item->getData('points') ?></td>
+									<td><?= $item->getData('created_at') ?></td>
+								</tr>
+								<?php endforeach; ?>
+							<?php else: ?>
+								<tr>
+									<td class="empty-row" colspan="4"><?= Mage::helper("Ave40_Translate")->__('There was nothing found here!')?></td>
+								</tr>
+							<?php endif; ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="po-over-info">
+					<span class="line"></span>
+					<span class="words"><?= Mage::helper("Ave40_Translate")->__('Last-month record') ?></span>
+				</div>
+			</div>
+			
+			<div class="consum-points point-over-box">
+				<div class="total-point-info">
+					<i class="icon points-icon"></i>
+					<span class="consum-point-num point-num "><?= $this->getConsumptionPoints() ? $this->getConsumptionPoints() : 0 ?></span>
+					<span class="more-btn"><?= Mage::helper("Ave40_Translate")->__('more') ?> >></span>
+					<div class="consum-points-pop points-pop refund-pop esc-pop">
+						<div class="inquire-top">
+							<span class="close black-close"></span>
+						</div>
+						<table class="point-record-table" border="0" cellpadding="0" cellspacing="1">
+							<thead>
+							<tr>
+								<th><?= Mage::helper("Ave40_Translate")->__('Project') ?></th>
+								<th><?= Mage::helper("Ave40_Translate")->__('Integral source') ?></th>
+								<th><?= Mage::helper("Ave40_Translate")->__('Quantity') ?></th>
+								<th><?= Mage::helper("Ave40_Translate")->__('consumption time') ?></th>
+							</tr>
+							</thead>
+							<tbody>
+							<?php if ($this->getConsumptionPointsCollection()->getSize() > 0): ?>
+								<?php foreach ($this->getConsumptionPointsCollection() as $item): ?>
+								<tr>
+									<td><?= Mage::helper("Ave40_Translate")->__('Consumption') ?></td>
+									<td><?= $item->getData('point_source') ?></td>
+									<td><?= $item->getData('points') ?></td>
+									<td><?= $item->getData('created_at') ?></td>
+								</tr>
+								<?php endforeach; ?>
+							<?php else: ?>
+								<tr>
+									<td class="empty-row" colspan="4"><?= Mage::helper("Ave40_Translate")->__('There was nothing found here!')?></td>
+								</tr>
+							<?php endif; ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="po-over-info">
+					<span class="line"></span>
+					<span class="words"><?= Mage::helper("Ave40_Translate")->__('Consumed') ?></span>
+				</div>
+			</div>
+		</div>
+		<div class="my-point-explain">
+			<h1>Frequently Asked Questions</h1>
+			<div>
+				<div class="my-point-title">
+					<p><?= Mage::helper("Ave40_Translate")->__('How do I collect Reward Points into My accounts?') ?></p>
+				</div>
+				<div class="my-point-way">
+					<p><?= Mage::helper("Ave40_Translate")->__('There are %d way to acquire Reward Points', 2) ?></p>
+					<div class="my-point-one-way">
+						<p>Ⅰ&nbsp;&nbsp;&nbsp; <?= Mage::helper("Ave40_Translate")->__('Paste your link to anywhere you like, <i class="my-points-yellow">1 click will get you 10 Reward Points</i> in return') ?></p>
+						<div>
+							<span><?= Mage::helper("Ave40_Translate")->__('Your link') ?>: &nbsp;&nbsp;&nbsp;<i class="my-point-href">www.ave40.com/itag?/fdaskht </i>&nbsp;&nbsp;&nbsp;</span><span
+								class="my-point-copy">copy</span>
+						</div>
+					</div>
+					<div class="my-point-two-way">
+						<p>Ⅱ &nbsp;&nbsp; <?= Mage::helper("Ave40_Translate")->__('Every review on <b>a specific product can get you <i class="my-points-yellow">50 - 500 </i> Reward Points.It depends <br/> on your review quality.</b>') ?></p>
+					</div>
+				</div>
+				<div class="point-use-tip">
+					<p class="my-point-title"><?= Mage::helper("Ave40_Translate")->__('Where can I use my Reward Points?') ?></p>
+					<p class="point-use-word"><?= Mage::helper("Ave40_Translate")->__('You can use your Reward Points at the stores to buy any participating product,50 Reward Pointsequals $1') ?></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

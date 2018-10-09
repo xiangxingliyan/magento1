@@ -1,0 +1,45 @@
+
+<div class="box-recent-review" >
+    <div class="head"><span><?php echo Mage::helper("Ave40_Translate")->__('New Order') ?></span></div>
+    <div id="neworder_box" class="neworder_box">
+    <ul class="items-content" >
+    <?php 
+$s=1;
+$thisorders =Mage::getModel('sales/order_item')->getCollection()->load()->getItems();
+    
+if ($thisorders) {
+    $thisorders2 = array_reverse($thisorders, TRUE);
+
+    $show_limit = 5;
+    if(count($thisorders2 ) > $show_limit ){
+	$thisorders2 = array_slice( $thisorders2 , 0 , $show_limit);
+    }
+    foreach ($thisorders2 as $i=>$_product) {
+	 $pmodel = Mage::getModel('catalog/product');
+      $_product = $pmodel->load($_product->getProductId());
+	?>
+         <li class="item-list">
+            
+            <span class="reviewimg">
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+                    <img class="product-image" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(45) ?>" width="45" height="45" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" />
+                </a>
+            </span>
+            <span class="reviewname"><a class="product-name" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></span>
+            <span class="reviewtitle"><a href="<?php echo $_product->getProductUrl() ?>#customer-reviews" ><?php echo $this->htmlEscape($_product->getTitle()) ?></a></span> 
+	    
+	    <span class="reviewauthor"><?php echo Mage::helper("Ave40_Translate")->__(' %s',$this->helper('core')->currency($_product->getPrice(),true,true))?></span>
+        </li>
+    <?php 
+	
+	}
+	}?>
+    </ul>
+    
+    <script type="text/javascript">decorateGeneric($$('.item-list'), ['last', 'odd', 'even']);</script>
+</div>
+
+ <div class="stairsNav"><?php  $block = Mage::getModel('cms/block')   ->setStoreId(Mage::app()->getStore()->getId()) ->load('stairsNav');  $content = $block->getContent();  
+    $processor = Mage::getModel('core/email_template_filter');  
+	echo $html = $processor->filter($content);  ?> </div>
+    </div>

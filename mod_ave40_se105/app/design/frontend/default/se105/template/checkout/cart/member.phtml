@@ -1,0 +1,75 @@
+<div class="header-wish">
+    <a href="/wishlist">
+        <p>Wish</p>
+        <p>List</p>
+    </a>
+</div>
+
+
+<div class="member">
+	<div class="member_content">
+		<?php if (empty(Mage::getSingleton('customer/session')->isLoggedIn())): ?>
+		<a href="/customer/account/login" class="signIn"><?= Mage::helper("Ave40_Translate")->__('Sign In') ?></a>
+		<br />
+		<a href="/customer/account/create"><?= Mage::helper("Ave40_Translate")->__('Join Us') ?></a>
+		<?php else: ?>
+		<div class="customer-name">
+			<a href="/customer/account/"><?= Mage::getSingleton('customer/session')->getCustomer()->getName() ?></a>
+		</div>
+		<?php endif ?>
+	</div>
+
+		<?php if (empty(Mage::getSingleton('customer/session')->isLoggedIn())): ?>
+		<div class="login_pop">
+			<div class="sign_in">
+				<span> Welcome to <i class="ave-words">AVE40.com</i></span>
+				<a href="/customer/account/login">
+					<span class="sign_btn loginBtn"><?= Mage::helper("Ave40_Translate")->__('Sign In') ?></span>
+				</a>
+				<?php if (Mage::getStoreConfig('ave40_login/global/enabled')): ?>
+				<div class="sign_way">
+					<span><?= Mage::helper("Ave40_Translate")->__('Sign In with') ?></span>
+
+					<?php if (Mage::getStoreConfig('ave40_login/facebook/enabled')): ?>
+					<a href="/login?platform=facebook&action=do_login" title="Facebook" class="icon facebook-icon"></a>
+					<?php endif ?>
+
+					<?php if (Mage::getStoreConfig('ave40_login/instagram/enabled')): ?>
+					<a href="/login?platform=instagram&action=do_login" title="Instagram" class="icon ins-icon"></a>
+					<?php endif ?>
+
+					<?php if (Mage::getStoreConfig('ave40_login/google/enabled')): ?>
+					<a href="/login?platform=google&action=do_login" title="Google" class="icon google-icon"></a>
+					<?php endif ?>
+
+					<?php if (Mage::getStoreConfig('ave40_login/vk/enabled')): ?>
+					<a href="/login?platform=vk&action=do_login" title="VK" class="icon vk-icon"></a>
+					<?php endif ?>
+
+					<?php if (Mage::getStoreConfig('ave40_login/twitter/enabled')): ?>
+					<a href="/login?platform=twitter&action=do_login" title="Twitter" class="icon twitter-icon"></a>
+					<?php endif ?>
+
+				</div>
+				<?php endif ?>
+			</div>
+			<div class="join_free">
+				<span class="newAver"><?= Mage::helper("Ave40_Translate")->__('New Customer?') ?></span>
+				<a href="/customer/account/create"><span class="join_btn loginBtn"><?= Mage::helper("Ave40_Translate")->__('Join Free') ?></span></a>
+			</div>
+		</div>
+		<?php else: ?>
+		<div class="login_pop logined-login-pop">
+			<div class="information">
+				<ul>
+					<li><a href="/wishlist"><?= Mage::helper("Ave40_Translate")->__('My Wishlist') ?></a></li>
+					<li><a href="/sales/order/history"><?= Mage::helper("Ave40_Translate")->__('My Orders') ?></a></li>
+					<!--<li><a href="/ave40customer/coupons">My Coupons</a></li>-->
+					<!--<li><a href="?tracking_info">Tracking info</a></li>-->
+					<li><a href="/customer/account/logout" class="signIn"><?= Mage::helper("Ave40_Translate")->__('Logout') ?></a></li>
+				</ul>
+			</div>
+		</div>
+		<?php endif ?>
+
+</div>

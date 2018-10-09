@@ -1,0 +1,18 @@
+<div class="keywordsWrappe" style="margin-top: 15px;">
+	<h3>Relevant recommendations:</h3>
+    <?php
+	     $keywords = Mage::helper("ave40_base/keywords")->getKeyWords($this->getProduct()->getID());
+         $priorityKeywordArr = $keywords["priority"];
+         $ordinaryKeywordArr = $keywords["ordinary_results"];
+	?>
+	<ul>
+        <?php foreach($ordinaryKeywordArr as $v): ?>
+			<li style="float:left;margin-right:10px;"><a href="<?php echo $v['link']; ?>"><?php echo $v['keyword']; ?></a></li>
+        <?php endforeach; ?>
+		
+        <?php foreach($priorityKeywordArr as $v): ?>
+			<li style="float:left;margin-right:10px;"><a href="<?php echo $v['link']; ?>"><?php echo $v['keyword']; ?></a></li>
+        <?php endforeach; ?>
+       
+	</ul>
+</div>

@@ -1,0 +1,494 @@
+<?php
+/**
+ * @var Ave40_CatalogSearch_Block_Advanced_Result $this
+ */
+$brandsData = $this->getBrands();
+$query = $this->getRequest()->getQuery();
+$brands = $brandsData['brands_data'];
+$additionalFilters = $this->getAdditionalFilterOptions();
+$categoryViewId = $GLOBALS['ave40_search_category'];
+/* @var Mage_Catalog_Model_Category $categoryInstance */
+$categoryInstance = Mage::registry('current_category');
+$isCategoryPage = $categoryInstance && $categoryInstance->getId();
+/* @var Ave40_CatalogSearch_Helper_Request $urlbuilder  */
+$urlbuilder = Mage::helper('ave40_catalogsearch/request');
+/**
+ * @param null $params
+ * @return Ave40_CatalogSearch_Helper_Request
+ */
+function ub($params=null)
+{
+    /* @var Ave40_CatalogSearch_Helper_Request $ub */
+    $ub = Mage::helper('ave40_catalogsearch/request');
+
+    if($params) {
+        return $ub->reset()->setParams($params)->removeParam('page');
+	} else {
+        return $ub->reset()->removeParam('page');
+	}
+
+}
+
+const SORT_PRICE = 'price';
+const SORT_NEWEST = 'created_at';
+const SORT_SALES_VOLUMN = 'sales_volumn';
+
+$sortubData = [];
+$order = ub()->getParam('order');
+$order[SORT_NEWEST] = $order[SORT_NEWEST] ? (strtolower($order[SORT_NEWEST]) == 'desc' ? null : 'desc') : 'asc';
+if(!$order[SORT_NEWEST]) {
+    unset($order[SORT_NEWEST]);
+}
+$sortubData [SORT_NEWEST] = ub()->setParam('order', $order)->getParam();
+
+$order = ub()->getParam('order');
+$order[SORT_PRICE] = $order[SORT_PRICE] ? (strtolower($order[SORT_PRICE]) == 'desc' ? null : 'desc') : 'asc';
+if(!$order[SORT_PRICE]) {
+	unset($order[SORT_PRICE]);
+}
+$sortubData [SORT_PRICE] = ub()->setParam('order', $order)->getParam();
+
+$order = ub()->getParam('order');
+$order[SORT_SALES_VOLUMN] = $order[SORT_SALES_VOLUMN] ? (strtolower($order[SORT_SALES_VOLUMN]) == 'desc' ? null : 'desc') : 'asc';
+if(!$order[SORT_SALES_VOLUMN]) {
+    unset($order[SORT_SALES_VOLUMN]);
+}
+$sortubData [SORT_SALES_VOLUMN] = ub()->setParam('order', $order)->getParam();
+
+if(isset($sortubData [SORT_NEWEST])) {
+    $sortubData [SORT_NEWEST]['order'] = [SORT_NEWEST => $sortubData[SORT_NEWEST]['order'][SORT_NEWEST]];
+}
+
+if(isset($sortubData [SORT_PRICE])) {
+    $sortubData [SORT_PRICE]['order'] = [SORT_PRICE => $sortubData[SORT_PRICE]['order'][SORT_PRICE]];
+}
+
+
+if(isset($sortubData [SORT_SALES_VOLUMN])) {
+    $sortubData [SORT_SALES_VOLUMN]['order'] = [SORT_SALES_VOLUMN => $sortubData[SORT_SALES_VOLUMN]['order'][SORT_SALES_VOLUMN]];
+}
+
+?>
+<script>
+	window.SearchRequestParams = <?php echo json_encode(ub()->getParam()) ?>;
+	window.SearchRequestRebuildParams = <?php echo json_encode(ub()->getParam()) ?>;
+	window.SearchAdditionalFilters = <?php echo json_encode($this->getAdditionalFilterForJs()) ?>;
+</script>
+<script type="text/html" id="remove_filter_template">
+<li><span class="text"></span><span class="remove "></span></li>
+</script>
+	<link rel="stylesheet" href="<?php echo $this->getSkinUrl('css/search/advanced-search-style.css') ?>"/>
+	<script type='text/javascript' src="<?php echo $this->getSkinUrl('js/JKHelper.js') ?>"></script>
+	<div class="search-page clearfix">
+		<div class="search-main-left">
+			<!-- 左侧筛选 -->
+			
+			<div class="left-screen">
+				<ul id="left-screen-box">
+
+					<li class="search-filter-operating">
+						<ul class="" id="selected_items" style="display: block;">
+                            <?php //if($this->canShowCleanAllButton()): ?>
+							<li onclick=""  class="options-title">
+                                <span class="selected-options">Options (<i>0</i>)</span>
+                                <?php if($this->canShowCleanAllButton()): ?>
+                                	<a href="<?php echo $this->getCleanAllUrl() ?>" class="search-clean-all">Clean all</a>
+                                <?php endif; ?>
+                            </li>
+                            <?php //endif; ?>
+						</ul>
+					</li>
+                    
+                    <?php if(!empty($additionalFilters) || $this->canShowCleanAllButton()): ?>
+					<?php if($isCategoryPage): ?>
+					<li class="category-screen">
+                        <?php
+							$layer = Mage::getSingleton('catalog/layer');
+							$layer->setCurrentCategory($categoryInstance);
+							$categoryBlock = Mage::app()->getLayout()->createBlock('catalog/navigation');
+							$categoryBlock->setTemplate('catalog/navigation/left.phtml');
+							echo $categoryBlock->toHtml();
+                        ?>
+					</li>
+					<?php endif; ?>
+
+					<?php /* 其余的筛选项目 */$miniDisplayNum = 6; ?>
+					<?php foreach ($additionalFilters as $code => $row): ?>
+						<li class="color-screen additional-filter additional-<?php echo $row['_frontend_class_name'] ?>"
+							data-filter-key="<?php echo $code ?>">
+							<div class="color-info">
+								<span class="left-screen-title"><i
+											class="left-arrow-icon"></i><?php echo $row['store_label'] ?></span>
+								<?php if(count($row['options']) > $miniDisplayNum): ?>
+								<span class="color-choose left-choose choose-more-btn"><?= Mage::helper("Ave40_Translate")->__('more') ?></span>
+								<?php endif; ?>
+							</div>
+
+							<ul class="color-drop-list basic-ul litter-filter" style="display: block;">
+								<?php $count = 0; ?>
+                                <?php uasort($row['options'], function($rowA, $rowB) {
+                                	return strcasecmp(trim($rowA['label']), trim($rowB['label'])) > 0 ? 1 : -1;
+                                }) ?>
+								<?php foreach ($row['options'] as $option): ?>
+									<?php if (empty($option['value'])) continue; ?>
+									<?php if (++$count > $miniDisplayNum) break; ?>
+									<li title="<?php echo $option['label'] ?>"
+										class="color-screen-list additional-val additional-val-<?php echo $this->makeFrontendClassName($option['label']) ?>
+										<?php echo $this->checkAdditionalFilter($code, $option['value']) ? 'user-selected' : '' ?>"
+										data-value="<?php echo $option['value'] ?>">
+										<a data-popup-loading="1" href="<?php ub()->toggleMergeParam($code, $option['value'])->showUrl() ?>"><?php echo $option['label'] ?></a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+
+							<div class="choose-more" style="display:none;">
+								<div class="choose-more-box">
+									<ul class="choose-more-list">
+										<?php foreach ($row['options'] as $option): ?>
+											<?php if (empty($option['value'])) continue; ?>
+											<li title="<?php echo $option['label'] ?>"
+												class="color-screen-list additional-val-<?php echo $this->makeFrontendClassName($option['label']) ?>
+										<?php /*echo $this->checkAdditionalFilter($code, $option['value']) ? 'user-selected' : '' */?>"
+												data-value="<?php echo $option['value'] ?>">
+												<?php echo $option['label'] ?>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+								<div class="choose-more-operation">
+									<button data-popup-loading="1" type="button"
+											class="color-choose-ok price-btn choose-more-ok"
+											data-url-del="<?php ub()->removeParam($code)->showUrl() ?>"
+											data-url-tpl="<?php ub()->setTpl($code, '{{val}}')->showUrl() ?>"><?php echo Mage::helper("Ave40_Translate")->__('OK') ?></button>
+									<span class="cancel"><?php echo Mage::helper("Ave40_Translate")->__('Cancel') ?></span>
+								</div>
+							</div>
+						</li>
+					<?php endforeach; ?>
+                    <?php endif; ?>
+				</ul>
+			</div>
+			
+
+		</div>
+		<div class="search-main">
+			<div class="search-main-product">
+				<div class="screening-condition">
+					<?php //品牌搜索 ?>
+					<?php if (!empty($brands)): ?>
+						<div class="brands-screen" id="brands_list">
+							<span class="brand-word"><?php echo Mage::helper("Ave40_Translate")->__('Brands') ?>:</span>
+							<ul class="brands-screen-list litter-brands">
+								<?php $i = 0;
+								foreach ($brands as $brand): ?>
+									<?php
+									/* @var \Mage_Catalog_Model_Category $brand */
+									if ($i++ > 7) break;
+									?>
+									<li data-brand-id="<?php echo $brand->getData('entity_id') ?>"
+										class="<?php echo $this->getBrandsHtmlClassName($brand->getData('entity_id')) ?>">
+										<a data-popup-loading="1" style="display: inline-block;width:100%;height:100%;"
+												href="<?php ub()->toggleMergeParam('brands', $brand->getData('entity_id'))->showUrl() ?>">
+											<i class="user-selected-icon"></i>
+											<img onload="jkImageFitWrap(this)" src="<?php echo $brand->getImageUrl() ?>"
+												 height="60"
+												 alt="<?php echo $brand->getData('name') ?>" title="<?php echo $brand->getData('name') ?>"">
+										</a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+
+							<?php if (count($brands) > 8): ?>
+								<span class="brand-more"><?php echo Mage::helper("Ave40_Translate")->__('More') ?><i class="drop-down"></i></span>
+							<?php endif; ?>
+
+							<div class="brand-more-pop">
+								<ul class="brands-screen-list">
+									<?php foreach ($brands as $i => $brand): ?>
+										<?php /* @var \Mage_Catalog_Model_Category $brand */ ?>
+										<li data-brand-id="<?php echo $brand->getData('entity_id') ?>"
+											class="<?php echo $this->getBrandsHtmlClassName($brand->getData('entity_id')) ?>">
+											<img onload="jkImageFitWrap(this)" src="<?php echo $brand->getImageUrl() ?>"
+												 height="70"
+												 alt="<?php echo $brand->getData('name') ?>"
+												 title="<?php echo $brand->getData('name') ?>"">
+										</li>
+									<?php endforeach; ?>
+								</ul>
+								<div class="choose-more-operation">
+									<button data-popup-loading="1" type="button" id="more-brands-ok" class="color-choose-ok price-btn"
+											data-url-del="<?php ub()->removeParam('brands')->showUrl() ?>"
+											data-url-tpl="<?php ub()->setTpl('brands', '{{val}}')->showUrl() ?>">OK
+									</button>
+									<span class="cancel"><?php echo Mage::helper("Ave40_Translate")->__('Cancel') ?></span>
+								</div>
+
+							</div>
+						</div>
+					<?php endif; ?> <?php /*endif for no brand*/ ?>
+
+
+					<?php /* 排序 */ ?>
+                    <div class="search-result-filter">
+                        <div class="sort-screen">
+                            <div class="sort-way">
+                                <span><?php echo Mage::helper("Ave40_Translate")->__('Sort by') ?>:</span>
+                                <div class="sort-by">
+                                    <?php /*清空排序*/ ?>
+                                    <div style="cursor:pointer;" class="integrated <?php echo $this->getSortedHtmlClassName('', 'active') ?> default-sort">
+                                        <a data-popup-loading="1" href="<?php ub()->removeParam('order')->showUrl() ?>"><?php echo Mage::helper("Ave40_Translate")->__('Relevance') ?></a>
+                                    </div>
+
+                                    <?php /* 按最新排序 */ ?>
+                                    <div class="price-sort">
+
+                                        <a href="<?php ub($sortubData[SORT_NEWEST])->showUrl() ?>"
+                                           data-sort-key="<?php echo SORT_NEWEST ?>"
+                                           class="sort-item <?php echo $this->getSortedHtmlClassName(SORT_NEWEST) ?>">
+                                            <?php echo Mage::helper("Ave40_Translate")->__('Date') ?>
+                                        </a>
+                                        <?php if ($this->checkSortItem(SORT_NEWEST)): ?>
+                                            <div class="price-arrow">
+                                                <?php if ($this->checkOrderItemAsc(SORT_NEWEST)): ?>
+                                                    <i class="top-arrow"></i>
+                                                <?php else: ?>
+                                                    <i class="bottom-arrow"></i>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <?php /* 按价格排序 */ ?>
+                                    <div class="price-sort">
+                                        <a href="<?php ub($sortubData[SORT_PRICE])->showUrl() ?>"
+                                           data-sort-key="<?php echo SORT_PRICE ?>"
+                                           class="sort-item <?php echo $this->checkSortItem(SORT_PRICE) ? 'user-sort' : '' ?>">
+                                            <?php echo Mage::helper("Ave40_Translate")->__('Price') ?>
+
+                                        <?php if ($this->checkSortItem(SORT_PRICE)): ?>
+                                            <div class="price-arrow">
+                                                <?php if ($this->checkOrderItemAsc(SORT_PRICE)): ?>
+                                                    <i class="top-arrow"></i>
+                                                <?php else: ?>
+                                                    <i class="bottom-arrow"></i>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        </a>
+                                    </div>
+
+                                    <?php /* 按销量排序 */ ?>
+                                    <div class="price-sort">
+                                        <a href="<?php ub($sortubData[SORT_SALES_VOLUMN])->showUrl() ?>"
+                                           data-sort-key="<?php echo SORT_SALES_VOLUMN ?>"
+                                           class="sort-item <?php echo $this->checkSortItem(SORT_SALES_VOLUMN) ? 'user-sort' : '' ?>">
+                                            <?php echo Mage::helper("Ave40_Translate")->__('Sales') ?>
+
+                                        <?php if ($this->checkSortItem(SORT_SALES_VOLUMN)): ?>
+                                            <div class="price-arrow">
+                                                <?php if ($this->checkOrderItemAsc(SORT_SALES_VOLUMN)): ?>
+                                                    <i class="top-arrow"></i>
+                                                <?php else: ?>
+                                                    <i class="bottom-arrow"></i>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        </a>
+                                    </div>
+
+                                    <!--<div class="order-sort or-ne-sell active">-->
+                                    <!--	<a href="javacript:;">--><?php //echo Mage::helper("Ave40_Translate")->__('Sales') ?><!--</a>-->
+                                    <!--	<i class="icon triangle-icon"></i>-->
+                                    <!--</div>-->
+
+                                </div>
+                            </div>
+
+                            <?php if(Mage::helper('ave40_widget')->pageIs('/brands/aspire')): ?>
+                                <span class="brand-official-link"><?php echo Mage::helper("Ave40_Translate")->__('All <a alt="aspire" href="http://www.aspirecig.com/" title="aspire">Aspire</a> products from official distributor AVE40') ?></span>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="price-section">
+                            <span class="price-word"><?php echo Mage::helper("Ave40_Translate")->__('Price') ?>:</span>
+                            <input type="text" name="price-min" id="price-min" placeholder="min"
+                                   value="<?php echo $this->getMinPriceFilterValue() ?>">
+                            <span>—</span>
+                            <input type="text" name="price-max" id="price-max" placeholder="max"
+                                   value="<?php echo $this->getMaxPriceFilterValue() ?>">
+                            <button data-popup-loading="1" type="button" class="price-btn" id="price-filter-button"
+                                    data-url-del="<?php ub()->removeParam('price')->showUrl() ?>"
+                                    data-url-tpl="<?php ub()->setTpl('price', '{{val}}')->showUrl() ?>"><?php echo Mage::helper("Ave40_Translate")->__('OK') ?></button>
+
+                            <div class="big-deal-screen">
+                                <label class="<?php echo $query['promotion'] ? 'user-selected' : '' ?>">
+                                    <input style="cursor:default;" type="checkbox" id="big-deal-checkbox"  <?php echo ub()->hasParam('promotion') ? 'checked' : '' ?> disabled/>
+                                    <a data-popup-loading="1" href="<?php ub()->toggleParam('promotion', 1)->showUrl() ?>">
+                                        <?php echo Mage::helper("Ave40_Translate")->__('Promotion') ?>
+                                    </a>
+                                </label>
+
+                                <label class="tpd-filter <?php echo $query['tpd'] ? 'user-selected' : '' ?>">
+                                    <input style="cursor:default;" type="checkbox" id="big-deal-checkbox"  <?php echo ub()->hasParam('tpd') ? 'checked' : '' ?> disabled/>
+                                    <a data-popup-loading="1" href="<?php ub()->toggleParam('tpd', 1)->showUrl() ?>">
+                                        <?php echo Mage::helper("Ave40_Translate")->__('TPD') ?>
+                                    </a>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+				</div>
+				<div class="search-main-content product_item_search_template">
+					<?php if (!$this->getResultCount()): ?>
+						<!--点击筛选条件无内容时提示 begin-->
+						<div class="search-no-result-tip">
+							<!--<img src="<?php /*echo $this->getSkinUrl('images/personal/person-enpty-05.png') */?>" class="no-con-anim-05" alt="">
+							<img src="<?php /*echo $this->getSkinUrl('images/personal/person-enpty-03.png') */?>" class="no-con-anim-03" alt="">
+							<img src="<?php /*echo $this->getSkinUrl('images/personal/person-enpty-06.png') */?>" class="no-con-anim-06" alt="">-->
+							<span class="search-no-result-tip-word"><?php echo Mage::helper("Ave40_Translate")->__('Did not find the product you want') ?></span>
+						</div>
+						<!--点击筛选条件无内容时提示 end-->
+					<?php else:
+                            $this->getChild('search_result_list')->setData('image_size', '200,200');
+                        	echo $this->getProductListHtml();
+						?>
+						<?php
+						/* @var Ave40_Widget_Block_Pagination $block */
+						$block = $this->getLayout()->createBlock('ave40_widget/pagination');
+						$block->setLastPage($this->getChild('search_result_list')->getProductCollection()->getLastPageNumber())->outputHtml();
+						?>
+					<?php endif; ?>
+					
+				<?php $this->getSearchCriterias(); ?>
+			</div>
+
+
+				<?php if($isCategoryPage): ?>
+					<?php $productCount = $this->getChild('search_result_list')->getProductCollection()->count()  ?>
+					<?php if($productCount <= 12): ?>
+						<!--推荐产品-->
+
+
+
+						<!--推荐产品结束 -->
+					<?php endif; ?>
+					
+					<!--博客文章-->
+					<?php if(avepcache_begin('category_blog_'.$categoryInstance->getId(), ['category_blogs'],3600*12)): ?>
+					<?php
+						$blogList = Mage::getSingleton('ave40_widget/blog')->getBlogList();
+						
+						if(count($blogList) > 3) {
+                            $blogListKeys = array_rand($blogList, 3);
+                            $newBlogList = [];
+                            foreach($blogListKeys as $key) {
+                                $newBlogList []= $blogList[$key];
+							}
+                            $blogList = $newBlogList;
+						}
+					?>
+						
+						<?php /*if(!empty($blogList)): */?><!--
+							<div class="search-blog-content">
+								<div class="stairsSection-list">
+									<div class="home-box stairsSection home-blog-article">
+										<div class="head">
+											<span><?php /*echo Mage::helper("Ave40_Translate")->__('Latest Blog Articles') */?></span>
+											<a class="see_more" href="/blog" target="_blank"><?php /*echo Mage::helper("Ave40_Translate")->__('More') */?><i class="see-more-icon"> &gt;&gt;</i></a>
+										</div>
+										<ul class="blog-main clearfix">
+											<?php /*foreach($blogList as $blog): */?>
+											<li>
+												<a href="<?php /*echo $blog['url'] */?>" title="<?php /*echo $blog['post_title'] */?>" target="_blank">
+                                                    <div style="border: 1px solid #f2f2f2;">
+                                                        <img alt="<?php /*echo $blog['post_title'] */?>" src="<?php /*echo $blog['thump'] */?>" title="<?php /*echo $blog['post_title'] */?>" />
+                                                    </div>
+                                                    <h2><?php /*echo $blog['post_title'] */?></h2>
+												</a>
+											</li>
+											<?php /*endforeach; */?>
+										</ul>
+									</div>
+								</div>
+							</div>
+						--><?php /*endif; */?>
+					<?php avepcache_end(); endif; ?>
+					<!--博客文章结束-->
+					
+					<!-- 文字模块 -->
+					<?php //if(avepcache_begin('category_description_' . $categoryInstance->getId(), ['category_description'])): ?>
+						<?php
+							$description = trim($categoryInstance->getDescription());
+							$headHtml = preg_match_all('#^<h1\s*?>([\s\S]*?)</h1>([\s\S]*)#i', $description, $matchs);
+							//print_r($matchs);
+							list($descHead, $descContent) = [$matchs[1][0], $matchs[2][0]];
+							$descHead = trim($descHead);
+						?>
+						<?php /*if(!empty($descContent)): */?><!--
+							<div class="search-word-content">
+								<div class="home-box">
+									<div class="head">
+										<span><?php /*echo $descHead */?></span>
+									</div>
+								</div>
+								<?php /*echo $descContent */?>
+							</div>
+						--><?php /*endif; */?>
+					<?php //avepcache_end(); endif; ?>
+					<!-- 文字模块结束 -->
+					
+				<?php endif; ?>
+			</div>
+		</div>
+
+        <!-- 搜索页推荐产品 -->
+        <div class="recommend-swiper-box">
+            <h3>We recommend</h3>
+            <div class="recommend-carousl product_item_recommend_template swiper-container swiper-container-recommend-product">
+                <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                    ->setTemplate('catalogsearch/advanced/recommend-product-items.phtml')
+                    ->setData('categories', ave40_sitedata('global_category_specify/search_recommend', 59))
+                    ->setData('sort', 'e.entity_id desc')
+                    ->setData('image_size', '230,230')
+                    ->setData('mouse_over_tools', '0')->toHtml() ?>
+            </div>
+            <div class="swiper-button-prev iconfont icon-jiantou-left"></div>
+            <div class="swiper-button-next iconfont icon-jiantou-right"></div>
+        </div>
+
+        <script>
+            ~function ($) {
+                $(function () {
+                    var recommendSwiper = new multipleProductCarousl({
+                        parentSelector: '.recommend-swiper-box',
+                        elmSelector: '.swiper-container-recommend-product',
+                        autoplay: 0,
+                        isLoop: false,
+                        slidesPerColumn: 1,
+                        slidesPerView : 4,
+                        nextBtnSelector: '.recommend-swiper-box .swiper-button-next',
+                        prevBtnSelector: '.recommend-swiper-box .swiper-button-prev',
+                        breakpoints:{
+                            768: {
+                                slidesPerView: 2
+                            },
+                            1023: {
+                                slidesPerView: 3
+                            },
+                            1199: {
+                                slidesPerView: 4
+                            },
+                            1920:{
+                                slidesPerView: 4
+                            }
+                        }
+
+                    });
+                })
+            }(jQuery)
+        </script>
+
+
+        <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/ave40-advanced-search.js') . '?v=4' ?>"></script>
+<?php //endif; ?>

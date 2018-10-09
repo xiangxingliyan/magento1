@@ -1,0 +1,82 @@
+<?php
+/* @var Mage_Checkout_Model_Cart $cart */
+$cart = $this->getCheckoutCart();
+/** @var Ave40_Base_Helper_Shoppingcart $shoppingcartHelper */
+$shoppingcartHelper = Mage::helper('ave40_base/shoppingcart');
+$quote = $shoppingcartHelper->getTmpQuote();
+
+/* @var Mage_Catalog_Helper_Product_Configuration $configurationHelper */
+$configurationHelper = Mage::helper('catalog/product_configuration');
+/* @var Mage_Catalog_Block_Product $productBlock */
+$productBlock = Mage::app()->getLayout()->createBlock('catalog/product');
+/* @var Mage_Catalog_Helper_Image $imageHelper */
+$imageHelper = Mage::helper('catalog/image');
+/** @var Mage_Core_Helper_Data $coreHelper */
+$coreHelper = Mage::helper('core');
+
+$ulAttributes = $this->getData('ul_attributes');
+$ulAttributesString = '';
+foreach ($ulAttributes as $attributeName => $attributeValue) {
+    $attributeValue = str_replace($attributeValue, "\n", '\\n');
+    $attributeValue = str_replace($attributeValue, '"', "'");
+    $ulAttributesString .= "$attributeName=\"$attributeValue\"";
+}
+
+// $cartItems = $cart->getQuote()->getAllVisibleItems();
+$cartItems = $quote->getAllVisibleItems();
+?>
+
+<?php if(!$this->getData('only_list')): ?>
+    <ul class="<?php echo $this->getData('ul_class') ?>" <?php echo $ulAttributesString ?>>
+<?php endif; ?>
+<?php /** @var Mage_Sales_Model_Quote_Item $item */ ?>
+<?php foreach ($cartItems as $item): ?>
+    <?php
+    $product = $item->getProduct();
+    $isConfigurable = $product->getTypeId() == 'configurable';
+
+    if($isConfigurable) {
+        $productOptions = $configurationHelper->getConfigurableOptions($item);
+    } else {
+        $productOptions = null;
+	}
+    ?>
+    <li>
+		<a href="<?php echo $product->getProductUrl() ?>">
+			<div class="head-cart-product-img">
+				<img src="<?php echo $imageHelper->init($product, 'small_image')->resize(50, 50) ?>">
+			</div>
+			<div class="head-cart-product-info">
+				<p class="head-cart-product-name"><?php echo $productBlock->escapeHtml($product->getName()) ?></p>
+				<?php if ($isConfigurable && !empty($productOptions)): ?>
+					<div class="head-cart-prodcut-attributes">
+						<?php foreach ($productOptions as $option): ?>
+							<p>
+								<span><?php echo $option['label'] ?>:</span>
+								<span><?php echo $option['value'] ?></span>
+							</p>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
+			</div>
+			<div class="head-cart-product-price">
+				<div class="price-box">
+					<span class="regular-price" id="product-price-<?php echo $product->getId() ?>">
+					<span class="price"><?php echo $coreHelper->formatPrice($item->getCalculationPrice()) ?></span>
+				</span>
+				
+				</div>
+				<?php //echo $productBlock->getPriceHtml($product) ?>
+			</div>
+		</a>
+    </li>
+<?php endforeach; ?>
+<?php if (count($cartItems) == 0): ?>
+    <li class="shopping-cart-empty"  style="height: 100%;padding: 0;line-height: 200px;border: none;text-align: center;color:#e10b0b;">
+        <?= Mage::helper("Ave40_Translate")->__('YOUR SHOPPING CART IS EMPTY') ?>
+    </li>
+<?php endif; ?>
+
+<?php if(!$this->getData('only_list')): ?>
+    </ul>
+<?php endif; ?>

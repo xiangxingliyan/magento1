@@ -1,0 +1,50 @@
+<?php
+/** @var Ave40_Base_Helper_Customer $customerHelper */
+$customerHelper = Mage::helper('ave40_base/customer');
+?>
+
+<div class="vapo-activity-page">
+
+    <div class="vapo-sale-banner"><img title="vaporesso" src="../media/wysiwyg/topic/vaporesso-sale/vapo_01.jpg" alt="vaporesso"></div>
+
+    <div class="vapo-activity-main col2-set clearfix">
+        <div class="col-1">
+            <a href="https://www.ave40.com/vaporesso-nexus-aio-starter-kit-650mah.html" alt="Vaporesso Nexus AIO Starter Kit 650mAh" title="Vaporesso Nexus AIO Starter Kit 650mAh">
+            <img title="Vaporesso Nexus AIO Starter Kit 650mAh" src="../media/wysiwyg/topic/vaporesso-sale/vapo_02.jpg" alt="Vaporesso Nexus AIO Starter Kit 650mAh">
+            </a>
+        </div>
+        <div class="col-2">
+            <a href="https://www.ave40.com/vaporesso-orca-solo-kit.html" alt="Vaporesso ORCA SOLO Kit" title="Vaporesso ORCA SOLO Kit">
+            <img class="right" title="Vaporesso ORCA SOLO Kit" src="../media/wysiwyg/topic/vaporesso-sale/vapo_03.jpg" alt="Vaporesso ORCA SOLO Kit">
+            </a>
+        </div>
+    </div>
+
+    <div class="vapo-activity-main col2-set clearfix">
+        <div class="col-1">
+            <a class="e-widget no-button" href="https://gleam.io/pidoq/10-x-vaporesso-nexus-kit-and-10-x-orca-solo-kit-giveaway" rel="nofollow">10 x Vaporesso NEXUS Kit and 10 x ORCA SOLO Kit Giveaway</a>
+        </div>
+        <div class="col-2">
+            <div class="vapo-activity-detail">
+                <div class="vapo-activity-01">10 X VAPORESSO NEXUS KIT <p>AND</p> 10 X ORCA SOLO KIT GIVEAWAY</div>
+                <div class="vapo-activity-02"><p>Good news! <br>We’re giving away for follow prizes: </p>10 x Vaporesso NEXUS Kit <br>10 x Vaporesso ORCA SOLO Kit</div>
+                <div class="vapo-activity-03">Good luck and remember the more entries you have, the more chances you have of winning!</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="vapo-activity-main exclusive-product">
+        <div class="vapo-activity-title"></div>
+        <div class="feature-product-list">
+            <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/activity/brand_campaign/brand-campaign-product-items.phtml')
+                ->setData('categories', 422)
+                ->setData('sort', 'position desc')
+                ->setData('item_limit', '12')
+                ->setData('image_size', '230,230')
+                ->setData('mouse_over_tools', '0')->toHtml() ?>
+        </div>
+    </div>
+    <div class="position-fix-qq"></div>
+    <div class="position-fix-cd"></div>
+</div>
+<script type="text/javascript" src="https://js.gleam.io/e.js" async="true"></script>

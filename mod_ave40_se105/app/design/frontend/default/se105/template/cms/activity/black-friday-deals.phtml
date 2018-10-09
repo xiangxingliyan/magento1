@@ -1,0 +1,1580 @@
+<?php
+/**
+ * 参考禅道任务
+ * http://zendao.intra.ave40.com/index.php?m=task&f=view&taskID=200
+ */
+/* @var Mage_Catalog_Block_Product_List $productBlock */
+$productBlock = Mage::app()->getLayout()->createBlock('catalog/product_list');
+
+$_product = $this->getProduct();
+
+
+$clearanceCategoryId = 988;
+//$clearanceCategoryId = 988;
+
+$recommendCategoryId = 990;
+//$recommendCategoryId = 990;
+
+$mayLikeCategoryId = 991;
+//$mayLikeCategoryId = 991;
+
+//正式
+// $recommendCategoryId = 990;
+
+//品牌分类产品以及跳转到对应分类页面
+$brandListCategory = [
+    [667, 342],
+    [668, 343],
+    [672, 348],
+    [661, 394],
+    [664, 422],
+    [435, 435],
+    [450, 450],
+    [434, 434]
+];
+
+?>
+
+<?php
+
+$_fnGetTargetCategoryLink = function ($index) use ($brandListCategory) {
+    /* @var Mage_Catalog_Model_Category $_target */
+    $_target = Mage::getModel('catalog/category')->load($brandListCategory[$index][1]);
+    return $_target->getUrl();
+};
+
+$_fnCreateBrandProducts = function ($index) use ($brandListCategory) {
+    $_category = Mage::getModel('catalog/category')->load($brandListCategory[$index][0]);
+
+    if ($_category->getId()) {
+        $products = $_category->getProductCollection()
+            ->addAttributeToSelect('*')
+            ->addAttributeToFilter('status', 1)
+            ->addAttributeToFilter('visibility', 4);
+
+        $products->getSelect()->order("entity_id DESC");
+        $products->getSelect()->limit(3);
+
+    } else {
+        $products = [];
+    }
+
+    ?>
+    <?php foreach ($products as $_product): ?>
+        <li>
+            <a href="<?php echo $_product->getProductUrl() ?>" target="_blank">
+                <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(110, 110) ?>"
+                     alt="<?php $_product->getName() ?>">
+            </a>
+        </li>
+    <?php endforeach; ?>
+    <?php
+}; /*$_fnCreateBrandProducts*/
+
+//秒杀活动开始日期以及分类id
+$promoBeginDate = "2017-11-20";
+$promoCategorys = [ 1015,1016,1017,1018,1019];
+//$promoCategorys = [59,59,59,59,59];
+$promoCategoryCount = count($promoCategorys);
+$currentDate = date('Y-m-d');
+?>
+
+<style>
+    .black-friday-deal-page {
+        background-image: url("/media/wysiwyg/topic/black-friday-deals/bg.jpg");
+        background-attachment: fixed;
+        background-position: center 0;
+        position: relative;
+    }
+
+    .black-friday-deal-page img {
+        max-width: 100%;
+    }
+
+    .black-mb-banner {
+        display: none;
+    }
+
+    .clearance-sale-col .home-product-img img {
+        width: auto;
+    }
+
+    .black-deal-main {
+        width: 1200px;
+        margin: 0 auto;
+    }
+
+    .clearance-sale-link li {
+        float: left;
+        margin: 20px 13.333px 20px 0;
+        opacity: 0.8;
+    }
+
+    .clearance-sale-link li:hover {
+        opacity: 1;
+    }
+
+    .clearance-sale-link li:last-child {
+        margin-right: 0
+    }
+
+    .recommend-product {
+        width: 100%;
+        height: auto;
+        background-image: url("/media/wysiwyg/topic/black-friday-deals/recommend-bg.jpg");
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        position: relative;
+        height: 648px;
+    }
+
+    .recommend-product.vaporesso-revenger {
+        background-image: url("/media/wysiwyg/topic/black-friday-deals/recommend-vapo-bg.jpg");
+    }
+
+    .recommend-product-word {
+        margin-top: 0.55rem;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .recommend-product-info {
+        width: 45.83333%;
+        float: right;
+    }
+
+    .recommend-product-word p {
+        color: #e5e6ea;
+        padding-right: 0.3rem;
+    }
+
+    .recommend-product-word .learn-more-link {
+        margin: 0.25rem 0;
+    }
+
+    .recommend-product-word .inquireNow-popup-btn {
+        display: inline-block;
+        width: 1.8rem;
+        height: 0.5rem;
+        text-align: center;
+        background: #dc4d4f;
+        font-size: 0.24rem;
+        line-height: 0.5rem;
+        color: #fff;
+        border-radius: 3px;
+        margin-bottom: 0.4rem;
+    }
+
+    .recommend-product-word .inquireNow-popup-btn:hover {
+        background: #ea4d4f;
+    }
+
+    .recommend-product-word .learn-more-link a {
+        color: #5a6fc2;
+    }
+
+    .recommend-product-main h3 {
+        color: #fff;
+        margin-top: 30px;
+    }
+
+    .black-friday-deal-page .home-list .home-product-img a:hover img {
+        -webkit-transform: translateY(-5px);
+        -moz-transform: translateY(-5px);
+        -ms-transform: translateY(-5px);
+        transform: translateY(-5px);
+    }
+
+    .black-friday-deal-page .home-product-img img {
+        -webkit-transition: -webkit-transform .4s ease;
+        transition: -webkit-transform .4s ease;
+        -moz-transition: transform .4s ease, -moz-transform .4s ease;
+        transition: transform .4s ease;
+        transition: transform .4s ease, -webkit-transform .4s ease, -moz-transform .4s ease;
+        -webkit-transform: translateY(0);
+        -moz-transform: translateY(0);
+        -ms-transform: translateY(0);
+        transform: translateY(0);
+    }
+
+    .black-friday-deal-page .home-list .item:hover a {
+        color: #ff8a00;
+    }
+
+    .recommend-product-main h3 a {
+        color: #f78585;
+        text-decoration: underline;
+    }
+
+    .black-deal-swiper-container .home-list li.item:hover, .recommend-product-list .home-list li.item:hover {
+        box-shadow: none;
+    }
+
+    .black-deal-swiper-container .product-items .item, .recommend-product-list .product-items .item {
+        background: #fff;
+        width: calc(20% - 6px);
+        margin: 5px 6px 0 0;
+        height: 300px;
+    }
+
+    .black-deal-inquire-btn {
+        width: 180px;
+        height: 30px;
+        background: #ff8a00;
+        color: #fff;
+        font-size: 14px;
+        display: inline-block;
+        line-height: 30px;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 2px 10px #fea339;
+        margin-top: 8px;
+    }
+
+    .black-deal-inquire-icon {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
+        width: 15px;
+        height: 15px;
+        background: url('<?php echo $this->getSkinUrl("images/topic/inquire-btn.png") ?>') no-repeat center / 100%;
+    }
+
+    .recommend-product-list .product-items .item .price-box {
+        margin: 7px 0 0;
+    }
+
+    .recommend-img {
+        height: 145px;
+        margin-bottom: 5px;
+    }
+
+    .recommend-img img {
+        height: 145px;
+        width: 100%;
+    }
+
+    .recommend-more-link {
+        height: calc(100% - 150px);
+        background: #fff;
+        line-height: 150px;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .recommend-product-list .product-items .recommend-product-more-col {
+        background: transparent;
+    }
+
+    .brand-product-list {
+        float: left;
+        width: calc(50% - 10px);
+        background: #fff;
+        padding: 15px 20px 25px;
+        box-sizing: border-box;
+        margin: 0 10px 10px 0;
+    }
+
+    .brand-product-list:nth-child(2n) {
+        margin-right: 0;
+    }
+
+    .brand-r {
+        margin-top: 15px;
+        margin-left: 15px;
+    }
+
+    .brand-product-list > div {
+        float: left;
+    }
+
+    .brand-l img {
+        width: 150px;
+    }
+
+    .brand-product-img li img {
+        width: 110px;
+    }
+
+    .brand-r .brand-product-img li {
+        float: left;
+        margin-right: 15px;
+        border: 1px solid #f0f0f0;
+    }
+
+    .brand-r .brand-product-img li:hover {
+        border-color: #ff8a00;
+    }
+
+    .brand-list-col {
+        margin-top: 0.3rem;
+    }
+
+    .brand-sale p {
+        color: #ff5440;
+        font-family: 'opensans-semibold';
+        text-align: center;
+    }
+
+    .brand-discount {
+        font-size: 22px;
+        margin: 0 0 10px;
+    }
+
+    .brand-coupon {
+        font-size: 14px;
+    }
+
+    .more-icon {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        vertical-align: middle;
+        margin-left: 0.3rem;
+        background: url('<?php echo $this->getSkinUrl("images/topic/clearance-more.png") ?>') no-repeat center / 100%;
+    }
+
+    .rev-iframe-box {
+        width: 478px;
+    }
+
+    .sales-label .sales-off-num:after {
+        content: '% Off';
+    }
+
+    .black-deal-product {
+        position: relative;
+    }
+
+    .black-deal-product .swiper-button-next, .black-deal-product .swiper-button-prev {
+        background: url('<?php echo $this->getSkinUrl("images/topic/right-btn.png") ?>') no-repeat center;
+        width: 44px;
+        height: 88px;
+        margin-top: -44px;
+    }
+
+    .black-deal-product .swiper-button-next {
+        right: -50px;
+
+    }
+
+    .black-deal-product .swiper-button-prev {
+        left: -50px;
+        transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+    }
+
+    /* flash - sale */
+    .show_by_day li {
+        width: calc(20% - 5px);
+        float: left;
+        text-align: center;
+        z-index: 2;
+        height: 55px;
+        line-height: 55px;
+        font-size: 18px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .show_by_day li.active span, .show_by_day li:hover span {
+        color: #fff;
+    }
+
+    .show_by_day li span {
+        position: relative;
+        z-index: 2;
+        color: #b0b1b3;
+    }
+
+    .show_by_day li::after {
+        border-radius: 3px;
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        z-index: -1;
+        background-color: #09818D;
+        background: -webkit-linear-gradient(27deg, #0b1755, #265485);
+        background: -o-linear-gradient(27deg, #0b1755, #265485);
+        background: -moz-linear-gradient(27deg, #0b1755, #265485);
+        background: linear-gradient(27deg, #0b1755, #265485);
+        -moz-transform: skewX(-25deg);
+        -ms-transform: skewX(-25deg);
+        -webkit-transform: skewX(-25deg);
+        transform: skewX(-25deg);
+    }
+
+    .show_by_day li:hover::after, .show_by_day li.active::after, .show_by_day:hover:before {
+        background: -webkit-linear-gradient(90deg, #0b1755, #3554b8, #265485);
+        background: -o-linear-gradient(90deg, #0b1755, #3554b8, #265485);
+        background: -moz-linear-gradient(90deg, #0b1755, #3554b8, #265485);
+        background: linear-gradient(90deg, #0b1755, #3554b8, #265485);
+    }
+
+
+
+
+    a.vape-product-link {
+        width: 45%;
+        height: 100%;
+        position: absolute;
+        bottom: 0;
+    }
+
+    /* vapo giveaways */
+
+    .vaporesso-giveaway .vapo-giveaway-l {
+        width: 50%;
+        float: left;
+    }
+
+    .vaporesso-giveaway .vapo-giveaway-r {
+        width: 50%;
+        float: left;
+        text-align: center;
+        background: url("/media/wysiwyg/topic/black-friday-deals/recommend-vapo-info-bg.jpg");
+    }
+
+    .vapo-giveaway-title {
+        color: #fff;
+        font-size: 22px;
+    }
+
+    .vapo-giveaway-word {
+        color: #dcdcdc;
+        font-size: 16px;
+        line-height: 2;
+    }
+
+    .wholesale-group {
+        margin-top: 10px;
+    }
+
+    .wholesale-textarea textarea {
+        height: 82px;
+    }
+
+    .wholesale-email-input, .wholesale-textarea-input {
+        background-color: rgba(255,255,255,0.9);
+        border-color: transparent;
+    }
+
+    .wholesale-submit {
+        margin-right: 33px;
+        margin-top: 20px;
+    }
+
+    .vapo-giveaway-title p i {
+        font-family: 'opensans-bold';
+        font-style: italic;
+        font-size: 40px;
+    }
+
+    .vapo-giveaway-title p span {
+        font-family: 'opensans-bold';
+        font-size: 40px;
+    }
+
+   /* .vapo-giveaway-inquire-col input:-moz-placeholder,.vapo-giveaway-inquire-col textarea:-moz-placeholder {
+        color: #666
+    }
+
+    .vapo-giveaway-inquire-col input:-ms-input-placeholder,.vapo-giveaway-inquire-col textarea:-ms-input-placeholder {
+        color: #666
+    }
+
+    .vapo-giveaway-inquire-col input::-webkit-input-placeholder, .vapo-giveaway-inquire-col textarea::-webkit-input-placeholder {
+        color: #666
+    }*/
+
+    .vapo-strong {
+        color: #d52744;
+    }
+
+    .vapo-giveaway-inquire-col > p {
+        color: #fff;
+        font-size: 16px;
+        text-align: left;
+        padding: 0 42px;
+    }
+
+    .divid-line {
+        background: -webkit-linear-gradient(left, rgba(214, 214, 214, 0), rgba(214, 214, 214, 1), rgba(214, 214, 214, 0)); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(right, rgba(214, 214, 214, 0), rgba(214, 214, 214, 1), rgba(214, 214, 214, 0)); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(right, rgba(214, 214, 214, 0), rgba(214, 214, 214, 1), rgba(214, 214, 214, 0)); /* Firefox 3.6 - 15 */
+        background: linear-gradient(to right, rgba(214, 214, 214, 0), rgba(214, 214, 214, 1), rgba(214, 214, 214, 0)); /* 标准的语法（必须放在最后） */
+        height: 1px;
+        margin: 0.2rem 0.3rem;
+
+    }
+
+    .form-tip {
+        text-align: left;
+        color: #fff;
+        padding: 0 42px;
+    }
+
+    .recommend-product.vaporesso-revenger,.vaporesso-giveaway{
+        margin-bottom: 0.4rem;
+    }
+
+    .recommend-captcha {
+        color: #eeebeb;
+        font-size: 16px;
+        position: absolute;
+        left: 10%;
+        top: 32%;
+        letter-spacing: 1px;
+        z-index: 2;
+    }
+
+    .black-giveaways-go {
+        position: absolute;
+        z-index: 100;
+        right: 10%;
+        cursor: pointer;
+    }
+
+
+
+    ul.show_by_day {
+        position: relative;
+    }
+
+    .flash_sale_date:first-child {
+        margin-left: 13px;
+    }
+
+    .show_by_day:before {
+        content: '';
+        position: absolute;
+        width: calc(20% - 5px);
+        height: 55px;
+        right: 0;
+        background: linear-gradient(27deg, #0b1755, #265485);
+    }
+
+    .one-dollar-spike-product {
+        width: calc(50% - 5px);
+        margin: 5px 11px 10px 0;
+        height: 370px;
+        float: left;
+        background: url('/media/wysiwyg/topic/black-friday-deals/falsh-sale-bg.jpg') no-repeat center / 100% 100%;
+    }
+
+    .flashsale-product-list.recommend-product-list .product-items .item {
+        width: calc(25% - 10px);
+        margin: 5px 13px 10px 0;
+        height: 370px;
+    }
+
+    .flashsale-product-list.recommend-product-list .product-items .item:nth-child(4n), .flashsale-product-list.recommend-product-list .product-items .item:last-child {
+        margin-right: 0;
+    }
+
+    .spike-product-info {
+        width: 49%;
+        float: left;
+        margin-top: 0.6rem;
+    }
+
+    .spike-product-info .countdown-time, .spike-product-info .product-name, .spike-product-info .price-box {
+        margin-left: 20px;
+        text-align: left;
+    }
+
+    .spike-product-info .countdown-time {
+        font-size: 16px;
+        color: #fff;
+    }
+
+    .spike-product-info .product-name {
+        font-size: 22px;
+        margin: 25px 0 30px 20px;
+        font-family: opensans-semibold;
+    }
+
+    .spike-product-info .product-name a p {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .spike-product-info .price-box .regular-price .price, .spike-product-info .price-box .special-price .price {
+        font-size: 43px;
+        color: #fff;
+    }
+
+    .spike-product-info .old-price .price {
+        font-size: 20px;
+        color: #f2e7e3;
+        margin-left: 15px;
+    }
+
+    a.spike-buy-btn {
+        width: 185px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        color: #fff;
+        margin-top: 20px;
+        font-size: 15px;
+        background: rgba(181, 150, 150, 0.8);
+        display: inline-block;
+        border-bottom-right-radius: 24px;
+        border-top-right-radius: 25px;
+    }
+
+    a.spike-buy-btn.active {
+        background: #ff8a00;
+    }
+
+    a.spike-buy-btn.coming {
+        background: #2c6ce1;
+    }
+
+    .flashsale-product-list .home-list .home-product-img {
+        height: 230px;
+        width: 100%;
+        position: relative;
+        margin-bottom: 8px;
+    }
+
+    .spike-product-info .black-deal-inquire-btn {
+        width: auto;
+        background: none;
+        box-shadow: none;
+        margin-left: 15px;
+        vertical-align: bottom;
+    }
+
+    .spike-product-image a {
+        display: inline-block;
+        position: relative;
+        top: calc(50% - 120px);
+    }
+
+    .spike-product-image {
+        float: left;
+        width: 49%;
+        text-align: center;
+        height: 100%;
+        position: relative;
+    }
+
+    .flashsale-product-list .countdown-time {
+        margin: 0;
+        text-align: left;
+        font-size: 12px;
+        color: #000;
+    }
+
+    .flashsale-product-list .limit-deal-time .js-limitDealTime .deal-hour, .flashsale-product-list .limit-deal-time .js-limitDealTime .deal-minute, .flashsale-product-list .limit-deal-time .js-limitDealTime .deal-second {
+        font-size: 18px;
+    }
+
+    .spike-product-info .limit-deal-time .js-limitDealTime .deal-hour, .spike-product-info .limit-deal-time .js-limitDealTime .deal-minute, .spike-product-info .limit-deal-time .js-limitDealTime .deal-second {
+        font-size: 22px;
+    }
+
+    .flashsale-product-list .product-items .product-name {
+        font-family: opensans-semibold;
+        padding: 0;
+        margin: 2px 0 10px;
+        text-align: left;
+    }
+
+    .flashsale-product-list .product-items .product-other-info {
+        padding: 0 0.2rem;
+        text-align: left;
+    }
+
+    .num_bar {
+        width: 100%;
+        height: 6px;
+        background: #FFFFFF;
+        border: 1px solid rgba(255, 138, 0, 0.8);
+        border-radius: 4px;
+        line-height: 1;
+        margin-bottom: 3px;
+    }
+
+    .num_bar span {
+        background: rgba(255, 138, 0, 0.5);
+        border-radius: 3px 0 0 3px;
+        display: block;
+        height: 6px;
+    }
+
+    .ordered_limited span {
+        width: 50%;
+        display: block;
+        float: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #000;
+    }
+
+    .ordered_limited .ordered {
+        text-align: left;
+    }
+
+    .ordered_limited .limited {
+        text-align: right;
+    }
+
+    .flashsale-product-list .price-box {
+        display: inline-block;
+    }
+
+    .flashsale-product-list .black-deal-inquire-btn {
+        width: 100px;
+        text-align: center;
+        float: right;
+        border-radius: 5px;
+    }
+
+    .flashsale-product-list .old-price .price {
+        font-size: 12px;
+    }
+
+    .flashsale-product-list .special-price .price, .flashsale-product-list .regular-price .price {
+        font-size: 23px;
+        color: #000;
+    }
+
+    .flashsale-product-list .product-items .item .price-box {
+        margin: 15px 0 0;
+    }
+
+    .flashsale-product-box.end .flashsale-product-list .home-list .home-product-img:after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.5) url('<?php echo $this->getSkinUrl("images/topic/end.png") ?>') no-repeat center;
+        z-index: 10;
+    }
+
+    .flashsale-product-box.coming .flashsale-product-list .home-list .home-product-img a:after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.5) url('<?php echo $this->getSkinUrl("images/topic/coming.png") ?>') no-repeat center ;
+        z-index: 10;
+    }
+
+    .flash-countdown {
+        min-height: 20px;
+    }
+
+    @media (min-width: 0px) {
+        .sales-label {
+            width: 70px;
+            height: 26px;
+            line-height: 26px;
+            right: calc(50% - 35px);
+            top: 0;
+            left: initial;
+            background: #f83837;
+            border-radius: 0;
+        }
+        .sales-label .sales-off-num:before{
+            content: '';
+        }
+
+        .sales-label .sales-off-num {
+            font-size: 16px;
+            position: static;
+            width: 100%;
+            font-weight: normal;
+        }
+    }
+
+    @media (max-width: 1199px) {
+        .black-deal-main {
+            width: 100%;
+        }
+
+        .black-deal-swiper-container .product-items .item, .recommend-product-list .product-items .item {
+            background: #fff;
+            width: calc(25% - 6px);
+        }
+
+        .sales-label .sales-off-num:before {
+            content: '';
+            border-radius: 0;
+        }
+
+        .clearance-sale-link li {
+            width: calc(25% - 13.333px);
+        }
+    }
+
+    @media (max-width: 1174px) {
+        .flashsale-product-list .black-deal-inquire-btn {
+            width: 90px;
+        }
+
+        .flashsale-product-list .special-price .price, .flashsale-product-list .regular-price .price {
+            font-size: 20px;
+        }
+
+    }
+
+    @media (max-width: 1078px) {
+        .flashsale-product-list.recommend-product-list .product-items .item {
+            height: 430px;
+        }
+
+        .flashsale-product-list .price-box {
+            display: block;
+            text-indent: 0;
+        }
+
+        .flashsale-product-list .black-deal-inquire-btn {
+            width: 100%;
+        }
+
+        .flashsale-product-list .product-items .item .price-box {
+            margin: 5px 0 0;
+        }
+
+    }
+
+    @media (max-width: 1023px) {
+        .black-deal-swiper-container .product-items .item, .recommend-product-list .product-items .item {
+            height: 330px;
+        }
+
+
+
+    }
+
+    @media (max-width: 767px) {
+        .black-mb-banner {
+            display: block;
+        }
+
+        .black-deal-product .swiper-button-prev, .black-deal-product .swiper-button-next {
+            background-image: url('<?php echo $this->getSkinUrl("images/homepage/banner-arrow.png") ?>');
+            width: 25px;
+            height: 60px;
+            margin-top: -30px;
+        }
+
+        .black-deal-product .swiper-button-next {
+            background-position: center 20px;
+            right: 0;
+        }
+
+        .black-deal-product .swiper-button-prev {
+            background-position: center -35px;
+            transform: initial;
+            left: 0;
+        }
+
+        .recommend-product-word p{
+            padding-right: 0;
+        }
+
+        .recommend-product {
+            background-image: url("/media/wysiwyg/topic/black-friday-deals/recommend-mb-bg.jpg");
+        }
+
+        .recommend-product.vaporesso-revenger {
+            background-image: url("/media/wysiwyg/topic/black-friday-deals/recommend-vapo-mb-bg.jpg");
+        }
+
+        .clearance-sale-link li {
+            width: auto;
+        }
+
+        .recommend-product-info {
+            float: left;
+            width: 100%;
+            padding: 0 0.2rem;
+            box-sizing: border-box;
+            margin: 300px auto 0;
+        }
+
+        .recommend-product-list .product-items .item, .black-deal-product .product-items .item {
+            width: 50%;
+            margin: 0;
+            height: 340px;
+        }
+
+        .recommend-product-word .inquireNow-popup-btn {
+            width: 100%;
+            height: 0.8rem;
+            font-size: 0.3rem;
+            line-height: 0.8rem;
+        }
+
+        .black-deal-inquire-btn {
+            width: 3rem;
+        }
+
+        .recommend-more-link {
+            height: 190px;
+            line-height: 190px;
+        }
+
+        .brand-r {
+            margin: 0.2rem;
+        }
+
+        .brand-r .brand-product-img li {
+            margin-right: 0.15rem;
+        }
+
+        .brand-r .brand-product-img li:last-child {
+            margin-right: 0;
+        }
+
+        .brand-sale {
+            float: right;
+            margin-top: 0.4rem;
+        }
+
+        .brand-product-list {
+            padding: 0;
+            width: 100%
+        }
+
+        .brand-l {
+            width: 100%;
+            padding: 0.2rem;
+            box-sizing: border-box;
+        }
+
+        .rev-iframe-box {
+            width: 100%;
+        }
+
+        .black-deal-main {
+            width: 100%;
+        }
+
+        .clearance-sale-link li {
+            float: left;
+            width: 50%;
+            text-align: center;
+            margin: 0 auto;
+            opacity: 1;
+        }
+
+        .black-pc-banner {
+            display: none;
+        }
+
+        /* flash sale */
+
+
+        .flashsale-product-list.recommend-product-list .product-items .item {
+            width: 50%;
+            margin: 0;
+        }
+
+        .flashsale-product-list.recommend-product-list .product-items .item:nth-child(2), .flashsale-product-list.recommend-product-list .product-items .item:last-child {
+            margin: 0;
+        }
+
+        .flashsale-product-list .limit-deal-time .js-limitDealTime .deal-hour, .flashsale-product-list .limit-deal-time .js-limitDealTime .deal-minute, .flashsale-product-list .limit-deal-time .js-limitDealTime .deal-second {
+            font-size: 14px;
+        }
+
+        .show_by_day li {
+            font-size: 12px;
+            width: 20%;
+            line-height: 1;
+
+        }
+
+        .flash_sale_date:first-child {
+            margin: 0;
+        }
+
+        .show_by_day li span {
+            margin: 0.3rem 0.4rem 0;
+            display: inline-block;
+        }
+
+        .flashsale-product-box.coming .flashsale-product-list .home-list .home-product-img:after {
+            background-size: 90%;
+        }
+
+
+        a.vape-product-link {
+            width: 100%;
+            height: 6rem;
+            position: absolute;
+            bottom: initial;
+        }
+
+        .vaporesso-giveaway .vapo-giveaway-r, .vaporesso-giveaway .vapo-giveaway-l {
+            width: 100%;
+        }
+
+        .vapo-giveaway-inquire-col > p {
+            padding: 0;
+        }
+
+        .wholesale-submit {
+            margin-right: 0;
+        }
+
+        .vapo-giveaway-title {
+            font-size: 20px;
+        }
+
+        .vapo-giveaway-word {
+            line-height: 1.5;
+        }
+
+        .vapo-giveaway-inquire-col {
+            padding: 0 0.2rem;
+        }
+
+        .recommend-captcha{
+            top: initial;
+            bottom: 4%;
+            left: 7%;
+        }
+        .recommend-product.vaporesso-revenger .recommend-captcha {
+            top: 34%;
+            font-size: 14px;
+            letter-spacing: 0;
+        }
+
+        .black-giveaways-go{
+            width: 2.5rem;
+            right: 3%;
+            display: none;
+        }
+    }
+
+    @media (max-width: 374px) {
+        .brand-product-img li img {
+            width: 100%;
+        }
+
+        .recommend-product-info {
+            float: left;
+            width: 100%;
+            padding: 0 0.2rem;
+            box-sizing: border-box;
+            margin: 250px auto 0;
+        }
+
+        .brand-r .brand-product-img li {
+            margin-right: 0.1rem;
+            width: 31%;
+        }
+
+        p.brand-discount {
+            font-size: 18px;
+            margin: 0 0 5px;
+            text-align: left;
+        }
+
+        .brand-coupon {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="black-friday-deal-page">
+    <div class="black-giveaways-go">
+        <a href="javascript:;" title="Vaporesso Giveaway">
+            <img src="/media/wysiwyg/topic/black-friday-deals/giveaway-btn.png" alt=""/>
+        </a>
+    </div>
+    <div class="black-deal-banner">
+        <div class="black-pc-banner imgCenterPosition">
+            <img src="/media/wysiwyg/topic/black-friday-deals/banner_01.jpg" alt=""/>
+            <img src="/media/wysiwyg/topic/black-friday-deals/banner_02.jpg" alt=""/>
+            <a href="/free-website" title="Get your free website now!" target="_blank">
+                <img src="/media/wysiwyg/topic/black-friday-deals/banner_03.jpg" alt=""/>
+            </a>
+        </div>
+        <div class="black-mb-banner">
+            <img src="/media/wysiwyg/topic/black-friday-deals/banner_mb.jpg" alt=""/>
+            <img src="/media/wysiwyg/topic/black-friday-deals/banner_mb_03.jpg" alt=""/>
+        </div>
+    </div>
+
+    <div class="black-deal-main">
+
+        <!-- flash-sale -->
+        <div class="flash-sale-col">
+            <div class="clearance-title">
+                <img src="/media/wysiwyg/topic/black-friday-deals/falsh-title.png" alt="">
+            </div>
+            <!-- 日期 -->
+            <div class="flash_sale_header">
+                <ul class="show_by_day clearfix">
+					<?php foreach ($promoCategorys as $k => $cid): ?>
+						<?php $date = date('Y-m-d', strtotime($promoBeginDate) + ($k*24*3600)) ?>
+						<li class="flash_sale_date
+						<?php if($k==0 && $date > $currentDate) {
+                            echo 'active ';
+                        } else if($k == $promoCategoryCount-1 && $date < $currentDate) {
+                            echo "active ";
+                        } else if($date == $currentDate) {
+                            echo "active";
+                        }?> " data-sale-date="<?php echo $date ?>">
+							<span><?php echo $date ?></span>
+						</li>
+					<?php endforeach; ?>
+                </ul>
+            </div>
+
+            <?php foreach ($promoCategorys as $k => $cid): ?>
+                <?php $date = date('Y-m-d', strtotime($promoBeginDate) + ($k*24*3600)) ?>
+            <div class="flashsale-product-box
+            <?php if($k==0 && $date > $currentDate) {
+                echo 'active coming';
+            } else if($k == $promoCategoryCount-1 && $date < $currentDate) {
+                echo "active end";
+            } else if($date > $currentDate) {
+                echo "coming hide";
+            } elseif ($date < $currentDate) {
+                echo "end hide";
+            } else{
+                echo "active";
+            } ?> " data-sale-date="<?php echo $date ?>">
+
+                <div class="flashsale-product-list recommend-product-list">
+                    <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                        ->setTemplate('cms/activity/black-deals-flash-product-items.phtml')
+                        ->setData('categories', $cid)
+                        ->setData('sort', 'e.entity_id desc')
+                        ->setData('image_size', '200,200')
+                        ->setData('special_countdown', '1')
+                        ->setData('item_limit', '8')
+						->setProDate($date)
+                        ->setData('mouse_over_tools', '0')->toHtml() ?>
+                </div>
+            </div>
+			<?php endforeach; ?>
+
+        </div>
+
+
+        <!-- clearance-sale -->
+        <div class="clearance-sale-col">
+            <div class="clearance-title">
+                <img src="/media/wysiwyg/topic/black-friday-deals/clearance-title.png" alt="">
+            </div>
+
+            <!-- 轮播图 -->
+            <div class="black-deal-product ">
+                <div class="black-deal-swiper-container swiper-container ">
+                    <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                        ->setTemplate('cms/activity/black-deals-clearance-product-items.phtml')
+                        ->setCategories($clearanceCategoryId)
+                        ->setData('mouse_over_tools', 0)
+                        ->setData('image_size', '176,176')
+                        ->toHtml();
+                    ?>
+                </div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+
+            <ul class="clearance-sale-link clearfix">
+                <li>
+                    <a href="/clearance" target="_blank" title="Clearance">
+                        <img src="/media/wysiwyg/topic/black-friday-deals/clearance-ad.jpg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="/new-arrival" target="_blank" title="New Arrival">
+                        <img src="/media/wysiwyg/topic/black-friday-deals/new-ad.jpg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="/devices" target="_blank" title="Devices">
+                        <img src="/media/wysiwyg/topic/black-friday-deals/mod-ad.jpg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="/tanks/rda" target="_blank" title="RDA">
+                        <img src="/media/wysiwyg/topic/black-friday-deals/rda-ad.jpg" alt="">
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- recommend-sale -->
+        <div class="recommend-sale">
+            <div class="clearance-title">
+                <img src="/media/wysiwyg/topic/black-friday-deals/recommend-title.png" alt="">
+            </div>
+            <div class="recommend-product vaporesso-revenger">
+
+                <a class="vape-product-link" href="/starter-kits/vaporesso/vaporesso-revenger"
+                   title="Vaporesso Revenger mini kit" target="_blank">
+                    <span class="recommend-captcha"> 15% Off Code: REV15E</span>
+
+                </a>
+                <div class="recommend-product-info">
+                    <div class="recommend-product-word">
+                        <p>From a fundamental level, Vaporesso looks to leverage technological advances in research and
+                            development and expert manufacturing to make e-cigarette hardware safer, with improved
+                            heating elements, more convenient ...</p>
+                        <p class="learn-more-link">
+                            <a href="/blog/vaporesso-led-with-a-strong-attack-revenger-family-review/"
+                               title="Learn more about Revenger mini kit" target="_blank">Learn more about Revenger mini
+                                kit</a></p>
+                        <a href="javascript:;" class="inquireNow-popup-btn">Inquire</a>
+                        <div class="rev-iframe-box">
+                            <iframe frameborder="0" height="309" src="https://www.youtube.com/embed/aRlZ2BrUUUo"
+                                    width="100%" allowfullscreen="true" webkitallowfullscreen="true"
+                                    mozallowfullscreen="true"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="vaporesso-giveaway clearfix" id="vaporesso-giveaway">
+                <div class="vapo-giveaway-l">
+                    <a class="e-widget no-button"
+                       href="https://gleam.io/7as2z/giveaway-of-vaporesso-revenger-mini-85w-kit-10-winners"
+                       rel="nofollow">GIVEAWAY of Vaporesso Revenger Mini 85W Kit, 10 Winners!!!</a>
+                    <script type="text/javascript" src="https://js.gleam.io/e.js" async="true"></script>
+                </div>
+                <div class="vapo-giveaway-r">
+                    <h2 class="vapo-giveaway-title">
+                        <p><i>GIVEAWAY</i> of Vaporesso</p>
+                        <p>Revenger Mini 85W Kit</p>
+                        <p><span>10</span> Winners!!!</p>
+                    </h2>
+                    <div class="vapo-giveaway-word">
+                        <p>Ave40’s Giveaway time! The Vaporesso Revenger Mini is totally lit! </p>
+                        <p>The newest and most modernized products are now FOR YOU!!! --</p>
+                        <p>to express our sincere appreciation for your support!</p>
+                        <p class="vapo-strong">10 x Vaporesso Revenger Mini 85W Kit</p>
+                        <p class="vapo-strong">with NRG SE Tank 2ml/3.5ml</p>
+                        <p>The giveaway starts from 9th to 16th Nov. The more entries you get</p>
+                        <p>in, the more chances to win the kits! Just get it! Good luck.</p>
+                    </div>
+                    <div class="divid-line"></div>
+                    <div class="vapo-giveaway-inquire-col">
+                        <p>Interest in Wholesale Discount?</p>
+                        <form id="vapo-giveaway-inquire">
+                            <div class="wholesale-group wholesale-email">
+                                <input type="email" name="email" required="required" placeholder="Email"
+                                       class="wholesale-email-input">
+                            </div>
+                            <div class="form-tip"></div>
+                            <input type="hidden" name="name" value="-">
+                            <div class="wholesale-group wholesale-textarea">
+                            <textarea name="comment"
+                                      placeholder="Provide company info and quantitiy desired to get wholesale discount"
+                                      required="required"
+                                      onkeydown="checkMaxInput(this,200)" onkeyup="checkMaxInput(this,200)"
+                                      onfocus="checkMaxInput(this,200)" onblur="checkMaxInput(this,200)"
+                                      class="wholesale-textarea-input"></textarea>
+                                <span class="remain-word">(<i class="Max_msg">0</i>/200)</span>
+                            </div>
+                            <div class="form-tip"></div>
+                            <?php echo Mage::app()->getLayout()->createBlock('core/template')->setTemplate('cms/vapo-sale-captcha.phtml')->toHtml() ?>
+                            <div class="wholesale-submit">
+                                <button type="submit" value="" class="send"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="recommend-product rev-vape">
+
+                <a class="vape-product-link" href="/brands/rev" title="REV Vape Mods" target="_blank">
+                    <span class="recommend-captcha"> 15% Off Code: REV15E</span>
+                </a>
+                <div class="recommend-product-info">
+                    <div class="recommend-product-word">
+                        <p>When checking it out all vape gears released in 2017, it struck
+                        <p>me that the racing-themed vape devices might not get as</p>
+                        <p>much attention as they deserve when compared to other</p>
+                        <p>sports-themed mods ...</p>
+                        <p class="learn-more-link"><a href="/blog/rev-vape-mods-modern-with-retro-racing-style/"
+                                                      title="Learn more about REV Vape Mods" target="_blank">Learn more
+                                about REV Vape Mods</a></p>
+                        <a href="javascript:;" class="inquireNow-popup-btn">Inquire</a>
+                        <div class="rev-iframe-box">
+                            <iframe frameborder="0" height="309" src="https://www.youtube.com/embed/r9HNEnRBzfg"
+                                    width="100%" allowfullscreen="true" webkitallowfullscreen="true"
+                                    mozallowfullscreen="true"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="recommend-product-main">
+                <?php if (!Mage::getModel('customer/session')->isLoggedIn()): ?>
+                    <h3>Notice: Please <a href="/customer/account/login">log in</a> to view wholesale price</h3>
+                <?php endif; ?>
+
+                <div class="recommend-product-list">
+                    <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                        ->setTemplate('cms/activity/black-deals-recommend-product-items.phtml')
+                        ->setData('categories', $recommendCategoryId)
+                        ->setData('sort', 'e.entity_id desc')
+                        ->setData('item_limit', '19')
+                        ->setData('image_size', '176,176')
+                        ->setData('mouse_over_tools', '0')->toHtml() ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- brand-list  -->
+        <?php $index = 0; ?>
+        <div class="brand-list-col">
+            <div class="brand-title">
+                <img src="/media/wysiwyg/topic/black-friday-deals/brand-title.png" alt="">
+            </div>
+            <div class="brand-product">
+                <ul class="clearfix">
+                    <li class="brand-product-list joyetech">
+                        <div class="brand-l">
+                            <a href="<?php echo $_fnGetTargetCategoryLink($index) ?>" target="_blank" title="joyetech">
+                                <img src="https://www.ave40.com/media/catalog/category/342.jpg" alt="">
+                            </a>
+                            <div class="brand-sale">
+                                <p class="brand-discount"><i>2</i>%&nbsp;Off</p>
+                                <p class="brand-coupon">Use Code:&nbsp; BFJOYE</p>
+                            </div>
+                        </div>
+                        <div class="brand-r">
+                            <ul class="brand-product-img">
+                                <?php $_fnCreateBrandProducts($index++); ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="brand-product-list eleaf">
+                        <div class="brand-l">
+                            <a href="<?php echo $_fnGetTargetCategoryLink($index) ?>" target="_blank" title="Eleaf">
+                                <img src="https://www.ave40.com/media/catalog/category/343.jpg" alt="">
+                            </a>
+                            <div class="brand-sale">
+                                <p class="brand-discount"><i>2</i>%&nbsp;Off</p>
+                                <p class="brand-coupon">Use Code:&nbsp; BFLEAF</p>
+                            </div>
+                        </div>
+                        <div class="brand-r">
+                            <ul class="brand-product-img">
+                                <?php $_fnCreateBrandProducts($index++); ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="brand-product-list wismec">
+                        <div class="brand-l">
+                            <a href="<?php echo $_fnGetTargetCategoryLink($index) ?>" target="_blank" title="Wismec">
+                                <img src="https://www.ave40.com/media/catalog/category/348.jpg" alt="">
+                            </a>
+                            <div class="brand-sale">
+                                <p class="brand-discount"><i>2</i>%&nbsp;Off</p>
+                                <p class="brand-coupon">Use Code:&nbsp; BFWISM</p>
+                            </div>
+                        </div>
+                        <div class="brand-r">
+                            <ul class="brand-product-img">
+                                <?php $_fnCreateBrandProducts($index++); ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="brand-product-list ijoy">
+                        <div class="brand-l">
+                            <a href="<?php echo $_fnGetTargetCategoryLink($index) ?>" target="_blank" title="Ijoy">
+                                <img src="https://www.ave40.com/media/catalog/category/394.jpg" alt="">
+                            </a>
+                            <div class="brand-sale">
+                                <p class="brand-discount"><i>4</i>%&nbsp;Off</p>
+                                <p class="brand-coupon">Use Code:&nbsp; BFIJOY</p>
+                            </div>
+                        </div>
+                        <div class="brand-r">
+                            <ul class="brand-product-img">
+                                <?php $_fnCreateBrandProducts($index++); ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="brand-product-list vaporesso">
+                        <div class="brand-l">
+                            <a href="<?php echo $_fnGetTargetCategoryLink($index) ?>" target="_blank" title="Vaporesso">
+                                <img src="https://www.ave40.com/media/catalog/category/422.jpg" alt="">
+                            </a>
+                            <div class="brand-sale">
+                                <p class="brand-discount"><i>2.5</i>%&nbsp;Off</p>
+                                <p class="brand-coupon">Use Code:&nbsp; BFVAPO</p>
+                            </div>
+                        </div>
+                        <div class="brand-r">
+                            <ul class="brand-product-img">
+                                <?php $_fnCreateBrandProducts($index++); ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="brand-product-list teslacigs">
+                        <div class="brand-l">
+                            <a href="<?php echo $_fnGetTargetCategoryLink($index) ?>" target="_blank" title="Teslacigs">
+                                <img src="https://www.ave40.com/media/catalog/category/tesla.jpg" alt="">
+                            </a>
+                            <div class="brand-sale">
+                                <p class="brand-discount"><i>5</i>%&nbsp;Off</p>
+                                <p class="brand-coupon">Use Code:&nbsp; BFTESLA</p>
+                            </div>
+                        </div>
+                        <div class="brand-r">
+                            <ul class="brand-product-img">
+                                <?php $_fnCreateBrandProducts($index++); ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="brand-product-list limitless">
+                        <div class="brand-l">
+                            <a href="<?php echo $_fnGetTargetCategoryLink($index) ?>" target="_blank" title="Limitless">
+                                <img src="https://www.ave40.com/media/catalog/category/450.jpg" alt="">
+                            </a>
+                            <div class="brand-sale">
+                                <p class="brand-discount"><i>5</i>%&nbsp;Off</p>
+                                <p class="brand-coupon">Use Code:&nbsp; BFLIMIT</p>
+                            </div>
+                        </div>
+                        <div class="brand-r">
+                            <ul class="brand-product-img">
+                                <?php $_fnCreateBrandProducts($index++); ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="brand-product-list smoant">
+                        <div class="brand-l">
+                            <a href="<?php echo $_fnGetTargetCategoryLink($index) ?>" target="_blank" title="Smoant">
+                                <img src="https://www.ave40.com/media/catalog/category/434.jpg" alt="">
+                            </a>
+                            <div class="brand-sale">
+                                <p class="brand-discount"><i>2</i>%&nbsp;Off</p>
+                                <p class="brand-coupon">Use Code:&nbsp; BFSMOA</p>
+                            </div>
+                        </div>
+                        <div class="brand-r">
+                            <ul class="brand-product-img">
+                                <?php $_fnCreateBrandProducts($index++); ?>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 猜你喜欢-->
+        <div class="maylike-sale recommend-sale">
+            <div class="clearance-title">
+                <img src="/media/wysiwyg/topic/black-friday-deals/maylike-title.png" alt="">
+            </div>
+            <div class="recommend-product-main">
+                <div class="recommend-product-list">
+                    <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                        ->setTemplate('cms/activity/black-deals-maylike-product-items.phtml')
+                        ->setData('categories', $mayLikeCategoryId)
+                        ->setData('sort', 'e.entity_id desc')
+                        ->setData('image_size', '176,176')
+                        ->setData('mouse_over_tools', '0')->toHtml() ?>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+
+    ~function ($) {
+        $(function () {
+
+
+            var swiper = new Swiper('.black-deal-swiper-container', {
+                slidesPerView: 5,
+                paginationClickable: true,
+                spaceBetween: 10,
+                prevButton: '.black-deal-product .swiper-button-prev',
+                nextButton: '.black-deal-product .swiper-button-next',
+                /*freeMode: true,*/
+                breakpoints: {
+                    //当宽度小于等于320
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 0
+                    },
+                    1000: {
+                        slidesPerView: 4
+                    }
+                }
+            });
+
+
+            /**
+             *  flash sale
+             */
+            $('.flash_sale_date').click(function () {
+                var _this = $(this);
+                var sale_date = _this.data("sale-date");
+                $(".flashsale-product-box ").each(function (i, ele) {
+                    var ul_sale_date = $(ele).data("sale-date");
+                    if (sale_date == ul_sale_date) {
+                        _this.addClass("active").siblings('li').removeClass("active");
+                        $(ele).removeClass("hide").siblings('.flashsale-product-box ').addClass('hide');
+                    }
+                })
+            })
+
+            $("#vapo-giveaway-inquire").validate({
+                errorClass: 'mess',
+                errorElement: "div",
+                onfocusout: false,
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.closest('.wholesale-group').next('.form-tip'));
+                },
+                submitHandler: function (form) {
+                    var inquireFormData = $('#vapo-giveaway-inquire').serialize();
+                    ave40.showLoading('Sending');
+                    ave40.ajaxPost('/inquire/index/axpost', inquireFormData, function () {
+                        if (this.ok) {
+                            ave40.closeLoading();
+                            Ave40MessageBox.alertSuccess('Your inquiry was submitted and will be responded to as soon as possible. Thank you for contacting us');
+                        } else {
+                            ave40.closeLoading();
+                            Ave40MessageBox.alertError(this.message);
+                        }
+                    });
+                    return false;
+                }
+            });
+
+            $('.black-giveaways-go').click(function () {
+                $("html,body").animate({scrollTop: $("#vaporesso-giveaway").offset().top - 200 + 'px'}, 1000);
+            })
+
+
+
+        })
+    }(jQuery)
+
+
+</script>

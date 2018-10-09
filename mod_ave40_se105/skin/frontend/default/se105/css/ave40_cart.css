@@ -1,0 +1,418 @@
+.ave40-cart-table  .cart .totals {
+    border: none;
+}
+
+.ave40-cart-table  .cart .a-right.last .btn-continue {
+    float: left;
+}
+
+.ave40-cart-table  .a-right .button.button span span {
+    color: #fff;
+    line-height: 20px;
+    /* background-color: #ff8a00; */
+    border: none;
+    background: none;
+    padding: 5px;
+    background-color: #ff8a00;
+}
+
+.ave40checkout-cart-index .main {
+    margin-bottom: 20px;
+}
+
+.ave40checkout-cart-index .cart {
+    margin-top: 20px;
+}
+
+.ave40checkout-cart-index .processCheckout {
+    font-size: 20px;
+    margin-top: 15px;
+    margin-right: 0.3rem;
+    float: right;
+    cursor: pointer;
+    color: #fff;
+    width: 147px;
+    height: 50px;
+    background-color: #e10b0b;
+    border-radius: 3px;
+}
+
+.ave40checkout-cart-index .processCheckout:hover{
+    background-color: #fb5151;
+}
+
+.ave40-cart-table table {
+    border-spacing: 0;
+    border-top: none;
+}
+
+.ave40-cart-table .data-table.ave40-cart-table-list th {
+    color: #777;
+    font-family: opensans-bold;
+    padding: 15px 5px;
+    background: #f6f6f6;
+    border-bottom: 15px solid #fff;
+    font-size: 15px;
+}
+
+.ave40-cart-table .data-table th, .ave40-cart-table .data-table tbody td {
+    padding: 20px 0 30px;
+    border-bottom: 1px solid #ddd;
+    background: #f6f6f6;
+}
+
+.ave40-cart-table .data-table tbody tr:nth-last-child(1) td{
+    border:none;
+}
+
+.ave40-cart-table  .data-table td img {
+    border: 1px solid #cecece;
+}
+
+.ave40-cart-table .data-table {
+    border: none;
+}
+
+.ave40checkout-cart-index .col-main {
+    padding-top: 20px;
+}
+
+.ave40-cart-table .selectAll {
+    margin-right: 20px;
+
+}
+
+.ave40-cart-table .selectAll label{
+    cursor: pointer;
+}
+
+.quoteDetail-list {
+    padding: 10px;
+    margin-top: 15px;
+    text-align: right;
+    padding-right: 0.6rem;
+}
+
+.quoteDetail .label {
+    display: inline-block;
+    color: #777;
+}
+
+.quoteDetail .quoteDetail-list div {
+    float: right;
+    clear: both;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.quoteDetail .subtal .value {
+    color: #e10b0b;
+    font-family: opensans-bold;
+}
+
+.cart-price .price{
+    font-family: inherit;
+}
+
+.cart-subtotal-price .price {
+    font-family: opensans-semibold;
+}
+
+.product-option-list .label{
+    color: #999;
+}
+
+.product-option-list {
+    margin-top: 10px;
+}
+
+.product-option-list .product-option-item{
+    margin-bottom: 5px;
+}
+
+.product-option-list .value{
+    margin-left: 10px;
+}
+
+.cart .ave40-cart-table-list tbody tr td:first-child{
+    padding: 0.2rem 0 0 0.3rem;
+}
+
+.ave40-cart-table-list tbody tr td:first-child {
+    padding: 0.2rem 0 0 0.3rem;
+    position: relative;
+}
+.ave40-cart-table-list tbody tr.cart-limted-tips td:first-child{
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.ave40-cart-table-list tbody tr.cart-limted-tips:last-of-type td:first-child{
+    border: 0;
+}
+
+
+.cart .ave40-cart-table .data-table th, .cart .ave40-cart-table .data-table tbody td{
+    border-bottom: 0;
+    padding: 20px 0 10px;
+}
+
+
+.ave40-cart-table .data-table td.cart-product-info-box{
+    min-width: 220px;
+}
+
+.ave40-cart-table .data-table td.cart-product-qty,.ave40-cart-table .data-table td.cart-product-price,.ave40-cart-table .data-table td.cart-subtotal-box,.ave40-cart-table .data-table td.cart-action-box {
+    min-width: 168px;
+}
+
+.ave40-cart-table .data-table td{
+    min-width: 100px;
+}
+
+.ave40-cart-table .data-table td.cart-checked-box{
+    min-width: 43px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+label.cart-checkbox-label {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    cursor: pointer;
+    top: 0;
+}
+
+.review-qty-box input.qty{
+    width: 60px;
+    height: 31px;
+    text-align: center;
+}
+
+.ave40-cart-table-list .action{
+    color: #777;
+    font-size: 14px;
+}
+
+.ave40-cart-table-list .action ._btn-remove{
+    display: inline-block;
+}
+
+.ave40-cart-table-list .action span{
+    cursor: pointer;
+}
+
+.ave40-cart-table-list .action span:hover{
+    color: #e10b0b;
+}
+
+.ave40-cart-table-list .action .addwishlist {
+    margin-bottom: 20px;
+}
+
+.selectAll .allitem {
+    margin-right: 5px;
+    margin-top: -2px;
+}
+
+.options.footerOptions > div {
+    display: inline-block;
+    margin-right: 0.3rem;
+}
+
+.quoteDetail > div .value{
+    display: inline-block;
+    width: 150px;
+}
+
+/* 订单详情页 产品列表table通用  */
+.order-details-sub-title{
+    font-size: 15px;
+    color: #777;
+    text-indent:15px;
+    font-family: opensans-semibold;
+}
+
+.order-details-product-list{
+    margin: 0.4rem 0;
+}
+
+.order-details-product-list .ave40-cart-table .data-table td img{
+    width: 60px;
+    height: 60px;
+}
+
+
+.order-details-product-list .ave40-cart-table-list tr td:first-child {
+    padding: 20px 10px 30px 30px;
+}
+
+.order-details-product-list .ave40-cart-table-list tr td{
+    vertical-align: top;
+}
+
+.order-details-product-list .quoteDetail  div.qty .value, .order-details-product-list .quoteDetail  div.weight .value {
+    font-family: opensans;
+    color: #777;
+}
+
+.order-details-product-list .quoteDetail .subtal .value,.cart-main .quoteDetail .subtal .value{
+    color: #333;
+    font-weight: normal;
+    font-family: inherit;
+}
+
+.quoteDetail .total {
+    width: 100%;
+    margin: 0.1rem 0 0.3rem;
+    height: 50px;
+    line-height: 50px;
+    background-color: #f6f6f6;
+    text-align: right;
+    padding-right: 0.6rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.quoteDetail .total .value .price{
+    font-size: 20px;
+    color: #e10b0b;
+    font-family: opensans-semibold;
+}
+
+.order-details-payment-table.order-details-table table tbody td:last-child {
+    width: 74%;
+    padding-left: 0.5rem;
+    color: #777;
+}
+
+.quoteDetail .subtal .value{
+
+}
+
+.order-details-payment-table.order-details-table table tbody tr:last-child td:last-child{
+    padding-left: 0.5rem;
+}
+
+.order-details-payment-table.order-details-table table tbody td:first-child {
+    font-size: 15px;
+    font-weight: normal;
+    font-family: opensans-bold;
+    color: #777;
+    width: 25%;
+}
+
+.order-details-payment-table.order-details-table table tbody tr:last-child td{
+    padding: 0.25rem 0 0.25rem 0.3rem;
+    vertical-align: top;
+}
+
+.order-details-payment-table.order-details-table table tbody tr td{
+    text-align: left;
+    padding-left: 0.3rem;
+}
+
+a.order-details-pay-btn{
+    display: inline-block;
+    vertical-align: middle;
+    width: 147px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+a.order-details-pay-btn:hover{
+    background-color: #e10b0b;
+}
+
+.order-reorder-btn{
+    background-color: #6e6e6e;
+    margin-right: 15px;
+}
+
+.order-details-repay-btn{
+    background-color: #6e6e6e;
+}
+
+
+.order-pay-btn{
+    background-color: #e10b0b;
+}
+
+.order-details-pay-box {
+    text-align: right;
+}
+
+.order-details-coupon-code{
+    color: #bbb;
+}
+
+
+/* 确认订单 */
+
+
+.sp-methods-dd{
+    min-height: 100px;
+}
+
+.sp-methods-dd > p{
+    padding: 0.2rem 0 0 0.3rem;
+}
+
+.ave40-sp-methods-items-content{
+    display: block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    padding: 15px 20px ;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ave40-sp-methods-items.checked{
+    border-color: #3f97d5;
+}
+
+.s_method_title{
+    font-family: OpenSans-Bold;
+    font-size: 15px;
+    padding-bottom: 20px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.s_method_desc {
+    min-height: 50px;
+    color: #999999;
+}
+
+span.s_method_logo {
+    float: right;
+}
+
+.ave40-sp-methods-items input.radio{
+    position: absolute;
+    opacity: 0;
+}
+
+/* 支付方式 */
+
+
+.checkout-btn-box{
+    text-align: right;
+    margin-bottom: 2rem;
+    padding-right: 0.3rem;
+}
+
+#payment-error{
+    text-indent: 0.3rem;
+}

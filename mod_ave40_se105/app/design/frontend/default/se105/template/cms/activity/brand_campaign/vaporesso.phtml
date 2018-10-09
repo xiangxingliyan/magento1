@@ -1,0 +1,113 @@
+<div class="campaign-page vaporesso-sale">
+    <div class="campaign-banner imgCenterPosition">
+        <div style="position: relative">
+            <img src="/media/wysiwyg/topic/brand_campaign/vaporesso_s_01.jpg" alt="" />
+        </div>
+        <img src="/media/wysiwyg/topic/brand_campaign/vaporesso_s_02.jpg" alt="" />
+
+        <div class="campaign-product-banner">
+            <a href="/vaporesso-nexus-aio-starter-kit-650mah.html" target="_blank" title="vaporesso nexus aio starter kit 650mah">
+                <img src="/media/wysiwyg/topic/brand_campaign/vaporesso_s_03.jpg" alt="" />
+            </a>
+            <a href="/vaporesso-nexus-aio-starter-kit-650mah.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+        </div>
+
+        <div class="campaign-product-banner">
+            <a href="/vaporesso-cascade-sub-ohm-tank-7ml.html" target="_blank" title="Vaporesso Cascade Sub-Ohm Tank 7ml">
+                <img src="/media/wysiwyg/topic/brand_campaign/vaporesso_s_04.jpg" alt="" />
+            </a>
+            <a href="/vaporesso-cascade-sub-ohm-tank-7ml.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+        </div>
+    </div>
+
+    <div class="campaign-main clearfix">
+
+        <div class="campaign-product ">
+            <div class="campaign-product-item">
+                <a href="/vaporesso-transformer-220w-with-nrg-kit.html" title="Vaporesso Transformer 220W with NRG Kit" target="_blank">
+                    <img src="/media/wysiwyg/topic/brand_campaign/vaporesso_s_05.jpg" alt="" />
+                </a>
+                <a href="/blog/vaping-daily-reveiw-vaporesso-transformer-200w-kit/" class="vaporesso-blog-link" target="_blank" title="Learn more about Transformer 220W"></a>
+                <a href="/vaporesso-transformer-220w-with-nrg-kit.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+                <div class="campaign-video vaporesso-01-video">
+                    <iframe width="100%" height="309" src="https://www.youtube.com/embed/e3fz-eYuIlM" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="campaign-product-item">
+                <a href="/vaporesso-revenger-go-kit-5000mah.html" title="Vaporesso Revenger Go Kit 5000mAh" target="_blank">
+                    <img src="/media/wysiwyg/topic/brand_campaign/vaporesso_s_06.jpg" alt="" />
+                </a>
+                <a href="/vaporesso-revenger-go-kit-5000mah.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+            </div>
+            <div class="campaign-product-item">
+                <a href="/vaporesso-revenger-mini-85w-kit-with-nrg-se-tank-2ml-3-5ml.html" title="Vaporesso Revenger Mini 85W Kit with NRG SE Tank" target="_blank">
+                    <img src="/media/wysiwyg/topic/brand_campaign/vaporesso_s_07.jpg" alt="" />
+                </a>
+                <a href="/vaporesso-revenger-mini-85w-kit-with-nrg-se-tank-2ml-3-5ml.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+            </div>
+            <div class="campaign-product-item">
+                <img src="/media/wysiwyg/topic/brand_campaign/vaporesso_s_08.jpg" alt="" />
+                <div class="campaign-product-item-left">
+                    <a href="/vaporesso-revenger-x-220w-kit-with-nrg-tank-2ml-5ml.html" class="vaporesso-product-link" title="Vaporesso Revenger X 220W Kit with NRG Tank" target="_blank"></a>
+                    <a href="/vaporesso-revenger-x-220w-kit-with-nrg-tank-2ml-5ml.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+                </div>
+                <div class="campaign-product-item-right">
+                    <a href="/vaporesso-revenger-220w-kit-with-nrg-tank.html" class="vaporesso-product-link" title="Vaporesso Revenger 220W Kit with NRG Tank" target="_blank"></a>
+                    <a href="/vaporesso-revenger-220w-kit-with-nrg-tank.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="vaporesso-sale-bg clearfix">
+            <div class="campaign-recommend">
+                <div class="campaign-title">
+                    <h2>RECOMMEND</h2>
+                    <span class="campaign-recommend-coupon">
+                        <span>10% Off Code: </span>
+                        <span>VAPORE10</span>
+                        <span>(Retail Customers Only)</span>
+                    </span>
+                </div>
+                <div class="campaign-recommend-product-list w-1200">
+                    <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                        ->setTemplate('cms/activity/brand_campaign/brand-campaign-product-items.phtml')
+                        ->setData('categories', '422')
+                        ->setData('sort', 'e.entity_id desc')
+                        ->setData('item_limit', '20')
+                        ->setData('image_size', '200,200')
+                        ->setData('mouse_over_tools', '0')
+                        ->toHtml() ?>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    ~function ($) {
+        $(function () {
+            $("#vaporesso-campaign-inquire").validate({
+                errorClass: 'mess',
+                errorElement: "div",
+                onfocusout: false,
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.closest('.wholesale-group').next('.form-tip'));
+                },
+                submitHandler: function (form) {
+                    var inquireFormData = $('#vaporesso-campaign-inquire').serialize();
+                    ave40.showLoading('Sending');
+                    ave40.ajaxPost('/inquire/index/axpost', inquireFormData, function () {
+                        if (this.ok) {
+                            ave40.closeLoading();
+                            Ave40MessageBox.alertSuccess('Your inquiry was submitted and will be responded to as soon as possible. Thank you for contacting us');
+                        } else {
+                            ave40.closeLoading();
+                            Ave40MessageBox.alertError(this.message);
+                        }
+                    });
+                    return false;
+                }
+            });
+        })
+    }(jQuery)
+</script>

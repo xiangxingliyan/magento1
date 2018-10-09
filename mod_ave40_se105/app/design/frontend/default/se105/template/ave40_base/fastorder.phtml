@@ -1,0 +1,288 @@
+<?php
+/** @var $this Mage_Core_Block_Abstract */
+/** @var Mage_Core_Helper_Data $coreHelper */
+$coreHelper = Mage::helper('core');
+
+/** @var Ave40_Base_Helper_Customer $customerHelper */
+$customerHelper = Mage::helper('ave40_base/customer');
+?>
+<?php
+$allItemInfo = $GLOBALS['items'];
+$items = $allItemInfo['product'];
+$massage = $allItemInfo['massage'];
+
+$disabledAttr = $customerHelper->isWholesaleUser() ? "" : "disabled='disabled'";
+?>
+<link rel="stylesheet" href="//at.alicdn.com/t/font_602739_oc7d46tu8e.css">
+<script src="<?= $this->getSkinUrl('js/art-template/template-web.js') ?>"></script>
+<script src="<?= $this->getSkinUrl('js/fast_order/fast_order.js') ?>"></script>
+
+<div class="fast-order-page">
+	<div class="col2-set clearfix">
+		<div class="col-1">
+			<h2><img src="/skin/frontend/default/se105/images/cart/fast-order-text.png" alt="" style="vertical-align: bottom; padding-right: 10px;"> How to order quickly?</h2>
+			<div class="fast-order-font">
+				<p>1. Enter the product <strong>SKU</strong> in the search bar below and click the <strong>"Search"</strong> button.</p>
+				<p>2. Click <strong>"Add"</strong> to Add the product to the table of the selected product.</p>
+				<p>3. Repeat the steps above until you have chosen all the products you want.</p>
+				<p>4. Click <strong>"Checkout"</strong> button to check out.</p>
+			</div>
+		</div>
+		<div class="fast-order-or">OR</div>
+		<div class="col-2">
+			<div class="fast-order-font">
+				<p>1. <a href="<?php echo '/media/downloads/quick-order/example.xlsx' ?>" class="fast-order-a">Download the template file</a> or refer to the example below to create a new Excel file, and then fill in the product SKU and QTY.</p>
+				<p>2. Click the <strong>"Upload File"</strong> button below and select the file you want to upload.  The format of the file can only be <strong>.xls</strong> or <strong>.xlsx</strong>, and no more than <strong>50 lines</strong> of data, he size cannot exceed <strong>1Mb</strong>.</p>
+				<p>3. Check if the product information you uploaded is consistent. If it is inconsistent, re-upload the file or manually modify the product information.</p>
+				<p>4. Click <strong>"Checkout"</strong> button to check out.</p>
+                <div class="fast-example clearfix">
+                    <div class="col-1">
+                        <div style="color: rgba(30,30,30,0.45); font-size: 13px; padding-top: 10px;">The sample</div>
+                        <img src="/skin/frontend/default/se105/images/cart/fast-order-jt.png" alt="" style="margin-left: -15px;">
+                    </div>
+                    <div class="col-2 <?php echo $customerHelper->isWholesaleUser()?"":"disabled"; ?>">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <div style="width: 0;height: 0;border:0;opacity:0;overflow: hidden;"><input type="file" <?php echo $disabledAttr ?> name="items_file" id="items_file_1" ></div>
+                            <div class="a-right"><label class="fast-order-button iconfont icon-shangchuan1" for="items_file_1">Upload File</label></div>
+                        </form>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+
+	<?php if(!$customerHelper->isLoginned()): ?>
+		<p class="login_tips"><a href="<?php echo $this->getUrl('customer/account/create') ?>">Register</a> or <a
+					href="<?php echo $this->getUrl('customer/account/login') ?>">login</a> to your wholesaler account to order faster</p>
+	<?php elseif (!$customerHelper->isWholesaleUser()): ?>
+		<p class="login_tips"><a href="javascript:ave40.showWholesaleUserVerifyWindow();">Become a wholesaler</a> to order faster</p>
+    <?php endif; ?>
+
+    <?php if(!empty($massage)): ?>
+        <div class="error-message" >
+            <?php foreach($massage as $value):?>
+                <p><i class="fast-error-icon"></i><span><?php echo $value; ?></span></p>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
+	<div>
+        <div class="fast-order-search clearfix">
+            <div class="a-col-6">
+                <input type="text" name="sku-name" id="fast-order-search-input" placeholder="SKU Number" value="" <?php echo $disabledAttr ?> />
+                <button type="button" class="iconfont icon-sousuo1" id="fast-order-search-btn" <?php echo $disabledAttr ?>></button>
+            </div>
+        </div>
+        <div class="fast-mobile-table" id="fast-search-result">
+            <table class="data-table fast-order-table fast-order-xianh" cellspacing="0" cellpadding="0" style="display: none">
+                <thead>
+                    <tr>
+                        <th width="15%">SKU</th><th width="108px"></th>
+                        <th width="31%" class="a-left">Product</th>
+                        <th width="15%">Price</th>
+                        <th width="15%">Qty</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                </thead>
+				<!-- art template -->
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+	</div>
+
+
+	<div class="fast-order-cart">
+		<h1>Selected product</h1>
+	    <form action="<?php echo $this->getUrl('*/*/index') ?>" method="post" enctype="multipart/form-data">
+
+            <div class="fast-mobile-table">
+                <table class="data-table fast-order-table" id="fast-select-list" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr>
+                            <th width="13%">SKU</th>
+                            <th width="108px"></th>
+                            <th width="26%" class="a-left">Product</th>
+                            <th width="13%">Price</th>
+                            <th width="13%">Qty</th>
+                            <th width="13%">Subtotal</th>
+                            <th width="13%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php if(empty($items) && !isset($items)):?>
+                        <tr class="no-select-result" id="no-select-result">
+                            <td class="fast-no-result" colspan="7">No Selected Product !</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach($items as $_item): ?>
+                            <tr data-type="item" data-item-id="<?php echo $_item['entity_id']?>" data-sku="<?php echo $_item['sku']?>" data-stock-qty="<?php echo $_item['stock_qty']; ?>" class="<?php echo "product_item_".$_item['entity_id']?>">
+                                <td class="fast-sku-cell fast-order-box a-center">
+                                    <input type="hidden" id="price_val_<?php echo "price_val_".$_item['entity_id']?>" data-fill-id="price" value="<?php echo round($_item['update_price'],2); ?>"><?php echo $_item['sku']; ?>
+                                </td>
+                                <td class="fast-order-img-box "><a><img src='<?php echo $_item['image']; ?>' width="78px" height="78px"></a></td>
+                                <td class="fast-order-product-box">
+                                    <div class="product-info">
+                                        <ul class="fast-order-list">
+                                            <h2 class="product-name"><a href="<?php echo $_item['url']; ?>" target="_blank"><?php echo $_item['name']; ?></a></h2>
+                                            <?php foreach($_item['attr_details'] as $attribute):?>
+                                                    <li><span class="label"><?php echo $attribute['attr_label'] ?></span><span class="value"><?php echo $attribute['value_label']; ?></span></li>
+                                            <?php endforeach ?>
+
+                                            <?php if($_item['pre_sales']==1):?>
+                                                <?php if($_item['tag'] !== null):?>
+                                                    <span class="fast-order-label coming-soon"><?php echo $_item['tag']; ?></span>
+                                                <?php else: ?>
+                                                    <span class="fast-order-label pre-order">Pre-order</span>
+
+                                                  <?php endif;?>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </div>
+                                </td>
+								<?php $disabledClass = $_item['is_in_stock'] ? '' : 'disabled' ?>
+                                <td class="fast-order-price a-center">
+									<p data-type="price"><?php echo $coreHelper->formatPrice($_item['update_price'], false) ?></p>
+									
+									<p data-type="origin-price">
+                                        <?php if($_item['update_price'] < $_item['origin_price']): ?>
+										<?php echo $coreHelper->formatPrice($_item['origin_price'], false) ?>
+										<?php endif; ?>
+									</p>
+									
+								</td>
+                                <td class="fast-order-qty a-center">
+                                    <div class="Quantity-num review-qty-box <?php echo $disabledClass ?>"  unselectable="on" onselectstart="return false;" style="-moz-user-select:none;">
+                                        <span class="_reduce qty-btn qty-reduce-btn <?php echo $disabledClass ?>">-</span>
+                                        <input <?php echo $_item['is_in_stock'] ? '' : 'disabled="disabled"' ?> data-type="qty"  type="text" name="cart" value="<?php echo $_item['add_qty']; ?>" size="4" title="Qty" style="padding:0" class="input-text input_qty qty" maxlength="12" / >
+                                        <span class="_add qty-btn qty-add-btn <?php echo $disabledClass ?>">+</span>
+                                    </div>
+                                    <?php if($_item['is_in_stock']==0):?>
+                                        <p class="fontsize-red fast-order-font13 outofstock" style="color: #e10b0b">Out of stock</p>
+                                    <?php elseif(isset($_item['notice_msg'])):?>
+                                        <p class="fontsize-red fast-order-font13 warningproduct" style="color: #e10b0b"><?php echo $_item['notice_msg']; ?></p>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="a-center fast-subtotal-price"><span class="price" data-type="subtotal">$<?php echo $_item['subtotel_price']; ?></span></td>
+                                <td class="a-center action last"><span class="fast-order-font14 fast-action fast-remove-btn">Remove</span></td>
+                            </tr>
+                        <?php endforeach ?>
+                    <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col2-set">
+                <div class="col-wide right a-right"><span>Total <span class="fontsize-red" id='total_qty'  style="font-size: 18px;"><?php echo $allItemInfo['item']; ?></span> Item &nbsp;&nbsp;&nbsp;Amount USD &nbsp; <strong class="fontsize-red" style="font-size: 20px;" id="total_price"><?php echo $allItemInfo['subtotel']; ?></strong> </span>
+                <button type="button" class="add_to_cart_btn_style fast-order-checkout" id="fast-order-checkout-btn" <?php echo $disabledAttr ?>>Checkout</button></div>
+            </div>
+	    </form>
+	</div>
+</div>
+
+<!-- art-template js模板 -->
+<script id="product_item_tmp" type="text/html">
+            {{if result_status}}
+			<tr data-type="item" data-item-id="{{data.entity_id}}" data-sku="{{data.sku}}" data-stock-qty="{{data.stock_qty}}" class="product_item_{{data.entity_id}}">
+				<td class="fast-sku-cell fast-order-box a-center">
+					<input type="hidden" id="price_val_{{data.entity_id}}" data-fill-id="price" value="{{data.price}}">
+					{{data.sku}}
+				</td>
+				<td class="fast-order-img-box ">
+					<a><img src="{{data.image}}" width="78px" height="78px"></a>
+				</td>
+				<td class="fast-order-product-box">
+					<div class="product-info">
+						<h2 class="product-name"><a href="{{data.url}}" target="_blank">{{data.name}}</a>
+						</h2>
+						<ul class="fast-order-list">
+							{{if data.attr_details.length > 0}}
+								{{each data.attr_details}}
+								<li>
+									<span class="label">{{$value.attr_label + ':'}}</span>
+									<span class="value">{{$value.value_label}}</span>
+								</li>
+								{{/each}}
+							{{/if}}
+						</ul>
+
+						<!--预售状态-->
+						{{if data.pre_sales}}
+							<span class="fast-order-label {{data.tag ? 'coming-soon' : 'pre-order'}}">{{data.tag ? data.tag : 'Pre-order'}}</span>
+						{{/if}}
+					</div>
+				</td>
+
+				<td class="fast-order-price a-center">
+					<p data-type="price">{{data.price_symbol + data.price}}</p>
+					<p data-type="origin-price">{{ data.origin_price ? 'data.price_symbol + data.origin_price' : ''}}</p>
+				</td>
+
+				<!--Selected product html结构-->
+				{{if isAddedClickAction}}
+				<td class="fast-order-qty a-center">
+					<div class="Quantity-num review-qty-box"  unselectable="on" onselectstart="return false;" style="-moz-user-select:none;">
+						<span class="_reduce qty-btn qty-reduce-btn">-</span>
+						<input data-type="qty"  type="text" name="cart" value="1" size="4" title="Qty" style="padding:0" class="input-text input_qty qty" maxlength="12" />
+						<span class="_add qty-btn qty-add-btn">+</span></div>
+					</div>
+				</td>
+				<td class="a-center fast-subtotal-price">
+					<span class="price" data-type="subtotal">{{data.price_symbol +  data.price}}</span>
+				</td>
+				<td class="a-center action last">
+					<span class="fast-order-font14 fast-action fast-remove-btn">Remove</span>
+				</td>
+
+				<!-- 搜索结果html结构 -->
+				{{else}}
+				<td class="fast-order-qty a-center">
+					<p class="fast-order-stock" style="color: {{data.is_in_stock ? '#555' : '#e10b0b' }}">{{data.is_in_stock ? 'In stock' : 'Out of stock'}}</p>
+				</td>
+				<td class="a-center action last">
+					{{if data.is_in_stock}}
+						<!-- 是否已添加 -->
+						{{if isAddedStatus}}
+							<span class="fast-order-font14 fast-action-add-btn fast-action  disabled">Added</span>
+						{{else }}
+							<span class="fast-order-font14 fast-action-add-btn fast-action ">Add</span>
+						{{/if}}
+					<!-- 无库存 -->
+					{{else}}
+						<span class="fast-order-font14 fast-action-add-btn fast-action  disabled">Add</span>
+					{{/if}}
+				</td>
+				{{/if}}
+			</tr>
+
+            {{else if result_status_error_code}}
+			<!--网络错误-->
+			<tr><td class="fast-no-result" style="color: #e10b0b">error</td></tr>
+
+			{{else}}
+			<!-- 搜索无结果 -->
+			<tr><td class="fast-no-result">We can't find any products with SKU '{{data.sku}}'</td></tr>
+            {{/if}}
+</script>
+
+<!-- loading js模板 -->
+<script id="loading_tmp" type="text/html">
+    <tr class="fast_loading"><td style="text-align: center"><div class="ave40_loading_animation"></div></td></tr>
+</script>
+
+<!-- 引入验证wholesale用户模块 -->
+<?php echo Mage::app()->getLayout()->createBlock('core/template')->setTemplate('ave40_verify_wholesale/verify_form.phtml')->toHtml() ?>
+
+<script type="text/javascript">
+    ~function ($) {
+        
+        $('[name=items_file]').change(function () {
+        	ave40.showLoading();
+			$(this).closest('form').submit();
+		});
+
+    }(jQuery);
+
+</script>
+

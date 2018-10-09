@@ -1,0 +1,62 @@
+<style>
+    /* email product */
+    .email-product-name{
+        font-size: 20px;
+    }
+    .email-product .email-product-img ,.email-product .email-product-info{
+        float: left;
+    }
+    .email-product{
+        overflow: hidden;
+        margin:45px 0 50px;
+    }
+    .email-product-info {
+        margin-left: 50px;
+        width: 350px;
+    }
+    .email-product-price{
+        margin: 20px 0 40px;
+    }
+    .special-price{
+        color: #ff8a00;
+        font-size: 25px;
+    }
+    .old-price{
+        color: #999;
+        text-decoration: line-through;
+        font-size: 20px;
+    }
+</style>
+
+<?php
+/**
+ * @var Mage_Core_Block_Template $this
+ */
+
+    $productId = $this->getProductId();
+    /* @var Mage_Catalog_Model_Product $product */
+    $product = Mage::getModel('catalog/product')->load($productId);
+    /* @var Mage_Catalog_Helper_Image $productHelper */
+    $productHelper = Mage::helper('catalog/image');
+    /* @var Mage_Catalog_Block_Product_List $productBlock */
+    $productBlock = Mage::app()->getLayout()->createBlock('catalog/product_list');
+?>
+
+<?php if ($product->getId()): ?>
+<div class="email-product">
+    <div class="email-product-img">
+        <a href="<?php echo $product->getProductUrl() ?>">
+            <img src="<?php echo $productHelper->init($product, 'small_image')->resize(188, 188) ?>" alt="" width="188" height="188">
+        </a>
+    </div>
+    <div class="email-product-info">
+        <p class="email-product-name"><a href="<?php echo $product->getProductUrl() ?>"><?php echo $this->escapeHtml($product->getName()) ?></a></p>
+
+        <?php echo $productBlock->getPriceHtml($product, true) ?>
+
+        <a href="<?php echo $product->getProductUrl() ?>">
+            <img src="<?php echo $this->getSkinUrl('images/email/email-product-list.png') ?>">
+        </a>
+    </div>
+</div>
+<?php endif; ?>

@@ -1,0 +1,138 @@
+<?php
+/** @var Ave40_Base_Helper_Customer $customerHelper */
+$customerHelper = Mage::helper('ave40_base/customer');
+?>
+<div class="sel-banner-main home-banner-b2b swiper-container swiper-container-sel-banner top-slide-show">
+    <ul class="home-banner swiper-wrapper">
+
+        <?php foreach (ave40_sitedata('clearance/slide_show') as $row): ?>
+
+            <li class="swiper-slide" data-swiper-autoplay="">
+                <a href="<?php echo $row['url'] ?>" title="<?php echo htmlentities($row['title']) ?>">
+                    <img alt="<?php echo htmlentities($row['title']) ?>"
+                         src="<?php echo $row['image'] ?>"/>
+                </a>
+            </li>
+
+        <?php endforeach; ?>
+    </ul>
+
+    <div class="swiper-pagination banner-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+</div>
+<div class="clearance-page">
+    <div class="clearance-main">
+        <div class="clearance-1-col clearfix">
+			<a href="<?php echo ave40_sitedata('clearance/picture_01/url');  ?>">
+				<img src="<?php echo ave40_sitedata('clearance/picture_01/src', $this->getSkinUrl('images/clearance/clearancebanner.png')) ?>" alt="<?php echo ave40_sitedata('clearance/picture_01/title') ?>">
+			</a>
+        </div>
+        <div class="clearance-2-col product_item_sales_template">
+            <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/product-items.phtml')
+				->setData('categories', ave40_sitedata('clearance/top_category_id'))
+				->setData('sort', 'position desc, e.entity_id desc')
+				->setData('item_limit', '6')
+				->setData('image_size', '180,180')
+				->setData('mouse_over_tools', '0')->toHtml() ?>
+        </div>
+
+        <a href="<?php echo ave40_sitedata('clearance/picture_02/url') ?>" target="_blank" title="<?php echo ave40_sitedata('clearance/picture_02/title') ?>">
+            <img class="clearance-bannerimg"  src="<?php echo ave40_sitedata('clearance/picture_02/src', $this->getSkinUrl('images/clearance/clearancebanner01.png')) ?>" alt="<?php echo ave40_sitedata('clearance/picture_02/title') ?>">
+        </a>
+        <div class="clearance-3-col clearance-product-show">
+            <div class="clearance-product-brands">
+				<span class="clearance-product-title ">
+					<span class="title-01-icon" data-category-id="<?php echo ave40_sitedata('clearance/tab_categories_01/categiry_id') ?>">
+						<div>
+							<?php echo ave40_sitedata('clearance/tab_categories_01/title') ?>
+						</div>
+					</span>
+				</span>
+				
+                <span class="clearance-product-title title-02-icon">
+					<span class="title-02-icon" data-category-id="<?php echo ave40_sitedata('clearance/tab_categories_02/categiry_id') ?>">
+						<div>
+							<?php echo ave40_sitedata('clearance/tab_categories_02/title') ?>
+						</div>
+					</span>
+				</span>
+                <span class="clearance-product-title title-03-icon">
+					<span class="title-03-icon" data-category-id="<?php echo ave40_sitedata('clearance/tab_categories_03/categiry_id') ?>">
+						<div>
+							<?php echo ave40_sitedata('clearance/tab_categories_03/title') ?>
+						</div>
+					</span>
+				</span>
+                <span class="clearance-product-title title-04-icon">
+					<span class="title-04-icon" data-category-id="<?php echo ave40_sitedata('clearance/tab_categories_04/categiry_id') ?>">
+						<div>
+							<?php echo ave40_sitedata('clearance/tab_categories_04/title') ?>
+						</div>
+					</span>
+				</span>
+            </div>
+	
+			<!--{{block type="ave40_catalog/products"-->
+			<!--template="cms/clearance-product-items.phtml" base_categories="759" sort="e.entity_id desc"-->
+			<!--enable_pagination=1 pagination_page_size=8 mouse_over_tools=0 categories_from_url_key='cat' }}-->
+            <div class="clearance-product-list ">
+                <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/product-items.phtml')
+					->setData('base_categories', ave40_sitedata('clearance/base_category_id'))
+					->setData('sort', 'position desc, e.entity_id desc')
+					->setData('enable_pagination', '1')
+					->setData('pagination_page_size', '8')
+					->setData('image_size', '230,230')
+					->setData('categories_from_url_key', 'cat')
+					->setData('mouse_over_tools', '0')->toHtml() ?>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/JKHelper.js') ?>"></script>
+<script type="text/javascript">
+    ~function ($) {
+        var url = jkUrl(location.href);
+        var cats = url.getParam('cat', ',');
+        $('.clearance-product-brands span span').each(function () {
+            var cat = String($(this).data('categoryId'));
+            if (-1 !== cats.indexOf(cat)) {
+                $(this).addClass('active');
+            }
+
+            $(this).click(function (e) {
+                var cat = String($(this).data('categoryId'));
+                if (-1 !== cats.indexOf(cat)) {
+                    window.location.href = location.pathname;
+                } else {
+                    window.location.href = '?cat=' + cat;
+                }
+            })
+        });
+
+        var slideclearp = new Swiper('.swiper-container-clearance', {
+            pagination: '.clearance-pagination',
+            paginationClickable: true,
+            autoplay: 4000,
+            speed: 600,
+            loop: true,
+            autoplayDisableOnInteraction: false,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+        });
+
+        $('.swiper-container-clearance').mouseenter(function () {
+            slideclearp.stopAutoplay();
+        });
+        $('.swiper-container-clearance').mouseleave(function () {
+            slideclearp.startAutoplay();
+        });
+    }(jQuery);
+</script>
+
+
+
+
+
+

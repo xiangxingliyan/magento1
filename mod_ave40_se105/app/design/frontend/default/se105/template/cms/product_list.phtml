@@ -1,0 +1,37 @@
+
+<?php if (($_products = $this->getProductCollection()) && $_collectionSize = $_products->getSize()): ?>
+
+	<div class="home-box stairsSection" category_id="<?=$this->getCategoryId()?>">
+	<div class="head">
+		<hr>
+		<span><?php echo Mage::helper("Ave40_Translate")->__($this->getTitle()) ?></span>
+		<a class="see_more" href="<?=$this->getMoreLink()?>" ><?php echo Mage::helper("Ave40_Translate")->__('More') ?><i class="see-more-icon"> &gt;&gt;</i></a>
+		<?=Mage::getModel('core/email_template_filter')->filter(Mage::getModel('cms/block')->setStoreId(Mage::app()->getStore()->getId())->load($this->getAdLinksBlockId())->getContent())?>
+	</div>
+	<div class="content catalog-listing <?php echo $this->getClassName() ?>">
+		<div>
+			<?=Mage::getModel('core/email_template_filter')->filter(Mage::getModel('cms/block')->setStoreId(Mage::app()->getStore()->getId())->load($this->getSliderBlockId())->getContent())?>
+		</div>
+
+		<?=Mage::getModel('core/email_template_filter')->filter(Mage::getModel('cms/block')->setStoreId(Mage::app()->getStore()->getId())->load($this->getAdImageBlockId())->getContent())?>
+
+		<?php
+		/* @var Ave40_Catalog_Block_Product_Items $block */
+		$block = Mage::app()->getLayout()->createBlock('ave40_catalog/product_items');
+		echo $block->setAttrDisabledRatingBar(true)->setProductCollection($_products)->toHtml()
+		?>
+	</div>
+	<script type="text/javascript">decorateGeneric($$('.grid-row'), ['first', 'last', 'odd', 'even']);</script>
+	<?=Mage::getModel('core/email_template_filter')->filter(Mage::getModel('cms/block')->setStoreId(Mage::app()->getStore()->getId())->load($this->getLimitDealBlockId())->getContent())?>
+</div>
+
+<?php
+$bottomAdBlockIds = array_filter(explode(',', $this->getBottomAdBlocks()));
+
+foreach ($bottomAdBlockIds as $blockId) {
+    echo Mage::app()->getLayout()->createBlock("cms/block")->setBlockId($blockId)->toHtml();
+}
+?>
+
+<?php endif; ?>
+

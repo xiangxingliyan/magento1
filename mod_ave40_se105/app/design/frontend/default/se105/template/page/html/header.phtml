@@ -1,0 +1,497 @@
+<?php
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+<link rel="stylesheet" href="//at.alicdn.com/t/font_602739_5ie0nvmpch4zpvi.css">
+
+<?php
+$cartProductCount =  $this->getSummaryCount();
+$cartProductCount = $cartProductCount > 0 ? $cartProductCount : 0;
+$totalPrice = $this->getSubtotal();
+$totalPrice = $totalPrice > 0 ? $totalPrice : 0;
+$configurationHelper = Mage::helper('catalog/product_configuration');
+/** @var Ave40_Base_Helper_Customer $ave40CustomerHelper */
+$ave40CustomerHelper = Mage::helper('ave40_base/customer');
+?>
+<?php
+/** @var Ave40_Base_Helper_Customer $customerHelper */
+$customerHelper = Mage::helper('ave40_base/customer');
+?>
+
+<?php if (ave40_sitedata('top_ad/top_ad_switch') ): ?>
+<?php if (!$_COOKIE['top_ad_click']): ?>
+	<!-- 全站顶部广告位 -->
+	<div class="top_ad ">
+		<span class="top-close"></span>
+		<a href="<?php echo ave40_sitedata('top_ad/top_ad_image/url') ?>"
+		   title="<?php echo ave40_sitedata('top_ad/top_ad_image/title') ?>"
+		   style="background-image:url('<?php echo ave40_sitedata('top_ad/top_ad_image/src') ?>')"
+		   target="_blank"></a>
+	</div>
+<?php endif; ?>
+<?php endif; ?>
+
+<?= $this->getChildHtml('jstranslate') ?>
+<div class="sticky">
+    <div class="sticky-container">
+        <div class="header-container categorese_fixed">
+            <div class="header">
+                <div class="login_content">
+                    <i class="i_menu iconfont icon-menu"></i>
+                    <h5 class="logo">
+                        <strong><?php echo $this->getLogoAlt() ?></strong>
+
+                        <?php if($customerHelper->isWholesaleUser()): ?>
+                            <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>"
+                               class="logo">
+                                <img src="/skin/frontend/default/se105/images/v2/logo_v2_wholesale.png" alt="">
+                            </a>
+                        <?php else: ?>
+                            <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>"
+                               class="logo">
+                                <img src="/skin/frontend/default/se105/images/v2/logo_v2.png" alt="">
+                            </a>
+                        <?php endif; ?>
+
+                    </h5>
+                    <div class="quick-access ">
+                        <div class="quick-access-left clearfix">
+						<?php if(avepcache_begin('header_top_search_term', [],  4*3600)): ?>
+                            <?php echo $this->getChildHtml('topSearch') ?>
+                            <?php echo $this->getChildHtml('searchTerm') ?>
+						<?php avepcache_end();endif; ?>
+                            <?php if(!empty(Mage::app()->getRequest()->getParam('name'))): ?>
+							<script type="text/javascript">
+								document.getElementById('page_head_search_input').value = '<?php echo Mage::app()->getRequest()->getParam('name') ?>';
+							</script>
+							<?php endif; ?>
+							
+							<?php $_searchCategories = array_filter(explode(',', Mage::app()->getRequest()->getParam('categories'))) ?>
+							<?php if(!empty($_searchCategories)): ?>
+								<script type="text/javascript">
+									document.getElementById('page_head_searchbar_categorys_selected_box').value = '<?php echo $_searchCategories[0] ?>';
+								</script>
+							<?php endif; ?>
+                        </div>
+                        <div class="quick-access-right">
+                            <?php if(!$customerHelper->isWholesaleUser()): ?>
+                            <div class="wholesale-box">
+                                <a href="/wholesale" class="quick-right-icon"
+								   onclick="_gaq.push(['_trackEvent','navigation','Click','wholesale']);">
+                                    <i class="iconfont icon-shangjia"></i>
+                                    <p>Wholesale</p>
+                                </a>
+                            </div>
+                            <?php endif; ?>
+
+
+                            <div class="sign-in-box">
+                                    <?php if (!Mage::getModel('customer/session')->isLoggedIn()): ?>
+                                        <a href="/customer/account/login" class="quick-right-icon" title="<?= Mage::helper("Ave40_Translate")->__('Sign In')?>" rel="nofollow"  class="sign-in-link"
+                                           onclick="_gaq.push(['_trackEvent','navigation','Click','sign in']);">
+                                            <i class="iconfont icon-yonghu-tianchong"></i>
+                                            <p><?= Mage::helper("Ave40_Translate")->__('Sign In')?></p>
+                                        </a>
+                                    <?php else: ?>
+                                        <a href="/customer/account/" class="quick-right-icon" title="<?= Mage::helper("Ave40_Translate")->__('Sign In')?>" rel="nofollow" class="sign-in-link">
+                                            <i class="iconfont icon-yonghu-tianchong"></i>
+                                            <p><?php echo Mage::getModel('customer/session')->getCustomer()->getName() ?></p>
+                                        </a>
+                                        <?php if (!Mage::getModel('customer/session')->isLoggedIn()): ?>
+                                            <div class="login_pop">
+                                                <div class="sign_in">
+                                                    <span> <?= Mage::helper("Ave40_Translate")->__('Welcome to')?> <i class="ave-words">AVE40.com</i></span>
+                                                    <a href="/customer/account/login" onclick="_gaq.push(['_trackEvent','SignIn_header_inSide_button','Click','SignIn_header_inSide_button']);">
+                                                        <span class="sign_btn loginBtn"><?= Mage::helper("Ave40_Translate")->__('Sign In')?></span>
+                                                    </a>
+                                                    <?php if (Mage::getStoreConfig('ave40_login/global/enabled')): ?>
+                                                        <div class="sign_way">
+                                                            <span><?= Mage::helper("Ave40_Translate")->__('Sign In with')?></span>
+
+                                                            <?php if (Mage::getStoreConfig('ave40_login/facebook/enabled')): ?>
+                                                                <a href="/login?platform=facebook&action=do_login"
+                                                                   title="Facebook" class="icon facebook-icon"></a>
+                                                            <?php endif ?>
+
+                                                            <?php if (Mage::getStoreConfig('ave40_login/instagram/enabled')): ?>
+                                                                <a href="/login?platform=instagram&action=do_login"
+                                                                   title="Instagram" class="icon ins-icon"></a>
+                                                            <?php endif ?>
+
+                                                            <?php if (Mage::getStoreConfig('ave40_login/google/enabled')): ?>
+                                                                <a href="/login?platform=google&action=do_login"
+                                                                   title="Google" class="icon google-icon"></a>
+                                                            <?php endif ?>
+
+                                                            <?php if (Mage::getStoreConfig('ave40_login/vk/enabled')): ?>
+                                                                <a href="/login?platform=vk&action=do_login" title="VK"
+                                                                   class="icon vk-icon"></a>
+                                                            <?php endif ?>
+
+                                                            <?php if (Mage::getStoreConfig('ave40_login/twitter/enabled')): ?>
+                                                                <a href="/login?platform=twitter&action=do_login"
+                                                                   title="Twitter" class="icon twitter-icon"></a>
+                                                            <?php endif ?>
+
+                                                        </div>
+                                                    <?php endif ?>
+                                                </div>
+                                                <div class="join_free">
+                                                    <span class="newAver"><?= Mage::helper("Ave40_Translate")->__('New Customer?')?></span>
+                                                    <a href="/customer/account/create" onclick="_gaq.push(['_trackEvent','JoinFree_header_button','Click','JoinFree_header_button']);"><span class="join_btn loginBtn"><?= Mage::helper("Ave40_Translate")->__('Join Free')?></span></a>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+
+                                    <?php if (Mage::getModel('customer/session')->isLoggedIn()): ?>
+                                        <div class="login_pop logined-login-pop">
+                                            <div class="information">
+                                                <ul>
+                                                    <li><a href="/wishlist"><?= Mage::helper("Ave40_Translate")->__('My Wishlist')?></a></li>
+                                                    <li><a href="/sales/order/history"><?= Mage::helper("Ave40_Translate")->__('My Orders')?></a></li>
+                                                    <li><a href="/customer/account/logout" class="signIn"><?= Mage::helper("Ave40_Translate")->__('Logout')?></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                            </div>
+                            <div class="cart-box">
+                                <?php echo $this->getChildHtml('top_cart') ?>
+                            </div>
+
+                            <?php /*echo $this->getChildHtml('top_cart') */?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+                <?php echo $this->getChildHtml('topContainer'); ?>
+            </div>
+
+           
+            <div class="nav-column clearfix">
+                <div id="topnav" class="w-1200">
+                    <?php if (avepcache_begin('global_nav')): ?>
+                    <div class="category_wrap">
+                        <div class="cate_title"><i class="iconfont icon-menu"></i><span>Categories</span></div>
+                        <ul class="cate-list">
+							<!-- Brands -->
+							<li class="cate-list-menu icon-brands">
+								<a href="/brands" class="prime">
+                                    <span class="cate-icon-box">
+                                        <i class="cate-icon">
+                                            <img src="<?php echo $this->getSkinUrl('images/v2/icon-brands.png') ?>" alt="">
+                                        </i>
+                                    </span>
+                                    <?= __t('Brands') ?>
+								</a>
+								<div class="submenu brands-submenu">
+									<ul class="submenu-words">
+										<?php if(ave40_sitedata('nav/categories/brands/list_is_subcategories')): ?>
+											<?php
+												/** @var Ave40_Brands_Helper_Data $brandsHelper */
+												$brandsHelper = Mage::helper('ave40_brands');
+												$brands = $brandsHelper->getBrands();
+												$brands = $brands['brands_data'];
+											?>
+											<?php /** @var Mage_Catalog_Model_Category $brand */ ?>
+											<?php foreach ($brands as $brand): ?>
+												<li class="topnav-main-product-li">
+													<div class="topnav-main-title">
+														<a href="<?php echo $brand->getUrl() ?>">
+															<?php echo $brand->getName() ?>
+														</a>
+													</div>
+												</li>
+											<?php endforeach; ?>
+										<?php else: ?>
+											<?php $submenus = ave40_sitedata('nav/categories/brands/sub_menus'); ?>
+                                            <?php foreach ($submenus as $menu): ?>
+												<li class="topnav-main-product-li">
+													<div class="topnav-main-title">
+														<a href="<?php echo $menu['url'] ?>">
+                                                            <?php echo $menu['title'] ?>
+														</a>
+													</div>
+												</li>
+                                            <?php endforeach; ?>
+										<?php endif ?>
+									</ul>
+									<div class="submenu-image">
+										<div class="submenu-image-brand-list ">
+                                            <div class="submenu-image-brand clearfix">
+												<?php foreach(ave40_sitedata('nav/categories/brands/brands_show') as $row): ?>
+                                                <a href="<?php echo $row['url'] ?>">
+
+                                                    <img src="<?php echo $row['image'] ?>" alt="<?php echo $row['title'] ?>" title="<?php echo $row['title'] ?>">
+                                                </a>
+												<?php endforeach; ?>
+                                            </div>
+                                            <div class="submenu-image-brand-product">
+												<a href="<?php echo ave40_sitedata('nav/categories/brands/picture/url') ?>">
+													<img src="<?php echo ave40_sitedata('nav/categories/brands/picture/src', $this->getSkinUrl('images/v2/cate-image.png')) ?>"
+													 alt="<?php echo ave40_sitedata('nav/categories/brands/picture/title') ?>"
+													 title="<?php echo ave40_sitedata('nav/categories/brands/picture/title') ?>"
+													>
+												</a>
+                                            </div>
+                                        </div>
+									</div>
+								</div>
+							</li>
+							
+							
+                            <?php foreach (ave40_sitedata('nav/categories/category_nav') as $item): ?>
+							<?php /** @var Mage_Catalog_Model_Category $categoryItem */ ?>
+                            <?php $categoryItem = Mage::getModel('catalog/category')->load($item['category_id']) ?>
+								
+                            <li class="cate-list-menu ">
+                                <a href="<?php echo $categoryItem->getUrl() ?>" class="prime">
+                                     <span class="cate-icon-box">
+                                        <i class="cate-icon">
+                                            <img src="<?php echo $item['icon'] ?>" alt="">
+                                        </i>
+                                     </span>
+                                    <?php echo __t($item['title']) ?>
+                                </a>
+                                <div class="submenu">
+                                    <ul class="submenu-words">
+                                        <?php /** @var Mage_Catalog_Model_Category $subCategory */ ?>
+                                        <?php foreach ($categoryItem->getChildrenCategories() as $subCategory): ?>
+                                        <li class="topnav-main-product-li">
+                                            <div class="topnav-main-title">
+                                                <a href="<?php echo $subCategory->getUrl() ?>">
+                                                    <?php echo Mage::helper("Ave40_Translate")->__($subCategory->getName())?>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                    <div class="submenu-image">
+										<a href="<?php echo $item['picture_url'] ?>">
+											<img src="<?php echo  $item['picture_src'] ? $item['picture_src'] : $this->getSkinUrl('images/v2/cate-image.png')  ?>"
+												 alt="<?php echo $item['picture_title'] ?>"
+												 title="<?php echo $item['picture_title'] ?>"
+											>
+										</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php avepcache_end();endif; ?>
+					<!-- 自定义链接 -->
+                    <div class="nav-list">
+                        <ul>
+                            <?php foreach(ave40_sitedata('nav/custom_link') as $row): ?>
+                                <li >
+                                    <a href="<?php echo $row['url'] ?>" onclick="_gaq.push(['_trackEvent','<?php echo $row["ga_category"] ?>', '<?php echo $row["ga_action"] ?>','<?php echo $row["ga_opt_label"] ?>']);" ><span><?= Mage::helper("Ave40_Translate")->__($row['title']) ?></span></a>
+                                </li>
+                            <?php endforeach; ?>
+							
+							<?php //if($ave40CustomerHelper->isWholesaleUser()): ?>
+                            <!--<li class="">
+                                <a href="<?php /*echo "/fast-order"; */?>"  onclick="_gaq.push(['_trackEvent','mean','Click','fast order']);"><span><?php /*echo Mage::helper("Ave40_Translate")->__("Fast Order") */?></span></a>
+                            </li>-->
+							<?php //endif; ?>
+	
+							<!--<li class="">
+								<a href="<?php /*echo "/24hrs"; */?>"  onclick="_gaq.push(['_trackEvent','mean','Click','24hrs']);"><span><?php /*echo Mage::helper("Ave40_Translate")->__("24HRS") */?></span></a>
+							</li>-->
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php
+    $routeName = Mage::app()->getRequest()->getRouteName();
+    $identifier = Mage::getSingleton('cms/page')->getIdentifier();
+    ?>
+    <?php /*if ($this->getIsHomePage() || ($routeName == 'cms' && $identifier == 'home') ):*/ ?><!--
+			<div class="show-menu-content">
+				<div class="show_menu"><?php /*echo $this->getChildHtml('topMenu') */ ?></div>
+			</div>
+		<?php /*else: */ ?>
+			<div class="show-menu-content">
+				<div class="hidden_menu"><?php /*echo $this->getChildHtml('topMenu') */ ?></div>
+			</div>
+		--><?php /*endif; */ ?>
+</div>
+</div>
+<div id="header-placeholder-elm" style="width:0; height:0; magin:0;"></div>
+
+<!-- ======= popup ads begin ======= -->
+
+<!-- 18岁提示弹窗 -->
+<?php if (!$_COOKIE['18_jin_tip'] && !Mage::getStoreConfig('ave40_developer/show18notice/disabled')): ?>
+    <?php //if (true): ?>
+
+    <!-- mobile -->
+    <style>
+        .ave-18notice {
+            background: url('<?= $this->getSkinUrl("images/homepage/18notice-new.png") ?>') no-repeat center / 100% !important;
+
+        }
+
+        @media (max-width: 767px) {
+            .ave-18notice {
+                width: calc(100%);
+                height:  9.12rem;
+            }
+
+            .ave-18notice-body {
+                height:  9.12rem;
+            }
+
+            .ave18notice-btn {
+                position: absolute;
+                width: 2.7rem;
+            }
+
+            .ave-18notice-flase {
+                bottom: 20%;
+                right: 9.5%;
+            }
+
+            .ave-18notice-true {
+                bottom: 20%;
+                left: 11%;
+            }
+
+        }
+    </style>
+    <div class="ave-18notice" style="background: url('<?= $this->getSkinUrl("images/homepage/18notice-new.png") ?> no-repeat center / 100%  ')">
+        <?php ob_start();
+        ob_flush(); ?>
+        <div class="ani-body">
+            <!--<div class="ave40notice-tip">
+				<img src="<? /*= $this->getSkinUrl('images/homepage/ave18-tip.png') */ ?>" alt="">
+				<p><?php /*echo $this->__('The products on this website are intended for ADULTS only.') */ ?></p>
+				<p><?php /*echo $this->__('Please leave this page!') */ ?></p>
+				<span class="ave40-tip-close"><?php /*echo $this->__('CLOSE') */ ?></span>
+			</div>-->
+
+
+            <div class="ave-18notice-body">
+                <span class="ave18notice-btn ave-18notice-true"><?php echo Mage::helper("Ave40_Translate")->__('Yes') ?></span>
+                <span class="ave18notice-btn ave-18notice-flase"><?php echo Mage::helper("Ave40_Translate")->__('No') ?></span>
+
+            </div>
+        </div>
+        <?php $obhtml = htmlspecialchars(ob_get_contents());
+        ob_end_clean();
+        echo $obhtml; ?>
+
+    </div>
+
+<?php endif; ?>
+
+<!-- ======= popup ads end ======= -->
+
+
+<?php echo Mage::app()->getLayout()->createBlock('core/template')->setTemplate('inquire/form.phtml')->toHtml() ?>
+
+<script>
+	/* 适应菜单 */
+	~function($) {
+		var topnav = $('#topnav');
+		var submenus = $(topnav).find('.cate-list-menu .submenu');
+		var catelist = topnav.find('.cate-list');
+		var navli = catelist.find('> li');
+		var submenubrandBox =  submenus.find('.submenu-image-brand');
+        var submenubrandimage = submenubrandBox.find('> a');
+		var submenubrandBottomBox =submenus.find('.submenu-image-brand-product');
+		
+		$(function() {
+			var topslideshow = $('.top-slide-show');
+			var navAdjustTimer = null;
+			
+			$(window).resize(function () {
+				resize_nav_menu(topslideshow);
+				
+				if(navAdjustTimer) {
+					clearTimeout(navAdjustTimer);
+					navAdjustTimer = null;
+				}
+				
+				navAdjustTimer = setTimeout(function () {
+					resize_nav_menu(topslideshow);
+				}, 100);
+			}).resize();
+			
+			topslideshow.find('img').load(function () {
+				resize_nav_menu(topslideshow);
+			});
+		});
+		
+		function resize_nav_menu(topslideshow) {
+			var height = 0;
+			
+			if(topslideshow.length > 0) {
+				height = topslideshow.height();
+			}
+			
+			if(height == 0) {
+				height = 500;
+			}
+			
+			var cateliHeight = height/navli.length;
+			cateliHeight = cateliHeight < 51 ? 51 : cateliHeight;
+			cateliHeight = cateliHeight > 80 ? 80 : cateliHeight;
+			navli.find('a.prime').css({'height':cateliHeight, 'lineHeight':cateliHeight+'px'});
+			
+			catelist.css({'height':height});
+			submenus.css({'height':height});
+
+            submenubrandBox.css({'height':height*0.3246});
+            submenubrandBottomBox.css({'height':height*0.5});
+
+            var subBrandHeight = (submenubrandBox.height() - 30) / 3;
+
+
+            subBrandHeight = subBrandHeight < 30 ? 30 : subBrandHeight;
+            subBrandHeight = subBrandHeight > 50 ? 50 : subBrandHeight;
+            submenubrandimage.css({'height':subBrandHeight});
+			
+			for(var j=0; j<submenus.length; j++) {
+				var submenu = $(submenus[j]);
+				var lis = submenu.find('li');
+				var lilength = lis.length;
+				
+				var catelistOriOpacity = catelist[0].style.opacity;
+				var catelistOriSisplay = catelist[0].style.display;
+				var submenuOriOpacity = submenu[0].style.opacity;
+				var submenuOriSisplay = submenu[0].style.display;
+				
+				catelist.css({'opacity':0, 'display':'block'});
+				submenu.css({'opacity':0, 'display':'block'});
+				var liheight = $(lis[0]).height();
+				catelist.css({'opacity':catelistOriOpacity, 'display':catelistOriSisplay});
+				submenu.css({'opacity':submenuOriOpacity, 'display':submenuOriSisplay});
+				var curlines = Math.ceil(lilength/4);
+				
+				var paddingTop = parseInt(submenu.css('paddingTop'));
+				var paddingBottom = parseInt(submenu.css('paddingBottom'));
+				
+				var maxlines = parseInt((height - paddingTop - paddingBottom) / liheight);
+				curlines = curlines > maxlines ? maxlines : curlines;
+				
+				lis.css('display', 'block');
+				for(var i=4*maxlines; i<lis.length; i++) {
+					$(lis[i]).css('display', 'none');
+				}
+				
+				var padding = (height - paddingTop - paddingBottom - liheight*curlines) / curlines /2;
+				padding = padding > 15 ? 15 : padding;
+				submenu.find('li').css({'paddingTop':padding, 'paddingBottom':padding});
+			}
+		}
+	}(ave40$)
+</script>

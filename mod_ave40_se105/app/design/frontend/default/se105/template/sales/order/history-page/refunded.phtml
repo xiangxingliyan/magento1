@@ -1,0 +1,278 @@
+<?php
+/**
+ * @var Ave40_Sales_Block_Order_History_Subpage $this
+ * @var Ave40_Sales_Block_Order_History $parent
+ */
+$parent = $this->getParentBlock();
+?>
+
+<div class="tab-main-content refunded hide">
+	<h1><?= Mage::helper("Ave40_Translate")->__('Refund') ?></h1>
+	<p class="you-can-choose"><?= Mage::helper("Ave40_Translate")->__('You can choose to return or rufund') ?></p>
+	<div class="refund-main">
+		<div class="ref-btn-main">
+			<div class="refund-btn-box clearfix">
+				<div class="refund ref-div">
+					<a href="#none" class="refund-btn" id="refund-btn"><?= Mage::helper("Ave40_Translate")->__('Refund') ?></a>
+					<div class="click-tip">
+						<i class="icon mouse-icon"></i>
+						<span><?= Mage::helper("Ave40_Translate")->__('Click to refund') ?></span>
+					</div>
+				</div>
+				<!--弹出框-->
+				<div class="refund-table refund-pop esc-pop">
+					<div class="inquire-top">
+						<span><?= Mage::helper("Ave40_Translate")->__('Refund') ?></span>
+						<span class="close-box"><i class="close"></i></span>
+					</div>
+					<div class="refund-form">
+						<form action="" method="post" enctype="multipart/form-data">
+							<dl class="clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Received') ?>:</dt>
+								<dd>
+									<label><input type="radio" name="receive_type"
+												  value="1"/><?= Mage::helper("Ave40_Translate")->__('Received goods') ?></label>
+									<label class="refund-label"><input type="radio" name="receive_type" value="0"
+																	   checked="checked"/><?= Mage::helper("Ave40_Translate")->__('Not Receiving') ?>
+									</label>
+									<span class="asterisk">*</span>
+								</dd>
+							</dl>
+							<dl class="clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Order number') ?>:</dt>
+								<dd>
+									<input type="text" name="order_number" class="order-num-text"
+										   placeholder="<?= Mage::helper("Ave40_Translate")->__('Please fill in the order No') ?>"
+										   required="required">
+									<span class="asterisk">*</span>
+								</dd>
+							</dl>
+							<dl class="clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Return reason:') ?></dt>
+								<dd>
+									<select required="required" name="reason_id" class="chosen-select">
+										<?php foreach ($parent->getLoadedRefundReasonCollection() as $reason): ?>
+											<option value="<?= $reason->getId() ?>"><?= $reason->getData('text') ?></option>
+										<?php endforeach; ?>
+									</select>
+									<span class="asterisk">*</span>
+								</dd>
+							</dl>
+							<dl class="clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Refund amount') ?>:</dt>
+								<dd>
+									<input type="text" name="refund_amount" class="ref-amount-text" required="required">
+									<span class="asterisk">$</span>
+									<span>(<?= Mage::helper("Ave40_Translate")->__('Refund amount description And the amount of postage') ?>
+										)</span>
+								</dd>
+							</dl>
+							<dl class="clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Description') ?>:</dt>
+								<dd>
+									<textarea name="description" id="ref-desc" onkeydown='checkMaxInput(this,200)'
+											  onkeyup='checkMaxInput(this,200)' onfocus='checkMaxInput(this,200)'
+											  onblur='checkMaxInput(this,200)' required="required"></textarea>
+									<span class="remain-word">(<i class="Max_msg">0</i>/200)</span>
+								</dd>
+							</dl>
+							<dl class="evidence clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Evidence') ?>:</dt>
+								<dd>
+
+									<div class="upload-btn">
+										<input type="file" name="evidence" class="up-load-input"
+											   onchange="document.getElementById('returnUpName').innerHTML=this.value"
+											   required="required">
+										<span class="add-icon">+</span>
+										<span><?= Mage::helper("Ave40_Translate")->__('Upload') ?></span>
+									</div>
+									<span class="asterisk">*</span>
+									<span id="returnUpName"></span>
+								</dd>
+							</dl>
+							<button type="submit" class="ref-submit-btn"><?= Mage::helper("Ave40_Translate")->__('Submit') ?></button>
+						</form>
+
+					</div>
+
+
+				</div>
+
+				<div class="refund-goods ref-div">
+					<a href="javascript:;" class="refund-btn" id="refund-goods-btn"><?= Mage::helper("Ave40_Translate")->__('Return good') ?>s</a>
+					<div class="click-tip">
+						<i class="icon mouse-icon"></i>
+						<span><?= Mage::helper("Ave40_Translate")->__('Click to refund') ?></span>
+					</div>
+				</div>
+				<!--弹出框-->
+				<div class="refund-goods-table refund-pop esc-pop">
+					<div class="inquire-top">
+						<span><?= Mage::helper("Ave40_Translate")->__('Received goods') ?></span>
+						<span class="close-box"><i class="close"></i></span>
+					</div>
+					<div class="refund-form">
+						<form action="" method="post" enctype="multipart/form-data">
+							<dl class="clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Received') ?>:</dt>
+								<dd>
+									<label><input type="radio" value="1" name="receive_type"
+												  checked="checked"/><?= Mage::helper("Ave40_Translate")->__('Received goods') ?></label>
+									<label class="refund-label"><input type="radio" name="receive_type"
+																	   value="0"/><?= Mage::helper("Ave40_Translate")->__('Not Receiving') ?>
+									</label>
+									<span class="asterisk">*</span>
+								</dd>
+							</dl>
+							<dl class="clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Order number') ?>:</dt>
+								<dd>
+									<input type="text" class="order-num-text" name="order_number"
+										   placeholder="Please fill in the order No" required="required">
+									<span class="asterisk">*</span>
+								</dd>
+							</dl>
+							<dl class="clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Return reason') ?>:</dt>
+								<dd>
+									<select required="required" name="reason_id" class="chosen-select">
+										<?php foreach ($parent->getLoadedRefundReasonCollection() as $reason): ?>
+											<option value="<?= $reason->getId() ?>"><?= $reason->getData('text') ?></option>
+										<?php endforeach; ?>
+									</select>
+										<span class="asterisk">*</span>
+								</dd>
+							</dl>
+							<dl class="clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Refund amount') ?>:</dt>
+								<dd>
+									<input type="text" name="refund_amount" class="ref-amount-text" required="required">
+									<span class="asterisk">$</span>
+									<span>(<?= Mage::helper("Ave40_Translate")->__('Refund amount description And the amount of postage') ?>
+										)</span>
+								</dd>
+							</dl>
+							<dl class="clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Description') ?>:</dt>
+								<dd>
+									<textarea id="ref-desc" name="description" onkeydown='checkMaxInput(this,200)'
+											  onkeyup='checkMaxInput(this,200)' onfocus='checkMaxInput(this,200)'
+											  onblur='checkMaxInput(this,200)' required="required"></textarea>
+									<span class="remain-word">(<i class="Max_msg">0</i>/200)</span>
+								</dd>
+							</dl>
+							<dl class="evidence clearfix">
+								<dt><?= Mage::helper("Ave40_Translate")->__('Evidence') ?>:</dt>
+								<dd>
+
+									<div class="upload-btn">
+										<input type="file" name="evidence" class="up-load-input"
+											   onchange="previewImage(this)" required="required">
+										<span class="add-icon">+</span>
+										<span>Upload</span>
+									</div>
+									<span class="asterisk">*</span>
+								</dd>
+							</dl>
+							<button type="submit" class="ref-submit-btn"><?= Mage::helper("Ave40_Translate")->__('Submit') ?></button>
+						</form>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+
+		<div class="refund-notice">
+			<dl class="refund-ret-abno clearfix">
+				<dt>
+					<i class="icon re-abno-icon"></i>
+				</dt>
+				<dd>
+					<p class="ref-words">Refund returns abnormal classification</p>
+					<p class="ref-info">qafhwfieuwfbfbaifbawkjfbawfiuawfbawiiiiif</p>
+				</dd>
+			</dl>
+			<dl class="ret-flow clearfix">
+				<dt>
+					<i class="icon re-flow-icon"></i>
+				</dt>
+				<dd>
+					<p class="ref-words">Retrun flow</p>
+					<p class="ref-info">qafhwfieuwfbfbaifbawkjfbawfiuawfbawiiiiif</p>
+				</dd>
+			</dl>
+			<dl class="ret-time clearfix">
+				<dt>
+					<i class="icon re-time-icon"></i>
+				</dt>
+				<dd>
+					<p class="ref-words">Return time</p>
+					<p class="ref-info">qafhwfieuwfbfbaifbawkjfbawfiuawfbawiiiiif</p>
+				</dd>
+			</dl>
+			<dl class="ret-query clearfix">
+				<dt>
+					<i class="icon re-query-icon"></i>
+				</dt>
+				<dd>
+					<p class="ref-words">Return query</p>
+					<p class="ref-info">qafhwfieuwfbfbaifbawkjfbawfiuawfbawiiiiif</p>
+				</dd>
+			</dl>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	~function ($) {
+		$(".chosen-select").chosen({
+			disable_search_threshold: 10,
+			width:270
+		})
+
+		$('div.refunded button[type=submit]').click(function (e) {
+
+//			e.preventDefault();
+			var $form = $(this).parent();
+
+			$form.validate({
+				errorClass: 'mess-error-tip',
+				errorElement: "div",
+
+				errorPlacement: function (error, element) {
+					error.hide();
+				},
+				submitHandler: function (form) {
+					$.ajax({
+						type: 'post',
+						url: '<?= $this->getUrl('ave40_api/refund') ?>',
+						data: new FormData($form[0]),
+						datatype: 'json',
+						processData: false,
+						contentType: false,
+						success: function (data) {
+							if (data.error) {
+
+								Ave40MessageBox.alertError(data.message);
+							} else {
+								$form.reset();
+								Ave40MessageBox.alertSuccess('The refund request was send to the services!');
+								$form.closest('.refund-pop').find('.close').click();
+							}
+						},
+						error: function () {
+
+						}
+					});
+
+				}
+			});
+
+
+		});
+	}(jQuery);
+</script>

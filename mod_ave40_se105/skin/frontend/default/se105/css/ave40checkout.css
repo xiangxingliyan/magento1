@@ -1,0 +1,267 @@
+.ave40checkout-index-repay .data-table {
+    border: none;
+}
+
+.ave40checkout-index-repay .shipping-address ul li span {
+    margin-right: 8px;
+}
+
+.ave40checkout-index-repay .payment-total-info {
+    margin-top: 15px;
+}
+
+
+.ave40checkout-index-repay .payment-total-info button#lbonepage-place-order-btn span {
+    display: block;
+    padding: 0;
+    color: #fff;
+
+}
+
+.ave40checkout-index-repay button.palce-order {
+    float: right;
+    margin: 0.3rem 0.3rem 1rem;
+}
+
+.ave40checkout-index-repay {
+    font-size: 14px;
+}
+
+.paypalfee dt{
+    float: left;
+}
+
+.ave40checkout-index-repay .payment-total-info {
+    padding-bottom: 15px;
+}
+
+.ave40checkout-index-repay #checkout-shipping-method-load dl.sp-methods .price{
+    color: #333;
+    font-weight: 400;
+    font-family: inherit;
+    text-align: right;
+    font-size: 14px;
+    width: auto;
+}
+
+.ave40checkout-index-repay .pay-price-info{
+    padding: 10px 0.5rem 15px 10px;
+}
+
+.ave40checkout-index-repay .ave40_total_partial {
+    height: 50px;
+    line-height: 50px;
+    background-color: #f6f6f6;
+    padding-right: 0.5rem;
+}
+
+.ave40checkout-index-repay .ave40_total_partial .price{
+    font-size: 20px;
+    color: #e10b0b;
+    font-family: opensans-semibold;
+}
+
+#total-price{
+    vertical-align: middle;
+}
+
+.ave40checkout-index-repay .payment .payment-way{
+    margin-bottom: 0;
+}
+
+.ave40checkout-index-repay #checkout-shipping-method-load dl.sp-methods dt{
+    margin-bottom: 0;
+    padding-right: 150px;
+}
+
+.ave40checkout-index-repay #checkout-shipping-method-load  dl.sp-methods dd ul li  label{
+    color: #999;
+}
+
+.ave40checkout-index-repay #checkout-shipping-method-load  dl.sp-methods dd{
+    text-align: right;
+}
+
+.ave40checkout-index-repay .pay-price-info > div{
+    float: right;
+    clear: both;
+}
+
+.pay-price-info-right{
+    width: 150px;
+    text-align: right;
+    float: right;
+}
+
+
+
+.subtotal-price{
+    font-weight: normal;
+}
+
+.ave40checkout-index-repay .price {
+    font-family: inherit;
+}
+
+.cart-subtotal-price .price {
+    font-family: opensans-semibold;
+}
+
+.ave40checkout-index-repay .a-center {
+    text-align: center;
+}
+
+.ave40checkout-index-repay .data-table th:first-child {
+    text-align: left;
+    text-indent: 0.3rem;
+}
+
+.ave40checkout-index-repay .cart-item-img {
+    display: inline-block;
+    float: left;
+    width: 82px;
+    height: 82px;
+    border: 1px solid #cecece;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-right: 20px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.ave40checkout-index-repay .cart-product-params {
+    float: left;
+    width: calc(100% - 110px);
+}
+
+.ave40checkout-index-repay .pay-info-title {
+    margin-top: 35px;
+}
+
+
+/*弹窗*/
+
+.ave40checkout-index-repay .payment-explain {
+    position: fixed;
+    background-color: #fff;
+    height: auto;
+    z-index: 10002;
+    width: 450px;
+    padding: 0.3rem 0.5rem;
+    display: none;
+}
+
+
+#payment_form_payonlinecc_payment {
+    position: static;
+    box-shadow: none;
+}
+
+.ave40checkout-index-repay .payment-explain .close-button {
+    top: 10px;
+    right: 10px;
+    position: absolute;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.ave40checkout-index-repay .payment-way .sp-methods-list dd ul {
+    background-color: inherit;
+    box-shadow: inherit;
+    padding: 0;
+}
+
+.ave40checkout-index-repay .sp-methods-list dd ul:before {
+    display: none;
+}
+
+.ave40checkout-index-repay .sp-methods-list dd .form-list {
+    width: 100%;
+    padding: 0;
+}
+
+.ave40checkout-index-repay .cart-form-row label em {
+    color: #ff0000;
+}
+
+.ave40checkout-index-repay .cart-form-row .input-box > select, .ave40checkout-index-repay .cart-form-row .input-box > input {
+    width: 100%;
+}
+
+.ave40checkout-index-repay .cart-form-row .input-box .v-fix select {
+    width: 95%;
+}
+
+.ave40checkout-index-repay .cart-form-row label {
+    float: none;
+}
+
+.ave40checkout-index-repay .cart-form-row .input-box > input.cart-button-sub  {
+    width: 100px;
+    font-size: 14px;
+    padding-left: 0;
+}
+
+.ave40checkout-index-repay .block.block-reorder {
+    display: none;
+}
+
+.ave40checkout-index-repay table.pay-tables {
+    width: 100%;
+    margin: 20px 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.ave40checkout-index-repay table.pay-tables tr td {
+    border: 1px solid #666;
+    padding: 10px 20px;
+}
+
+.ave40checkout-index-repay table.pay-tables tr td:first-child {
+    font-family: opensans-semibold;
+    width: 35%;
+}
+
+.ave40checkout-index-repay .payment-explain h3{
+    font-weight: normal;
+    font-family: opensans-bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.ave40checkout-index-repay .pay-fontred {
+    color: #ff0000;
+}
+
+.ave40checkout-index-repay .disable-button, .ave40checkout-index-repay .disable-button span {
+    background-color: #ccc !important;
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1199px) {
+    .ave40checkout-index-repay .main-container.col2-right-layout .col-main {
+        width: 78%;
+    }
+}
+
+@media screen and (max-width: 1023px) {
+
+
+    .ave40checkout-index-repay .main-container.col2-right-layout .col-right {
+        float: none;
+        width: initial;
+    }
+}
+
+@media screen and (max-width: 767px){
+    .ave40checkout-index-repay .payment-explain{
+        width: 80%;
+    }
+
+    .ave40checkout-index-repay #payment_form_payonlinecc_payment{
+        width: 90%;
+    }
+}
+

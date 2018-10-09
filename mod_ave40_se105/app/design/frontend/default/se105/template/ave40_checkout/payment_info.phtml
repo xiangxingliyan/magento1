@@ -1,0 +1,206 @@
+<?php
+/** @var Ave40_Checkout_Block_Order_Detail $this */
+$orderInfo = $this->getOrderInfo();
+$_orderInfo = $orderInfo['orderInfo'];
+$paymentMethod = $orderInfo['paymentObj']['method'];
+if ($paymentMethod == "paypal_express") {
+	$checkouturl = '/ave40checkout/paypal/start';
+	$checkouttype = "Paypal";
+} elseif ($paymentMethod == "payonlinecc_payment") {
+	$checkouturl = '/ave40checkout/Fht/pay';
+	$checkouttype = "Fht";
+}
+else {
+    $checkouturl = "";
+	$checkouttype = "";
+}
+?>
+<style>
+	.sp-methods .summary-collapse { float:right; text-align:right; padding-left:20px; background:url(/skin/frontend/default/modern/images/bkg_collapse.gif) 0 4px no-repeat; cursor:pointer; }
+	.show-details .summary-collapse { background-position:0 -53px; }
+	.summary-detail {font-size: 11px;}
+</style>
+<div class="main-right ">
+	<div class="payment-total-info ">
+		<div class="pay-price-info clearfix">
+			<div class="pay-price-info-quantity clearfix">
+				<span class="words">Qty :</span>
+				<span class="pay-price-info-num pay-price-info-right">
+								<b>
+									<span id="count_partial"><?php echo $_orderInfo['qty']; ?></span>
+								</b>
+								</span>
+			</div>
+            <div class="item-box clearfix">
+                <span class="words">Weight :</span>
+                <span class="weight-num pay-price-info-right"
+                      id="weight_total_partial"><?php echo $_orderInfo['weight'] ?>Kg</span>
+            </div>
+			<div class="subtotal-box clearfix">
+				<span class="words">SubTotal :</span>
+				<span class="subtotal-price pay-price-info-right" id="subtotal-price">
+                                    <span id="subtotal_partial" _value="<?php echo $_orderInfo['subtotal']; ?>"><?php echo $formatedPrice = Mage::helper('core')->currency($_orderInfo['subtotal'], true, false); ?></span>
+                                </span>
+			</div>
+
+			<div class="shipping-fee-box clearfix">
+				<div id="shipping_partial">
+					<div id="shippingmethod-error" class="error"></div>
+					<div id="checkout-shipping-method-load">
+						<dl class="sp-methods">
+							<dt>Shipping Table Rates :</dt>
+							<dd >
+								<ul>
+									<li class="clearfix">
+                                        <label for="s_method_amtable_amtable6"><?php echo $_orderInfo['shippingMethod']; ?>
+                                            <span class="price" id="shippingAmount" _value="<?php echo $_orderInfo['shippingAmount']; ?>">
+                                                <?php echo $formatedPrice = Mage::helper('core')->currency($_orderInfo['shippingAmount'], true, false); ?>
+                                            </span>
+                                        </label>
+									</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+					<div id="onepage-checkout-shipping-method-additional-load"></div>
+				</div>
+			</div>
+			
+			<?php if(floatval($this->getOrder()->getDiscountAmount()) != 0): ?>
+			<div class="item-box clearfix">
+				<span class="words">Discount amount :</span>
+				<span class="weight-num pay-price-info-right"><?php echo $this->getCoreHelper()->formatCurrency($this->getOrder()->getDiscountAmount(), false) ?></span>
+			</div>
+			<?php endif; ?>
+
+		<div class="paypalfee" style="<?php if(empty($_orderInfo['additionalFees'])) {echo "display:none";} ?>">
+			<div id="shipping_partial">
+				<div id="shippingmethod-error" class="error"></div>
+				<div>
+					<dl class="sp-methods additional-fees" onclick="expandDetails(this,'.multifees-details-view')">
+						<dt><div class="summary-collapse">Additional Fees :</div></dt>
+						<dd class="pay-price-info-right">
+							<ul>
+								<li class="clearfix">
+									<!--<span class="label">(Paypal Fee) </span>-->
+									<span class="value" style="float:right;"> <?php echo $formatedPrice = Mage::helper('core')->currency($orderInfo['additionalFees'], true, false); ?></span>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<?php foreach ($_orderInfo['additionalFees'] as $value) { ?>
+						<dl class="sp-methods summary-detail multifees-details-view" style="display:none">
+							<dt><?php echo $value['title']; ?></dt>
+							<dd class="pay-price-info-right">
+								<ul>
+									<li class="clearfix">
+										<!--<span class="label">(Paypal Fee) </span>-->
+										<span class="price_value" style="float:right;"> <?php echo $formatedPrice = Mage::helper('core')->currency($value['fee'], true, false); ?></span>
+									</li>
+								</ul>
+							</dd>
+						</dl>
+					<?php } ?>
+				</div>
+				<div id="onepage-checkout-shipping-method-additional-load"></div>
+			</div>
+		</div>
+
+		</div>
+		<div class="total-box">
+			<input class="input-text promo-input" type="number" name="Additional Fees" style="display: none">
+			<input id="incrementId" type="hidden" name="incrementId" value="<?php echo $_orderInfo['incrementId']; ?>">
+			<input id="checkouturl" type="hidden" name="checkouturl" value="<?php echo $checkouturl; ?>">
+			<input id="checkouttype" type="hidden" name="checkouttype" value="<?php echo $checkouttype; ?>">
+			<div class="ave40_total_partial">
+				<span class="words">Total : </span>
+				<span class="total-price subtotal-price" id="total-price">
+					<span id="total_partial" class="pay-price-info-right" _value="<?php echo $_orderInfo['_grandTotal']; ?>">
+						<span class="price"><?php echo $formatedPrice = Mage::helper('core')->currency($_orderInfo['grandTotal'], true, false); ?></span>
+                                    </span>
+                                </span>
+			</div>
+			<div id="saveOder-error" class="error"></div>
+			<button role="review-save" type="submit"
+					onclick="_gaq.push(['_trackEvent','Checkout_button','Click','Checkout_button']);"
+					title="<?php echo Mage::helper('checkout')->__('Checkout') ?>" name="submitbtn"
+					id="lbonepage-place-order-btn" class="button btn-checkout palce-order ">
+				<span><span>Checkout</span></span>
+			</button>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	~function ($) {
+		$('.btn-checkout').click(function() {
+			var url = $("#checkouturl").val();;
+			var orderid = $("#incrementId").val();
+			var checkouttype = $("#checkouttype").val();
+
+			if (checkouttype == "Paypal") {
+
+				ave40.showLoading('<?php echo Mage::helper("Ave40_Translate")->__("Please wait..."); ?>');
+				ave40.ajaxPost(url, {
+					orderid: orderid,
+					form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>'
+				}, function () {
+					ave40.closeLoading();
+					if (this.ok) {
+						ave40.showLoading('<?php echo Mage::helper("Ave40_Translate")->__("Redirect to the paypal checkout page"); ?>');
+						window.location.href= this.data.url;
+					} else {
+						Ave40MessageBox.alertError(this.message);
+					}
+				});
+			}
+			else if (checkouttype == "Fht") {
+				var _cvv = $("#payonlinecc_payment_cc_cid").val();
+				var _cardNo = $("#payonlinecc_payment_cc_number").val();
+				var _expMonth = $("#payonlinecc_payment_expiration").val();
+				var _expYear = $("#payonlinecc_payment_expiration_yr").val();
+
+				if(_cvv == "" || _cardNo == "" || _expMonth == "" || _expYear == "") {
+					$('.sp-methods-list.payonlinecc_payment .payment-explain').showAve40PopupBox();
+				}
+				else {
+					ave40.showLoading('<?php echo Mage::helper("Ave40_Translate")->__("Please wait..."); ?>');
+					ave40.ajaxPost(url, {
+						cardNo: _cardNo,
+						cvv: _cvv,
+						expMonth: _expMonth,
+						expYear: _expYear,
+						orderid: orderid,
+						form_key: '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>'
+					}, function () {
+						if (this.ok) {
+							window.location.href= this.data.url;
+						} else {
+							ave40.closeLoading();
+							Ave40MessageBox.alertError(this.message);
+						}
+					});
+				}
+			}
+			else {
+				Ave40MessageBox.alertError("Please select the payment method.");
+			}
+		});
+	}(jQuery)
+	
+	function expandDetails(el, childClass) {
+		if (Element.hasClassName(el,'show-details')) {
+			$$(childClass).each(function(item){
+				item.hide();
+			});
+			Element.removeClassName(el,'show-details');
+		}
+		else {
+			$$(childClass).each(function(item){
+				item.show();
+			});
+			Element.addClassName(el,'show-details');
+		}
+	}
+
+</script>

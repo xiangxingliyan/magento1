@@ -1,0 +1,457 @@
+<?php
+/**
+ * Create account form template
+ *
+ * @see app/design/frontend/base/default/template/customer/form/register.phtml
+ */
+/** @var $this Mage_Customer_Block_Form_Register */
+?>
+
+<?php
+$use_ave40_login = false;
+if (Mage::getStoreConfig('ave40_login/global/enabled') && !empty($_GET['platform'])) {
+    $platform = trim($_GET['platform']);
+    if (Mage::getStoreConfig("ave40_login/$platform/enabled") && isset($_SESSION['ave40_login'][$platform])) {
+        if (!$this->getFormData()->getEmail()) {
+            $this->getFormData()->setEmail($_SESSION['ave40_login'][$platform]['email']);
+        }
+        if (!$this->getFormData()->getFirstname()) {
+            $this->getFormData()->setFirstname($_SESSION['ave40_login'][$platform]['first_name']);
+        }
+        if (!$this->getFormData()->getLastname()) {
+            $this->getFormData()->setLastname($_SESSION['ave40_login'][$platform]['last_name']);
+        }
+        $use_ave40_login = true;
+    }
+}
+?>
+
+<style type="text/css">
+	.main {
+		width: auto;
+		padding: 0;
+	}
+
+	.col-main {
+		width: auto;
+		padding: 0;
+	}
+
+	.input_form .btn span {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.input_form .info {
+		display: none;
+	}
+
+	.register {
+		display: block;
+	}
+
+	/*#login_back {
+        height: 100%;
+        width: 100%;
+        padding-bottom: 400px;
+        position: fixed;
+        z-index: 1;
+        animation: scrollBgGridLinks 120s linear infinite;
+        -moz-animation: scrollBgGridLinks 120s linear infinite;
+        -o-animation: scrollBgGridLinks 120s linear infinite;
+        -webkit-animation: scrollBgGridLinks 120s linear infinite;
+        -webkit-animation-fill-mode: forwards;
+        -moz-animation-fill-mode: forwards;
+        -o-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+    }*/
+</style>
+<?= $this->getChildHtml('jstranslate') ?>
+<!--<div id="login_back"></div>
+<div class="login_back_opac"></div>-->
+<div class="login_regit_content">
+	<div class="register login_regit_page">
+		<div class="aveLogo">
+			<h1>CREATE AN ACCOUNT</h1>
+		</div>
+
+        <?php if (Mage::getStoreConfig('ave40_login/global/enabled') && !empty($_GET['platform'])): ?>
+			<div class="platform_method_box">
+				<div class="method_switch">
+					<a href="<?php echo '/customer/account/login/' . '?' . $_SERVER['QUERY_STRING']; ?>"><?php echo Mage::helper("Ave40_Translate")->__('Link An Existing Account') ?></a>
+					<a href="#"
+					   class="current"><?php echo Mage::helper("Ave40_Translate")->__('Create A New Account') ?></a>
+				</div>
+			</div>
+        <?php endif ?>
+
+        <?php if (Mage::getStoreConfig('ave40_login/global/enabled') && empty($_GET['platform'])): ?>
+			<div class="sign_in">
+				<div class="sign_way">
+					<span><?php echo Mage::helper("Ave40_Translate")->__('Sign up with') ?></span>
+
+                    <?php if (Mage::getStoreConfig('ave40_login/facebook/enabled')): ?>
+						<a href="/login?platform=facebook&action=do_login" title="Facebook"
+						   class="icon facebook-icon"></a>
+                    <?php endif ?>
+
+                    <?php if (Mage::getStoreConfig('ave40_login/instagram/enabled')): ?>
+						<a href="/login?platform=instagram&action=do_login" title="Instagram" class="icon ins-icon"></a>
+                    <?php endif ?>
+
+                    <?php if (Mage::getStoreConfig('ave40_login/google/enabled')): ?>
+						<a href="/login?platform=google&action=do_login" title="Google" class="icon google-icon"></a>
+                    <?php endif ?>
+
+                    <?php if (Mage::getStoreConfig('ave40_login/vk/enabled')): ?>
+						<a href="/login?platform=vk&action=do_login" title="VK" class="icon vk-icon"></a>
+                    <?php endif ?>
+
+                    <?php if (Mage::getStoreConfig('ave40_login/twitter/enabled')): ?>
+						<a href="/login?platform=twitter&action=do_login" title="Twitter" class="icon twitter-icon"></a>
+                    <?php endif ?>
+				</div>
+				<span class="text"><?php echo Mage::helper("Ave40_Translate")->__('Or sign up with your email address') ?></span>
+			</div>
+        <?php endif ?>
+
+		<div class="col2-set">
+			<form action="<?php echo $this->getPostActionUrl() ?>?ajax=1" method="post" id="register-form"
+				  name="my_form">
+				<div class="regis-wrapper">
+					<div class="input_form">
+						<input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>"/>
+						<input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>"/>
+						<h2>PERSONAL INFORMATION</h2>
+
+						<div class="first_name_box">
+							<span class="words"><em
+										class="fontsize-red">* </em><?php echo Mage::helper("Ave40_Translate")->__('First Name') ?>
+								:</span>
+							<input type="text" id="firstname" name="firstname"
+								   placeholder="<?php echo Mage::helper("Ave40_Translate")->__('') ?>"
+								   onBlur="nameCheck()"
+								   value="<?php echo $this->escapeHtml($this->getFormData()->getFirstname()) ?>"
+								   required/>
+							<div class="input-tip"></div>
+						</div>
+
+						<div class="last_name_box">
+							<span class="words"><em
+										class="fontsize-red">* </em><?php echo Mage::helper("Ave40_Translate")->__('Last Name') ?>
+								:</span>
+							<input type="text" id="lastname" name="lastname"
+								   placeholder="<?php echo Mage::helper("Ave40_Translate")->__('') ?>"
+								   onBlur="nameCheck()"
+								   value="<?php echo $this->escapeHtml($this->getFormData()->getLastname()) ?>"
+								   required/>
+							<div class="input-tip "></div>
+						</div>
+
+						<div>
+							<span class="words"><em
+										class="fontsize-red">* </em><?php echo Mage::helper("Ave40_Translate")->__('Email Address') ?>
+								:</span>
+							<input type="email" name="email" id="email_address" required="required"
+								   value="<?php echo $this->escapeHtml($this->getFormData()->getEmail()) ?>"
+								   title="<?php echo Mage::helper("Ave40_Translate")->__('Email address') ?>"
+								   placeholder="<?php echo Mage::helper("Ave40_Translate")->__('') ?>"/>
+							<div class="input-tip "></div>
+						</div>
+
+						<div class="user_type_box">
+							<input type="radio" name="user_type" id="wholesale_user_type" value="1" checked="checked">
+							<label for="wholesale_user_type">Wholesale</label>
+
+							<input type="radio" name="user_type" id="retail_user_type" value="0">
+							<label for="retail_user_type">Retail</label>
+						</div>
+
+						<h2 style="padding-top: 25px;">LOGIN INFORMATION</h2>
+						<div>
+							<span class="words"><em
+										class="fontsize-red">* </em><?php echo Mage::helper("Ave40_Translate")->__('Password') ?>
+								:</span>
+							<input type="password" name="password" id="password"
+								   placeholder="<?php echo Mage::helper("Ave40_Translate")->__('') ?>"
+								   onBlur="passwdCheck()" minlength="6" required pattern="^[\w]{6,18}$"/>
+							<div class="input-tip ">
+								<!--						<p class="passwd error  info"><i></i><span>Password length between 6-18 </span></p>-->
+							</div>
+						</div>
+						<div>
+                        <span class="words"><em
+									class="fontsize-red">* </em><?php echo Mage::helper("Ave40_Translate")->__('Confirm Password') ?>
+							:</span>
+							<input type="password" name="confirmation"
+								   placeholder="<?php echo Mage::helper("Ave40_Translate")->__('') ?>" id="" value=""
+								   required="required" onBlur="confirmCheck()"/>
+							<div class="input-tip ">
+								<!--						<p class="confirm error info"><i></i><span>Passwords are not the same</span></p>-->
+							</div>
+						</div>
+
+						<div class="captcha-inputsty">
+                        <span class="words"><em
+									class="fontsize-red">* </em><?php echo Mage::helper("Ave40_Translate")->__('Verification Code') ?>
+							:</span>
+                            <?php if (empty($use_ave40_login)): ?>
+                            <?php echo $this->getChildHtml('captcha') ?>
+							<div class="input-tip captcha-info-tip">
+							</div>
+						</div>
+                        <?php else: ?>
+							<input type="hidden" name="platform" value="<?= htmlspecialchars($platform) ?>">
+                        <?php endif ?>
+
+					</div>
+					<div class="register_modify_info">
+						<h2>MODIFY INFORMATION</h2>
+						<p><em class="fontsize-red">* </em>Verify your Phone Number and enjoy our wholesale membership
+						</p>
+						<div>
+							<span class="words mobile-paddstyle"><?php echo Mage::helper("Ave40_Translate")->__('Select your location') ?>
+								:</span>
+							<select name="country_id" id="country">
+                                <?php $countryCollection = Mage::getModel('directory/country')->getCollection(); ?>
+                                <?php foreach ($countryCollection as $country): ?>
+                                    <?php if (!$country->getPhonePrefix()) {
+                                        continue;
+                                    } ?>
+									<option value="+<?= $country->getPhonePrefix() ?>"><?= $country->getId() ?>
+										(+<?= $country->getPhonePrefix() ?>
+										) <?= $country->getName() ? ('-' . $country->getName()) : '' ?></option>
+                                <?php endforeach ?>
+							</select>
+							<div class="input-tip "></div>
+						</div>
+						<div>
+                        <span class="words"><?php echo Mage::helper("Ave40_Translate")->__('Mobile Phone No') ?>
+							:</span>
+							<div class="col-sm-73">
+								<input type="text" data-name="phone_subfix" name="phone_subfix" id="phone"
+									   required="required"
+									   placeholder="<?php echo Mage::helper("Ave40_Translate")->__('') ?>"/>
+								<input type="hidden" data-name="phone" name="phone" id="phone_val"
+									   placeholder="<?php echo Mage::helper("Ave40_Translate")->__('') ?>"/>
+								<button type="button" data-sending-text="Sending" data-text="Send" data-time-unit="s"
+										class="send"
+										id="send_phone_code"><?php echo Mage::helper("Ave40_Translate")->__('Send') ?></button>
+								<div class="input-tip "></div>
+							</div>
+
+						</div>
+						<div>
+                        <span class="words"><?php echo Mage::helper("Ave40_Translate")->__('Verification code') ?>
+							:</span>
+							<div class="">
+								<input type="text" data-name="sms_code" name="sms_code" id="smscode"
+									   required="required"/>
+								<!--<button type="button" id="phone_verify_btn" class="verify disable" disabled="disabled"><?php //echo Mage::helper("Ave40_Translate")->__('Verify') ?></button>-->
+								<div class="input-tip"></div>
+							</div>
+
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<button type="submit" id="regit_btn" class="create-account-btn btn mobile-showbtn"
+							onclick="_gaq.push(['_trackEvent','CreateAccount_button','Click','CreateAccount_button']);">
+                        <?php if (isset($_GET['platform'])): ?>
+                            <?php echo Mage::helper("Ave40_Translate")->__('Done') ?>
+                        <?php else: ?>
+                            <?php echo Mage::helper("Ave40_Translate")->__('Click to Register') ?>
+                        <?php endif ?>
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+    ~function ($) {
+        jQuery(function () {
+            jQuery("#register-form").validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    firstname: "required",
+                    lastname: "required",
+                    password: {
+                        required: true,
+                        minlength: 6
+                    },
+                    confirmation: {
+                        required: true,
+                        minlength: 6,
+                        equalTo: "#password"
+                    }
+
+                },
+                onfocusout: false,
+                errorClass: 'mess-error-tip',
+                errorElement: "div",
+                errorPlacement: function (error, element) {
+                    error.appendTo(element.siblings('.input-tip'));
+                },
+                submitHandler: function (form) {
+                    if ($('#regit_btn').getAndInBusying()) {
+                        return;
+                    }
+
+                    ave40.showLoading('<?php echo Mage::helper("Ave40_Translate")->__("Registered..."); ?>');
+                    var FormData = jQuery('#register-form').serialize();
+                    jQuery.ajax({
+                        url: form.action,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: FormData,
+                        success: function (data) {
+                            if (data.errno == 0) {
+                                Ave40MessageBox.alertSuccess('<?php echo Mage::helper("Ave40_Translate")->__('You have successfully logged in and registered, This page is jumpping to the Personal Information Page...') ?>')
+                                ave40.getLoading().setAlertText('Loading');
+                                window.location.href = '/customer/account/';
+                            } else {
+                                $('#regit_btn').outBusying();
+                                $('#user_create').click();
+                                if (data.errno == 501501) {
+                                    jQuery('.captcha-info-tip').html(data.errmsg)
+                                }
+                                ave40.closeLoading();
+                                Ave40MessageBox.alertError(data.errmsg);
+
+                            }
+                        },
+                        error: function (error) {
+                            $('#regit_btn').outBusying();
+                        }
+                    });
+                }
+            });
+
+            $('.user_type_box').find('input[type=radio]').click(function () {
+                var checked = $('#wholesale_user_type').prop('checked');
+                var $modifyElem = $('.register_modify_info');
+                if (checked) {
+                    $modifyElem.find('input[type=text]').prop('required', 'true').each(function () {
+                        $(this).attr('name', $(this).data('name'));
+                    });
+                    $modifyElem.slideDown();
+                } else {
+                    $modifyElem.find('input[type=text]').prop('required', 'false').removeAttr('name');
+                    $modifyElem.slideUp();
+                }
+            });
+
+
+            $('#phone').blur(function () {
+                $('#phone_val').val(
+                    $('#country').val() + $('#phone').val()
+                );
+            })
+
+            $('#country').change(function () {
+                $('#phone_val').val(
+                    $('#country').val() + $('#phone').val()
+                );
+            });
+
+            $('#send_phone_code').click(function () {
+                var phoneval = $('#phone_val').val();
+                var phone = $('#phone').val();
+
+                if (phone.length == 0) {
+                    Ave40MessageBox.alertError('Phone number is required');
+                    return;
+                }
+
+                if (!/\+[0-9]+/.test(phoneval)) {
+                    Ave40MessageBox.alertError('Malformed phone number');
+                    return;
+                }
+
+                var thiselm = $(this);
+                thiselm.attr('disabled', 'disabled').html(thiselm.data('sendingText'));
+
+                if (thiselm[0].intervalTimer) {
+                    clearInterval(thiselm[0].intervalTimer);
+                }
+
+                ave40.ajaxGet('/ave40api/customer/sendSmsCode?phone=' + encodeURIComponent(phoneval), null, function () {
+                    if (this.ok) {
+                        thiselm[0].intervalTimer = setInterval((function (elm) {
+                            return function () {
+                                if (!elm.timecount) {
+                                    elm.timecount = 1
+                                } else {
+                                    elm.timecount++;
+                                }
+
+                                if (elm.timecount > 60) {
+                                    clearInterval(elm.intervalTimer);
+                                    elm.timecount = 0;
+                                    elm.intervalTimer = null;
+                                    $(elm).html($(elm).data('text')).removeAttr('disabled');
+                                    return;
+                                }
+
+                                $(elm).html((60 - elm.timecount) + $(elm).data('timeUnit'));
+                            }
+                        })(thiselm[0]), 1000);
+                        Ave40MessageBox.alertSuccess(this.message);
+                    } else {
+                        thiselm.removeAttr('disabled').html(thiselm.data('text'));
+                        Ave40MessageBox.alertError(this.message);
+                    }
+                });
+            });
+        })
+    }(jQuery)
+
+
+    function emailCheck() {
+        var email_val = document.my_form.email.value;
+        var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        if (!myreg.test(email_val)) {
+            jQuery('.input-tip .email ').css('display', 'block')
+//		myreg.focus();
+        } else {
+            jQuery('.input-tip .email ').css('display', 'none')
+        }
+    }
+
+    function nameCheck() {
+        var firstname = document.my_form.firstname.value;
+        var lastname = document.my_form.lastname.value;
+        if (firstname == "" || lastname == "") {
+            jQuery('.input-tip .name ').css('display', 'block')
+        } else {
+            jQuery('.input-tip .name ').css('display', 'none')
+        }
+    }
+
+    function confirmCheck() {
+        var create_pwd = document.my_form.password.value;
+        var confirm_pwd = document.my_form.confirmation.value;
+        if (create_pwd != confirm_pwd) {
+            jQuery('.input-tip .confirm').css('display', 'block')
+            return false;
+        } else {
+            jQuery('.input-tip .confirm').css('display', 'none')
+        }
+    }
+
+    function passwdCheck() {
+        var passwdreg = /^[\w]{6,12}$/;
+        var passwd = document.my_form.password.value;
+        if (!passwdreg.test(passwd)) {
+            jQuery('.input-tip .passwd ').css('display', 'block')
+        } else {
+            jQuery('.input-tip .passwd ').css('display', 'none')
+        }
+    }
+
+
+</script>

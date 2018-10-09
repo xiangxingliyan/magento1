@@ -1,0 +1,33 @@
+<?php if (($_products = $this->getProductCollection()) && $count = $_products->getSize()): ?>
+
+<div class="topic-product">
+	<div class="topic-product-title">
+		<img src="/media/wysiwyg/topic/topic-8.png">
+	</div>
+	<ul class="topic-product-items home-list clearfix">
+		<?php $products = $_products->getItems() ?>
+		<?php $i = 0 ?>
+		<?php foreach ($products as $product): ?>
+		<?php $i ++ ?>
+		<?php if ($i > 20) break ?>
+		<li class="item" product_id="<?=$product->getId()?>">
+			<div class="home-product-img">
+				<img class="lazy" data-original="<?=$this->helper('catalog/image')->init($product, 'small_image')->resize(200, 200)?>"
+					 src="<?=$this->getSkinUrl('images/loader.gif')?>"
+					 width="200" alt="<?=$product->getName()?>" style="display: inline;">
+			</div>
+			<div class="product-other-info">
+				<h2 class="product-name">
+					<?=$product->getName()?>
+				</h2>
+			</div>
+			<a href="<?=$product->getProductUrl()?>" class="buy-now-btn" title="buy now">BUY NOW11111</a>
+		</li>
+		<?php endforeach ?>
+	</ul>
+</div>
+<?php endif ?>
+
+<div class="topic-footer">
+	<img src="<?=$this->getSkinUrl('images/topic/topic-5.png')?>" style="width: 100%">
+</div>

@@ -1,0 +1,20 @@
+<div class="home-brands">
+	<div class="home-brands-carousl swiper-container swiper-container-home-brands">
+		<ul class="home-brands-carousl-list swiper-wrapper clearfix">
+			<?php foreach(Mage::helper('ave40_brands')->getBrands()['brands_data'] as $brand): ?>
+			<li class="swiper-slide">
+				<a href="<?php echo $brand->getUrlPath(); ?>" title="<?php echo $brand->getName() ?>">
+					<img src="<?php echo $brand->getImageUrl() ?>" alt="<?php echo $brand->getName() ?>">
+				</a>
+			</li>
+			<?php endforeach; ?>
+		</ul>
+
+	</div>
+    <div class="swiper-button-prev iconfont icon-jiantou-left"></div>
+    <div class="swiper-button-next iconfont icon-jiantou-right"></div>
+</div>
+
+
+
+

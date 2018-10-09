@@ -1,0 +1,260 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php /** @var $this Mage_Sales_Block_Order_Info */ ?>
+<?php $_order = $this->getOrder() ;
+$trackNumbers = $_order->getTracksCollection();
+$erpOrderInfo = Mage::getModel('ave40_base/erp_orderinfo');
+$erpOrderInfo->loadByOrderIncrementId($_order->getIncrementId());
+if ($erpOrderInfo->getLogisticsProvider() == '豪速通') {
+    $trackNo =  !empty($erpOrderInfo->getTransferNo()) ? $erpOrderInfo->getTransferNo() : '';
+} else {
+    $trackNo =  !empty($erpOrderInfo->getExpressNo()) ? $erpOrderInfo->getExpressNo() : '';
+}
+$state = strtolower($_order->getState());
+$status = $_order->getStatus();
+$stateText = empty($status) ? $state : $_order->getStatusLabel();
+$step = [
+    Ave40_Sales_Model_Order::STATUS_CLOSED,
+    Ave40_Sales_Model_Order::STATUS_PAYMENT_PA,
+    Ave40_Sales_Model_Order::STATUS_STATUS_PENDING,
+    Ave40_Sales_Model_Order::STATUS_FRAUD,
+    Ave40_Sales_Model_Order::STATUS_PAYMENT_REVIEW,
+    Ave40_Sales_Model_Order::STATUS_PENDING_PAYMENT,
+    Ave40_Sales_Model_Order::STATUS_PAYMENT_ACCEPTED,
+    Ave40_Sales_Model_Order::STATUS_PAID,
+    Ave40_Sales_Model_Order::STATUS_PROCESSING,
+    Ave40_Sales_Model_Order::STATUS_PICING,
+    Ave40_Sales_Model_Order::STATUS_PICKED,
+    Ave40_Sales_Model_Order::STATUS_SHIPPED,
+    Ave40_Sales_Model_Order::STATUS_COMPLETE
+];
+?>
+
+<!-- 菜单激活样式 -->
+<style>
+    .aside-tab ul li.order_current_aside a{
+        color: #fff;
+        background: rgba(255, 255, 255, 0.2);
+        border-left: 4px solid #e10b0b;
+    }
+</style>
+
+<?php if(Mage::helper('ave40_widget')->getDeviceDetector()->isMobile()): ?>
+    <style>
+        .personal-aside{
+            display: none;
+        }
+    </style>
+<?php endif; ?>
+
+<div class="order-details-info">
+    <?php echo $this->getMessagesBlock()->toHtml() ?>
+    <div class="page-title title-buttons order-details-title bg-f6 margin-b-15">
+        <span>Order Details</span>
+        <?php /*echo $this->getChildHtml('buttons') */?>
+    </div>
+    <?php echo $this->getStatusHistoryRssUrl($_order) ?>
+<!--    <dl class="order-info ">
+        <dt><?php /*echo Mage::helper("Ave40_Translate")->__('About This Order:') */?></dt>
+        <dd>
+            <?php /*$_links = $this->getLinks(); */?>
+            <ul id="order-info-tabs">
+                <?php /*foreach ($_links as $_link): */?>
+                    <?php /*if ($_link->getUrl()): */?>
+                        <li><a href="<?php /*echo $_link->getUrl() */?>"><?php /*echo $_link->getLabel() */?></a></li>
+                    <?php /*else: */?>
+                        <li class="current"><?php /*echo $_link->getLabel() */?></li>
+                    <?php /*endif; */?>
+                <?php /*endforeach; */?>
+            </ul>
+            <script type="text/javascript">decorateGeneric($('order-info-tabs').select('LI'), ['first', 'last']);</script>
+        </dd>
+    </dl>-->
+
+    <div class="order-details-table">
+        <table cellpadding="0" cellspacing="1">
+            <tr>
+                <th>Order Id</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Shipping Method</th>
+                <th>Tracking Number</th>
+            </tr>
+            <tr>
+                <td><?php echo $_order->getRealOrderId() ?></td>
+                <td><?php echo $this->formatDate($_order->getCreatedAtStoreDate(), 'long') ?></td>
+                <td>
+                    <?php if (in_array($state, [
+                        Mage_Sales_Model_Order::STATE_NEW,
+                        Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
+                        Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW
+                    ])):?>
+                        <p class="logistics-status"><?php echo Mage::helper("Ave40_Translate")->__('Pending') ?></p>
+                    <?php else:?>
+                        <p class="logistics-status"><?php echo Mage::helper("Ave40_Translate")->__($stateText) ?></p>
+                    <?php endif;?>
+                </td>
+                <td>
+                    <?php if ($_order->getShippingDescription()): ?>
+                        <?php
+                        $shippingMethodName = explode('-', $_order->getShippingDescription());
+                        echo $this->escapeHtml(end($shippingMethodName));
+                        ?>
+                    <?php else: ?>
+                        <p><?php echo $this->helper('sales')->__('No shipping information available'); ?></p>
+                    <?php endif; ?>
+                </td>
+                <td>
+                        <p><a target="_blank"
+                              href="<?php echo $this->getUrl('ave40_base/logistics/index/infoid/' . $erpOrderInfo->getId() . '/seno/' . md5($erpOrderInfo->getId() . 'ave40' . $erpOrderInfo->getExpressNo())); ?>"><?php echo $trackNo ?></a>
+                        </p>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+
+    <!--
+        step1 :     width: calc(100% / 5);
+        step2 :     width: calc(100% / 1.95);
+        step3 :     width: calc(100% / 1.18);
+        step4 :     width: 100%;
+    -->
+    <div class="order-details-status">
+        <div class="order-details-sub-title margin-b-15">
+            <span>Order Status</span>
+        </div>
+
+        <?php if (in_array($_order->getState(), [ Mage_Sales_Model_Order::STATE_CLOSED])):?>
+            <p class="order-details-status-tips bg-f6">Your order has been closed.</p>
+
+        <?php elseif (in_array($_order->getState(), [Mage_Sales_Model_Order::STATE_CANCELED])):?>
+            <p class="order-details-status-tips bg-f6">Your order has been cancelled.</p>
+
+        <?php else:?>
+        <div class="order-details-process-box">
+            <div class="order-details-process">
+                <div class="process-bar">
+                    <span class="process-bar-set" style="width: calc(100% /
+                    <?php if (in_array($state, [
+                        Mage_Sales_Model_Order::STATE_COMPLETE,
+                    ])) {
+                        echo 1;
+                    } else if (in_array($state, [
+                        Mage_Sales_Model_Order::STATE_CANCELED,
+                        Mage_Sales_Model_Order::STATE_CLOSED,
+                    ])) {
+                        echo 0;
+                    } else if (in_array($state, [
+                        Mage_Sales_Model_Order::STATE_PROCESSING,
+                    ])) {
+                        if ($_order->getStatus() == Ave40_Sales_Model_Order::STATUS_SHIPPED) {
+                            echo 1.18;
+                        } else if ($_order->getStatus() == Ave40_Sales_Model_Order::STATUS_PAID) {
+                            echo 2;
+                        } else{
+                            echo 2.65;
+                        }
+                    } else {
+                        echo 5;
+                    } ?>
+                            );"></span>
+                </div>
+                <dl class="first-step <?php if (array_search($_order->getStatus(), $step) >=  array_search(Ave40_Sales_Model_Order::STATUS_PAYMENT_PA, $step)) echo 'done'; else echo 'undone'?>">
+                    <dt>Orders</dt>
+                    <dd><i class="iconfont icon-duigou"></i></dd>
+                </dl>
+                <dl class="second-step <?php if (array_search($_order->getStatus(), $step) >= array_search(Ave40_Sales_Model_Order::STATUS_PAID, $step)) echo 'done'; else echo 'undone'?>">
+                    <dt>Paid</dt>
+                    <dd><i class="iconfont icon-duigou"></i></dd>
+                </dl>
+
+                <dl class="third-step <?php if (array_search($_order->getStatus(), $step) >= array_search(Ave40_Sales_Model_Order::STATUS_SHIPPED, $step)) echo 'done'; else echo 'undone'?>">
+                    <dt>Shipped</dt>
+                    <dd><i class="iconfont icon-duigou"></i></dd>
+                </dl>
+                <dl class="last-step <?php if (array_search($_order->getStatus(), $step) >= array_search(Ave40_Sales_Model_Order::STATUS_COMPLETE, $step)) echo 'done'; else echo 'undone'?>">
+                    <dt>Completed</dt>
+                    <dd><i class="iconfont icon-duigou"></i></dd>
+                </dl>
+            </div>
+        </div>
+        <?php endif;?>
+    </div>
+
+<!--    <?php /*if (!$_order->getIsVirtual()): */?>
+        <div class="col2-set order-info-box">
+            <div class="col-1">
+                <div class="box">
+                    <div class="box-title">
+                        <h2><?php /*echo Mage::helper("Ave40_Translate")->__('Shipping Address') */?></h2>
+                    </div>
+                    <div class="box-content">
+                        <address><?php /*echo $_order->getShippingAddress()->format('html') */?></address>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="box">
+                    <div class="box-title">
+                        <h2><?php /*echo Mage::helper("Ave40_Translate")->__('Shipping Method') */?></h2>
+                    </div>
+                    <div class="box-content">
+                        <?php /*if ($_order->getShippingDescription()): */?>
+                            <?php /*echo $this->escapeHtml($_order->getShippingDescription()) */?>
+                        <?php /*else: */?>
+                            <p><?php /*echo $this->helper('sales')->__('No shipping information available'); */?></p>
+                        <?php /*endif; */?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php /*endif; */?>
+    <div class="col2-set order-info-box">
+        <div class="col-1">
+            <div class="box">
+                <div class="box-title">
+                    <h2><?php /*echo Mage::helper("Ave40_Translate")->__('Billing Address') */?></h2>
+                </div>
+                <div class="box-content">
+                    <address><?php /*echo $_order->getBillingAddress()->format('html') */?></address>
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="box box-payment">
+                <div class="box-title">
+                    <h2><?php /*echo Mage::helper("Ave40_Translate")->__('Payment Method') */?></h2>
+                </div>
+                <div class="box-content">
+                    <?php /*echo $this->getPaymentInfoHtml() */?>
+                </div>
+            </div>
+        </div>
+    </div>-->
+</div>
+

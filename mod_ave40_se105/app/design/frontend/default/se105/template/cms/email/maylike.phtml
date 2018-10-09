@@ -1,0 +1,84 @@
+<style>
+    /*you may like*/
+    .email-may-like{
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+    .like-product-name {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+    .email-like-title {
+        padding-bottom: 15px;
+        border-bottom: 1px solid #dfdfdf;
+        margin-bottom: 30px;
+    }
+    .email-like-title span {
+        border-left: 5px solid #ff8a00;
+        padding-left: 10px;
+    }
+    .email-like-product li{
+        width: 144px;
+        float: left;
+        margin-bottom: 20px;
+        margin-right: 3px;
+    }
+    .price-box span {
+        font-size: 12px;
+    }
+    .like-product-other-info {
+        text-align: center;
+        font-size: 12px;
+    }
+</style>
+
+<?php
+/**
+ * @var Mage_Core_Block_Template $this
+ */
+$categoryId = $this->getCategoryId();
+if (empty($categoryId)) {
+    return ;
+}
+$storeId = Mage::app()->getStore()->getId();
+$media = Mage::getModel('catalog/product_media_config');
+$category = Mage::getModel('catalog/category')->load($categoryId);
+
+$collection = Mage::getModel('catalog/product')->getCollection();
+$collection->addAttributeToSelect('*')
+    ->setStore($storeId)
+    ->addCategoryFilter($category)
+    ->addAttributeToSort('position');
+Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($collection);
+Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($collection);
+/* @var Mage_Catalog_Helper_Image $productHelper */
+$productHelper = Mage::helper('catalog/image');
+/* @var Mage_Catalog_Block_Product_List $productBlock */
+$productBlock = Mage::app()->getLayout()->createBlock('catalog/product_list');
+?>
+
+<?php if($collection->getSize()): ?>
+<div class="email-may-like">
+    <div class="email-like-title">
+        <span><?php echo Mage::helper("Ave40_Translate")->__('You may like') ?></span>
+    </div>
+    <ul class="email-like-product">
+		<?php foreach ($collection as $product): ?>
+			<?php /* @var Mage_Catalog_Model_Product $product */ ?>
+        <li>
+            <div class="like-product-img">
+                <a href="<?php echo $product->getProductUrl() ?>">
+                    <img title="<?php echo $this->escapeHtml($product->getName()) ?>" src="<?php echo $productHelper->init($product, 'small_image')->resize(144, 144) ?>" width="144" height="144">
+                </a>
+            </div>
+            <div class="like-product-other-info">
+                <div class="like-product-name"><a href=""><?php echo $this->escapeHtml($product->getName()) ?></a></div>
+                <?php echo $productBlock->getPriceHtml($product, true) ?>
+            </div>
+        </li>
+		<?php endforeach; ?>
+    </ul>
+</div>
+<?php endif; ?>

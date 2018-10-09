@@ -1,0 +1,174 @@
+<?php
+/** @var Ave40_Base_Helper_Customer $customerHelper */
+$customerHelper = Mage::helper('ave40_base/customer');
+Mage::register('ave40_is_in_home_route', true);
+?>
+<style>
+    .categorese_fixed .cate_title{
+        background-color: #ececec;
+        color: #e10b0b;
+    }
+    .categorese_fixed .category_wrap .cate-list{
+        display: block;
+    }
+
+	.fixed .categorese_fixed .category_wrap .cate-list{
+		display: none;
+	}
+
+	.fixed .categorese_fixed .category_wrap:hover .cate-list {
+		display: block;
+	}
+
+	.fixed .categorese_fixed .cate_title{
+		background-color: inherit;
+		color: inherit;
+	}
+
+	.fixed .category_wrap:hover .cate_title{
+		background-color: #ececec;
+		color: #e10b0b;
+	}
+
+</style>
+
+<div class="homepage-banner-box">
+    <div class="home-banner-main home-banner-b2b swiper-container swiper-container-home-banner top-slide-show">
+        <ul class="home-banner swiper-wrapper">
+
+            <?php foreach (ave40_sitedata('home/2b/slide_show') as $row): ?>
+
+                <li class="swiper-slide" data-swiper-autoplay="">
+                    <a href="<?php echo $row['url'] ?>" title="<?php echo htmlentities($row['title']) ?>">
+                        <img alt="<?php echo htmlentities($row['title']) ?>"
+                             src="<?php echo $row['image'] ?>"/>
+                    </a>
+                </li>
+
+            <?php endforeach; ?>
+        </ul>
+
+        <div class="swiper-pagination banner-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+    </div>
+</div>
+<style type="text/css">
+    .new-home-b2b {
+        width: 100%;
+        max-width: 1200px;
+        margin: 44px auto;
+    }
+</style>
+<div class="new-home-b2b">
+	<!-- 品牌 -->
+    <?php echo Mage::app()->getLayout()->createBlock('core/template')->setTemplate('cms/home-brands-carousel.phtml')->toHtml() ?>
+
+    <!-- b2b 中间广告位-->
+    <a href="<?php echo ave40_sitedata('home/2b/ad01/url') ?>" title="<?php echo ave40_sitedata('home/2b/ad01/title') ?>">
+        <img src="<?php  echo ave40_sitedata('home/2b/ad01/img') ?>" alt="">
+    </a>
+
+    <!--
+        no_verification未验证用户判断class:
+
+        1.新品第二行单品特殊处理只显示wholesale文字 :no_verification_guide_new_arrival
+        2.未验证用户鼠标移入显示submit框:
+            no_verification_guide
+            no_verification_template
+
+            全屏弹出提示框特殊处理class:
+            no_verification_full_screen_item
+            no_verification_full_screen_template
+    -->
+	
+	<!-- new arrival 楼层 -->
+    <div class="new-arrival <?php echo $customerHelper->isGuideGuest()?'no_verification_guide_new_arrival':'' ?>">
+        <div class="home-box">
+            <div class="head">
+                <hr>
+                <span><?php echo ave40_sitedata('home/2b/f01/title', 'NEW ARRIVALS') ?></span>
+            </div>
+        </div>
+        <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/product-items.phtml')
+			->setData('categories', ave40_sitedata('home/2b/f01/category_id', 513))
+			->setData('sort', 'e.entity_id desc')
+			->setData('item_limit', '8')
+			->setData('image_size', '230,230')
+			->setData('mouse_over_tools', '0')->toHtml() ?>
+    </div>
+
+	<!-- Hot Products 楼层 -->
+    <div class="home-best-seller">
+        <div class="home-box">
+            <div class="head">
+                <hr>
+                <span><?php echo ave40_sitedata('home/2b/f02/title', 'BEST SELLERS') ?></span>
+            </div>
+        </div>
+        <div class="home-best-seller-content clearfix">
+            <div class="home-best-seller-banner">
+				<a href="<?php  echo ave40_sitedata('home/2b/f02/left_picture_url') ?>" title="<?php  echo ave40_sitedata('home/2b/f02/left_picture_title') ?>">
+					<img src="<?php echo ave40_sitedata('home/2b/f02/left_picture') ?>" alt="<?php  echo ave40_sitedata('home/2b/f02/left_picture_title') ?>"/>
+				</a>
+			</div>
+            <div class="homeb2b-best-seller-ad">
+				<a href="<?php echo ave40_sitedata('home/2b/f02/top_picture_url') ?>" title="<?php echo ave40_sitedata('home/2b/f02/top_picture_title') ?>">
+					<img src="<?php echo ave40_sitedata('home/2b/f02/top_picture') ?>" alt="<?php echo ave40_sitedata('home/2b/f02/top_picture_title') ?>"/>
+				</a>
+			</div>
+            <div class="home-best-seller-product <?php echo $customerHelper->isGuideGuest()?'no_verification_guide':'' ?>">
+                <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/product-items.phtml')->setData('categories', ave40_sitedata('home/2b/f02/category_id'))->setData('sort', 'e.entity_id desc')->setData('item_limit', '3')->setData('image_size', '230,230')->setData('mouse_over_tools', '0')->toHtml() ?>
+            </div>
+        </div>
+    </div>
+	
+	<!-- SALES 楼层 -->
+    <div class="feature-product ">
+        <div class="home-box">
+            <div class="head">
+                <hr>
+                <span><?php echo ave40_sitedata('home/2b/f03/title', 'SALES') ?></span>
+            </div>
+        </div>
+        <div class="<?php echo $customerHelper->isGuideGuest()?'no_verification_guide':'' ?>">
+            <div class="feature-product-list  <?php echo $customerHelper->isGuideGuest()?'no_verification_full_screen_item':'' ?>">
+                <div class="<?php echo $customerHelper->isGuideGuest()?'no_verification_single_item':'' ?>">
+                    <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/product-items.phtml')
+						->setData('categories', ave40_sitedata('home/2b/f03/category_id', 494))
+						->setData('sort', 'e.entity_id desc')
+						->setData('item_limit', '8')
+						->setData('image_size', '230,230')
+						->setData('mouse_over_tools', '0')->toHtml() ?>
+                </div>
+    
+                <?php if($customerHelper->isGuideGuest()): ?>
+                <div class="<?php echo $customerHelper->isGuideGuest()?'no_verification_full_screen_template no_verification_template':'' ?> ">
+                    <div class="<?php echo $customerHelper->isGuideGuest()?'no_verification_info':'' ?>">
+						<?php if($customerHelper->isLoginned()): ?>
+							<p>Verify to become a wholesaler</p>
+							<a href="javascript:;" class="no_verification_submit" onclick="_gaq.push(['_trackEvent','create','Click','wholesale_verification']);">Verification</a>
+						<?php else: ?>
+							<p>Sign in to view wholesale price</p>
+							<a href="/customer/account/login" class="no_verification_submit_login" onclick="_gaq.push(['_trackEvent','create','Click','wholesale_login']);">Login</a>
+						<?php endif; ?>
+                    </div>
+                </div>
+				<?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 引入验证wholesale用户模块 -->
+<?php echo Mage::app()->getLayout()->createBlock('core/template')->setTemplate('ave40_verify_wholesale/verify_form.phtml')->toHtml() ?>
+
+<?php $customer = Mage::getSingleton('customer/session')->getCustomer(); ?>
+
+
+
+
+
+
+

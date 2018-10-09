@@ -1,0 +1,284 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     default_iphone
+ * @copyright   Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/* @var $this Mage_Wishlist_Block_Customer_Wishlist */
+$wishlistItemCollection = $this->getWishlistItems();
+$wishlistItemCollection->setPageSize(8);
+$wishlistItemCollection->setCurPage($this->getRequest()->getParam('p', '1'));
+$jsAddToCartFunc = $jsAddToCartFunc = 'click_add_to_cart_' .mt_rand(100000000, 999999999);
+$currency = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
+?>
+
+<style>
+    .busying {
+        opacity:0.5;
+        cursor:wait;
+    }
+</style>
+
+<!-- 漂亮的分割线 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<?php if(Mage::helper('ave40_widget')->getDeviceDetector()->isMobile()): ?>
+    <style>
+        .personal-aside{
+            display: none;
+        }
+    </style>
+<?php endif; ?>
+
+<?php if ($this->helper('wishlist')->isAllow()) : ?>
+
+<div class="personal-main">
+    <div class="main-right wishlist-main">
+		<div class="main-tab">
+			<ul class="tab">
+				<li class="active"><a title=""><span><?= Mage::helper("Ave40_Translate")->__('Wishlist') ?></span></a></li>
+			</ul>
+		</div>
+        <?php if ($this->hasWishlistItems()): ?>
+        <!-- wishlist存在 -->
+        <div class="wishlist-exist" style="display:block;">
+
+            <div class="filter-operating bg-f6 margin-b-15">
+                <div class="Operation-bar">
+                    <?php if ('open' != $_GET['sp']): ?>
+                        <label>
+                            <input type="checkbox" id="wishlist-select-all"/>
+                            <span><?php echo Mage::helper("Ave40_Translate")->__('Select All') ?></span>
+                        </label>
+                    <?php endif; ?>
+                    <?php if ('open' != $_GET['sp']): ?>
+                        <button class="select-del-btn iconfont icon-shanchu " ></button>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="wishlist-tab-ul bg-f6 margin-b-15 overview-order-tab">
+                <ul class="clearfix ">
+                    <li class="wishlist-check"></li>
+                    <li class="tab-wishlist-details"><?php echo Mage::helper("Ave40_Translate")->__('Selected Item(s)') ?></li>
+                    <li class="tab-wishlist-unit-price"><?php echo Mage::helper("Ave40_Translate")->__('Unit Price') ?></li>
+                    <li class="tab-wishlist-as-low-as"><?php echo Mage::helper("Ave40_Translate")->__('As Low As') ?></li>
+                    <li class="tab-wishlist-action"><?php echo Mage::helper("Ave40_Translate")->__('Action') ?></li>
+                </ul>
+            </div>
+
+            <div class="wishlist-product-list bg-f6">
+                <div class="wishlist-deal-box" >
+                    <ul class="wishlist-deal-info clearfix">
+                        <?php foreach ($wishlistItemCollection as $item):?>
+                        <?php
+                            $product = Mage::getModel('catalog/product')->load($item->getProductId());
+                            $optionsResult = [];
+                            if ($options = $product->getProductOptions()) {
+                                if (isset($options['options'])) {
+                                    $optionsResult = array_merge($optionsResult, $options['options']);
+                                }
+                                if (isset($options['additional_options'])) {
+                                    $optionsResult = array_merge($optionsResult, $options['additional_options']);
+                                }
+                                if (isset($options['attributes_info'])) {
+                                    $optionsResult = array_merge($optionsResult, $options['attributes_info']);
+                                }
+                            }
+                            $productName = $this->stripTags($product->getName());
+                            $productImageUrl = $this->helper('catalog/image')->init($product, 'small_image')->resize(155, 120);
+
+                        ?>
+                            <li class="wishlist-product-list-item clearfix">
+                            <div class="checked-box">
+                                <input type="checkbox" data-tag="wishlistid" data-wishlist-id="<?php echo $item->getId() ?>"/>
+                            </div>
+                            <div class="wishlist-product-info not-review-product-items">
+                                <div class="order-product-img">
+                                    <img src="<?php echo $productImageUrl;?>" alt="">
+                                </div>
+                                <div class="order-product-parameter">
+                                    <span><a href="<?php echo $product->getProductUrl() ?>"><?php echo $productName ?></a></span>
+                                    <p class="order-color-list">
+                                        <?php foreach ($optionsResult as $option): ?>
+                                            <span class="order-product-color"><?php echo  $option['label'] ?></span>
+                                            <span class="color-name"><?php echo  $option['value'] ?></span>
+                                        <?php endforeach; ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="wishlist-unit-price">
+                                <span class="mb_wishlist_price_label">Unit Price:</span>
+                                <span class="price"><?php echo $currency . number_format($product->getPrice(), 2) ?></span>
+                            </div>
+                            <div class="wishlist-as-low-as">
+                                <span class="mb_wishlist_price_label">As Low As:</span>
+                                <span class="price"><?php echo $currency . number_format($product->getFinalPrice(), 2) ?></span>
+                            </div>
+                            <div class="wishlist-action" data-item="<?php echo $item->getId();?>">
+                                <a href="#" class="delete-one-wishlist">Delete</a>
+                            </div>
+                        </li>
+                        <?php endforeach;?>
+                    </ul>
+                </div>
+            </div>
+
+<!--            <ul class="product-items home-list">
+                <?/*= $this->getChild('wishlist_product_list')
+					->setData('wish_product_collection', $wishlistItemCollection)
+					->setData('js_addtocart_name', $jsAddToCartFunc)
+					->toHtml() */?>
+            </ul>-->
+
+            <?php
+            /* @var Ave40_Widget_Block_Pagination $block */
+                $block = $this->getLayout()->createBlock('ave40_widget/pagination');
+                echo $block->setLastPage($wishlistItemCollection->getLastPageNumber())->toHtml();
+            ?>
+        </div>
+
+        <?php else: ?>
+
+        <!-- wishlist为空 -->
+        <div class="wishlist-empty">
+			<?php echo $this->getLayout()->createBlock('core/template')->setTemplate('customer/empty-list.phtml')->toHtml() ?>
+        </div>
+        <?php endif; ?>
+    </div>
+</div>
+<?php endif ?>
+
+<script>
+
+    function <?= $jsAddToCartFunc ?>() {
+        (function($) {
+            var $elm = $(this);
+            $elm.addClass('busying').attr('disabled', 1);
+
+            $.ajax({
+                url:'/ave40api/shoppingcart/add',
+                data: {product:$elm.data('id')},
+                dataType:'json',
+                type:'post',
+                success:function (result) {
+                    $elm.removeClass('busying').removeAttr('disabled');
+
+                    if(result.error) {
+                        alert('Error:' + result.message);
+                    } else {
+                        $('.topcart .car_count').html(result.data.total_count);
+                        alert(result.message);
+                    }
+                },
+                error: function (e) {
+                    $elm.removeClass('busying').removeAttr('disabled');
+                    alert('<?= Mage::helper("Ave40_Translate")->__('Failed to add!') ?>');
+                }
+            });
+        }).call(this, jQuery);
+    }
+
+    function allchk() {
+        (function($) {
+            var chknum = $(".wishlist-product-list-item :checkbox").size();
+            var chk = 0;
+            $(".wishlist-product-list-item :checkbox").each(function () {
+                if ($(this).prop("checked") == true) {
+                    chk++;
+                }
+            });
+            if (chknum == chk) {
+                $("#wishlist-select-all").prop("checked", true);
+            } else {
+                $("#wishlist-select-all").prop("checked", false);
+            }
+            if (chknum == 0) {
+                $("#wishlist-select-all").prop("checked", false);
+            }
+        }).call(this, jQuery);
+    }
+
+
+    ~function ($) {
+        //全选
+
+        $("#wishlist-select-all").click(function () {
+            if (this.checked) {
+                $(".wishlist-product-list-item :checkbox").prop("checked", true);
+            } else {
+                $(".wishlist-product-list-item  :checkbox").prop("checked", false);
+            }
+        });
+        $(".wishlist-product-list-item :checkbox").click(function () {
+            allchk();
+        });
+
+        function getCheckedOrder() {
+            var ids = [];
+
+            jQuery('.wishlist-product-list input[data-tag=wishlistid]:checked').each(function () {
+                ids.push($(this).data('wishlistId'));
+            });
+
+            return ids;
+        }
+
+        //多选删除
+        $('.select-del-btn').click(function () {
+            if (getCheckedOrder().length > 0) {
+                if ( confirm('Are you sure to delete wishlist?')) {
+                    ave40.showLoading('Delete')
+                        .ajaxPost('/ave40api/wishlist/remove', {item: getCheckedOrder()}, function () {
+                            if (this.ok) {
+                                 ave40.closeLoading();
+                                location.reload();
+                            } else {
+                                Ave40MessageBox.alertError(this.message);
+                                ave40.closeLoading();
+                                location.reload();
+                            }
+                        });
+                }
+            }
+
+        });
+        //单个删除
+        $('.delete-one-wishlist').click(function () {
+            var $item = [$(this).parent().data('item')];
+            if ( confirm('Are you sure to delete wishlist?')) {
+                ave40.showLoading('Delete')
+                    .ajaxPost('/ave40api/wishlist/remove', {item: $item}, function () {
+                        if (this.ok) {
+                             ave40.closeLoading();
+                            location.reload();
+                        } else {
+                            Ave40MessageBox.alertError(this.message);
+                            ave40.closeLoading();
+                            location.reload();
+                        }
+                    });
+            }
+
+        });
+        }(jQuery)
+
+</script>

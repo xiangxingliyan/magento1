@@ -1,0 +1,229 @@
+<?php
+$orderId = $this->getOrderId();
+/* @var Mage_Sales_Model_Order $order */
+$order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+$total = $order->getGrandTotal();
+$subtotal = $order->getSubtotal();
+$discount = $order->getDiscountAmount();
+$affiliateTotal = ($subtotal + $discount);
+$paymentMethod = $order->getPayment()->getMethod();
+$timestamp = time();
+
+/** @var Ave40_Base_Helper_Customer $baseCustomerHelper */
+$baseCustomerHelper = Mage::helper('ave40_base/customer');
+
+?>
+
+<script src="https://cdn.ywxi.net/js/conversion.js" class="mcafeesecure-track-conversion"
+        data-type="purchase"
+        data-orderid="<?php echo $orderId ?>"
+        data-email="<?php echo $order->getCustomerEmail() ?>"
+        data-firstname="<?php echo $order->getCustomerFirstname() ?>"
+        data-lastname="<?php echo $order->getCustomerLastname() ?>"
+        data-country="<?php echo $order->getShippingAddress()->getCountryId()?>"
+></script>
+
+<img src="https://shareasale.com/sale.cfm?amount=<?php echo $total; ?>&tracking=<?php echo $orderId; ?>&transtype=sale&merchantID=76012" width="1" height="1">
+
+<!-- referral_tracking_code -->
+<script type='text/javascript'>
+	!function(d,s) {
+		var rc = "//go.referralcandy.com/purchase/pubzyn7y6qyhp821fbdvojybp.js";
+		var js = d.createElement(s);
+		js.src = rc;
+		var fjs = d.getElementsByTagName(s)[0];
+		fjs.parentNode.insertBefore(js,fjs);
+	}(document,"script");
+</script>
+
+<div id="refcandy-lollipop"
+	 data-id="gcykfsh39fxz8wbv6ma0sbxwy"
+	 data-fname="<?php echo $order->getCustomerFirstname() ?>"
+	 data-lname="<?php echo $order->getCustomerLastname() ?>"
+	 data-amount="<?php echo $total ?>"
+	 data-currency="<?php echo $order->getOrderCurrency()->getCode() ?>"
+	 data-email="<?php echo $order->getCustomerEmail() ?>"
+	 data-timestamp="<?php echo $timestamp ?>"
+	 data-external-reference-id="<?php echo $this->getOrderId() ?>"
+	 data-signature="<?php echo md5(implode(',', [
+         $order->getCustomerEmail(),
+         $order->getCustomerFirstname(),
+         $total,
+         $timestamp,
+         '3144e98ef31ccf688fc608dc806838eb'
+     ])) ?>"
+></div>
+
+<?php
+
+
+	if ($paymentMethod == 'banktransfer') {
+		echo Mage::app()->getLayout()->createBlock('core/template')
+			->setOrder($order)
+			->setTemplate('cms/transfer-pay.phtml')
+			->toHtml();
+		return ;
+	} else if($paymentMethod == 'ave40_westernunion') {
+        echo Mage::app()->getLayout()->createBlock('core/template')
+            ->setOrder($order)
+			->setTemplate('cms/western-pay.phtml')
+			->toHtml();
+		return ;
+	}
+?>
+
+<div class="pay-success-page">
+	<!--
+	<div class="page-title">
+		<h1><?php /*echo Mage::helper("Ave40_Translate")->__('Your order has been received') */?></h1>
+	</div>
+	-->
+    <div class="ave40-step clearfix">
+        <dl class="first-step done">
+            <dt>1</dt>
+            <dd>1. view the shoppingcart</dd>
+        </dl>
+        <dl class="second-step done">
+            <dt>2</dt>
+            <dd>2. check out</dd>
+        </dl>
+        <dl class="last-step doing">
+            <dt>3</dt>
+            <dd>3. Complete payment</dd>
+        </dl>
+    </div>
+
+
+	<div class="page-content-se">
+		<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+		<h2 class="sub-title"><i class="icon finish-icon"></i><span><?php echo Mage::helper("Ave40_Translate")->__('Congratulations on your successful payment') ?></span></h2>
+
+
+		<div class="pay-success-order-info">
+            <img src="https://shareasale.com/sale.cfm?tracking=<?php echo $orderId; ?>&amount=<?php echo $affiliateTotal; ?>&transtype=sale&merchantID=72888" width="1" height="1">
+		<?php if ($this->getOrderId()): ?>
+			<?php $order = $this->order; ?>
+
+			<!--
+			<div class="pay-success-payment-info">
+				<span class="words">Payment:</span>
+				<span class="pay-icon paypal-icon"></span>
+			</div>
+			-->
+
+			<?php if ($this->getCanViewOrder()) : ?>
+				<div class="pay-order-num"><?php echo Mage::helper("Ave40_Translate")->__('Order number: %s', sprintf('<a href="%s">%s</a>', $this->escapeHtml('/sales/order/history/'), $this->escapeHtml($this->getOrderId()))) ?></div>
+			<?php else : ?>
+                <div><?php echo Mage::helper("Ave40_Translate")->__('Your order # is') ?>: <?php echo $this->escapeHtml($this->getOrderId()) ?></div>
+			<?php endif; ?>
+
+			<!--
+			<p><?php /*echo Mage::helper("Ave40_Translate")->__('You will receive an order confirmation email with details of your order and a link to track its progress.') */?></p>
+			<?php /*if ($this->getCanViewOrder() && $this->getCanPrintOrder()) : */?>
+				<div>
+					<?php /*echo Mage::helper("Ave40_Translate")->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) */?>
+					<?php /*echo $this->getChildHtml() */?>
+				</div>
+			<?php /*endif; */?>
+			-->
+
+			<div class="pay-success-amount">
+				<span>Payment amount :</span>
+				<span class="price">$<?=number_format($order->getBaseGrandTotal(), 2);?></span>
+			</div>
+
+			<?php if ($this->getAgreementRefId()): ?>
+				<p><?php echo Mage::helper("Ave40_Translate")->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId()))) ?></p>
+			<?php endif; ?>
+
+			<?php if ($profiles = $this->getRecurringProfiles()): ?>
+				<p><?php echo Mage::helper("Ave40_Translate")->__('Your recurring payment profiles:'); ?></p>
+				<ul class="disc">
+					<?php foreach ($profiles as $profile): ?>
+						<?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id'))); ?>
+						<li><?php echo Mage::helper("Ave40_Translate")->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description'))) ?></li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+
+			<div class="pay-success-button">
+				<a href="<?= $this->getViewOrderUrl() ?>" _href="<?= $this->getViewOrderUrl() ?>" class="pay-succ-btn">View order</a>
+				<a href="/" class="pay-succ-btn inquireNow ">Back</a>
+			</div>
+			<?php echo $this->getChildHtml('inquire_form') ?>
+
+			<!--
+			<div class="buttons-set">
+				<button type="button" class="button" title="<?php /*echo Mage::helper("Ave40_Translate")->__('Continue Shopping') */?>"
+						onclick="window.location='<?php /*echo $this->getUrl() */?>'">
+					<span><span><?php /*echo Mage::helper("Ave40_Translate")->__('Continue Shopping') */?></span></span></button>
+			</div>
+			-->
+		<?php endif; ?>
+		</div>
+		
+		<input type="hidden" data-avetype='email' value="<?php echo $order->getCustomerEmail() ?>">
+		<?php if(($order->getPayment()->getMethod() == 'paypal_express' || $order->getPayment()->getMethod() == 'payonlinecc_payment') &&
+			$order->getCustomerEmail() && !$baseCustomerHelper->isEmailUserExist($order->getCustomerEmail())): ?>
+            <p class="hr"></p>
+			<div class="auto_register_user">
+
+				<h3><?php echo __t('Create a new account with your e-mail address') ?></h3>
+                <p>
+                    <span><?php echo __t('Please enter your password and create an account at Ave40 for faster checkout.') ?></span>
+                    <span><?php echo __t('Get the latest on new arrivials, sales & exclusive offers. ') ?></span>
+                </p>
+                <div class="auto_register_form">
+                    <div class="auto_register_email_col auto_register_form_col">
+                        <input id="ave40_auto_register_user_email" type="text" placeholder="E-mail" value="<?php echo $order->getCustomerEmail() ?>" / >
+                    </div>
+                    <div class="auto_register_password_col auto_register_form_col">
+                        <input id="ave40_auto_register_user_passwd" type="text" placeholder="Password"  />
+                    </div>
+                    <div class="auto_register_save_button">
+                        <button id="save_pwd">save</button>
+                    </div>
+                </div>
+			</div>
+			
+			<script>
+				~function ($) {
+					$('#save_pwd').click(function () {
+						var pwd = $('#ave40_auto_register_user_passwd').val();
+						var email = $('#ave40_auto_register_user_email').val();
+						var url = "<?php echo $this->getUrl('ave40_api/customer/saveQuickRegisterUser/');?>";
+						
+						ave40.showLoading();
+						ave40.ajaxPost(url, {email:email, pwd:pwd, form_key:'<?php echo Mage::getSingleton('core/session')->getFormKey() ?>'}, function () {
+							ave40.closeLoading();
+							
+							if (this.ok) {
+								 $('.auto_register_user').hide();
+								 $('.pay-success-page p.hr').hide();
+								Ave40MessageBox.alertSuccess(this.message);
+							} else {
+								Ave40MessageBox.alertError(this.message);
+							}
+						});
+					});
+				}(jQuery)
+			</script>
+		<?php endif; ?>
+	</div>
+
+
+	<?php
+		$orderAmount = floatval(Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId())->getGrandTotal());
+	?>
+
+    <?php if($this->getOrderId()): ?>
+	<!-- BEGIN OF FLEXOFFERS.COM TRACKING CODE -->
+	<img src="https://track.flexlinks.com/tracker.aspx?AID=4ce45f74-bc41-4396-9437-90e167cbe753&AMT=<?php echo $orderAmount ?>&UID=<?php echo $this->getOrderId() ?>" width="1" height="1" alt=""/>
+	<!-- END OF FLEXOFFERS.COM TRACKING CODE -->
+    <?php endif; ?>
+
+    <!-- ve -->
+    <img src="//cdsch2.veinteractive.com/DataReceiverService.asmx/Pixel?journeycode=70016FF3-E8E0-45E8-83C5-7F8EF79CF29A" width="1" height="1"/>
+	
+</div>
+

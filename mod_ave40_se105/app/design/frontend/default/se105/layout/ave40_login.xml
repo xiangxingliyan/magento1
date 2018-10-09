@@ -1,0 +1,7 @@
+<layout version="1.0.0">
+	<ave40_login_index_index>
+		<reference name="root">
+			<block name="content" type="core/template" output="toHtml" template="ave40_login/index.phtml"/>
+		</reference>
+	</ave40_login_index_index>
+</layout>

@@ -1,0 +1,1149 @@
+.topic-page > div {
+    width: 1920px;
+    margin: 0 auto;
+    position: relative;
+    left: 50%;
+    margin-left: -960px;
+    overflow: hidden;
+}
+
+.swiper-sellers-product-prev, .swiper-arrival-product-prev {
+    left: initial;
+    right: 80px;
+}
+
+.swiper-sellers-product-next, .swiper-sellers-product-prev, .swiper-arrival-product-prev, .swiper-arrival-product-next {
+    background-image: none;
+    top: -29px;
+    width: 10px;
+    height: 17px;
+}
+
+.topic-product .home-list .home-product-img{
+    width: 50%;
+    float: left;
+}
+
+.topic-product .home-product-img img{
+    margin: 0;
+}
+
+.topic-product .product-other-info {
+    width: 50%;
+    float: right;
+    padding-top: 30px;
+}
+
+.topic-product .product-other-info h1{
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.topic-product .product-items .product-name{
+    padding: 10px;
+    overflow: initial;
+    white-space: initial;
+    text-overflow: initial;
+    text-align: left;
+    color: #000;
+    height: 51px;
+}
+
+/*.topic-product p.special-price {
+    float: left;
+}*/
+/*.topic-product p.old-price{
+    float: left;
+}*/
+
+.swiper-pagination-arrival-product {
+    bottom: inherit;
+    left: inherit;
+    top: -50px;
+    width: 60px;
+    right: 20px;
+    font-size: 16px; 
+}
+
+.arrival-product-banner .swiper-pagination-current,.sellers-product-banner .swiper-pagination-current{
+    color: #e10b0b;
+}
+
+.product_item_new_arrival_template .product-numberfive .product_item_box:first-child .product_item_card {
+    height: 500px;
+}
+
+.product_item_new_arrival_template .product-numberfive .product_item_box:first-child .product_item_card .product_card_img{
+    float: none;
+    width: 100%;
+    height: 80%;
+}
+
+.product_item_new_arrival_template .product-numberfive .product_item_box:first-child .product_item_card .product_card_other_info{
+    float: none;
+    width: 100%;
+    height: auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.product_item_new_arrival_template .product-numberfive .product_item_box:first-child .product_card_name{
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+
+.topic-product {
+    width: 100%;
+    background-size: 100% 100%;
+}
+
+.topic-product-title {
+    margin: 30px auto;
+    width: 100%;
+}
+
+.topic-product .bx-wrapper .bx-viewport {
+    background: none;
+}
+
+.topic-product-title fieldset {
+    border-top: 1px dashed #dddddd;
+}
+
+.topic-product-items {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.topic-product .bx-wrapper .bx-controls-direction a {
+    width: 70px;
+    height: 140px;
+    margin-top: -70px;
+    background: url("../../images/topic/top-newarrival-arrow.png") no-repeat;
+}
+
+.topic-product .bx-wrapper .bx-controls-direction a.bx-next {
+    background-position: -245px 0;
+    right: -80px;
+}
+
+.topic-product .bx-wrapper .bx-controls-direction a.bx-next:hover {
+    background-position: -180px 0;
+}
+
+.topic-product .bx-wrapper .bx-controls-direction a.bx-prev {
+    background-position: -5px 0;
+    left: -80px;
+}
+
+.topic-product .bx-wrapper .bx-controls-direction a.bx-prev:hover {
+    background-position: -80px 0;
+}
+
+.topic-product-items .home-product-img, .topic-product-items .home-product-img a {
+    height: 240px;
+}
+
+.topic-product-items .product-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0 20px;
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+
+.topic-product-items .price-box {
+    margin-bottom: 10px;
+}
+
+.topic-product-items .special-price .price, .topic-product-items .regular-price .price {
+    font-size: 20px;
+}
+
+.topic-newarrival-page .bx-wrapper .bx-pager .bx-pager-item {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 7px;
+}
+
+.topic-newarrival-page .bx-wrapper .bx-pager .bx-pager-item:first-child {
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+    padding-left: 15px;
+}
+
+.topic-newarrival-page .bx-wrapper .bx-pager .bx-pager-item:last-child {
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+    padding-right: 15px;
+}
+
+.topic-newarrival-page .bx-wrapper .bx-pager.bx-default-pager a {
+    background: #d8d8d8;
+}
+
+.topic-newarrival-page .bx-wrapper .bx-pager.bx-default-pager a:hover, .topic-newarrival-page .bx-wrapper .bx-pager.bx-default-pager a.active {
+    background: #ff8a00;
+}
+
+.topic-newarrival-page .bx-wrapper .bx-pager, .bx-wrapper .bx-controls-auto {
+    bottom: 3%;
+}
+
+.topic-product-items .buy-now-btn {
+    color: #fff;
+    background: #ff8a00;
+    height: 35px;
+    line-height: 35px;
+    font-size: 15px;
+    width: 200px;
+    border-radius: 10px;
+    margin: 0 auto;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.spec-buy-now-btn {
+    display: inline-block;
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    position: absolute;
+}
+
+.topic-page .red-buy-now-btn {
+    border: 1px solid #d71b00;
+    color: #d71b00;
+    bottom: 17%;
+    left: 19%;
+}
+
+.topic-page .yellow-buy-now-btn {
+    border: 1px solid #b6b609;
+    color: #b6b609;
+    left: 10%;
+    top: 35%;
+}
+
+.topic-share-now {
+    border: 1px solid #f2d606;
+    color: #f2d606;
+    top: 78%;
+    left: 19%;
+}
+
+.topic-third-column {
+    width: 100%;
+    padding: 40px 0;
+    background: #ffdee2;
+}
+
+.topic-third-column-body > div {
+    position: relative;
+    float: left;
+    width: 590px;
+}
+
+.topic-column-body {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.topic-third-column-left {
+    margin-right: 20px;
+}
+
+/*product topic 20170606*/
+.topic-new-first-btn {
+    position: absolute;
+    left: 46%;
+    top: 28%;
+}
+
+.topic-new-product-1-column .topic-new-first-btn {
+    left: 25%;
+    top: 70%;
+}
+
+.topic-new-product-2-column .topic-new-first-btn {
+    left: 47.5%;
+    top: 27%;
+}
+
+.topic-new-product-3-column .topic-new-first-btn {
+    left: 45%;
+    top: 26%;
+}
+
+.topic-new-product-4-column .topic-new-first-btn {
+    left: 56.5%;
+    top: 38%;
+}
+
+.topic-new-product-5-column .topic-new-first-btn {
+    left: 55%;
+    top: 72%;
+}
+
+.topic-new-second-column .topic-new-white-btn {
+    position: absolute;
+    left: 60%;
+    bottom: 15%;
+}
+
+.topic-new-third-column .topic-new-white-btn {
+    position: absolute;
+    left: 36%;
+    bottom: 13%;
+}
+
+.topic-new-carousel {
+    position: relative;
+}
+
+.topic-new-carousel-ul li {
+    float: left;
+}
+
+.topic-new-carousel .bx-pager-item:first-child {
+    margin-left: 28%;
+    color: #000;
+}
+
+.topic-new-carousel .bx-pager.bx-default-pager .bx-pager-item:nth-child(2) a {
+    background: #ebebeb;
+}
+
+.topic-new-carousel .bx-pager.bx-default-pager .bx-pager-item:nth-child(3) a {
+    background: #ecb69a;
+}
+
+.topic-new-carousel .bx-pager.bx-default-pager .bx-pager-item:nth-child(4) a {
+    background: #f1dda8;
+}
+
+.topic-new-title {
+    font-size: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+
+/*giveaways pages*/
+
+.giveaways-firstcolumn {
+    width: 1920px;
+    height: 506px;
+    margin: 0 auto;
+    position: relative;
+    left: 50%;
+    margin-left: -960px;
+    overflow: hidden;
+}
+
+.giveaways-secondcolumn {
+    background: url("/media/wysiwyg/topic/giveaways/givesways_03.jpg") no-repeat;
+    width: 1920px;
+    height: 360px;
+    margin: 0 auto;
+    position: relative;
+    left: 50%;
+    margin-left: -960px;
+    overflow: hidden;
+}
+
+.giveaways-secondcolumn-content {
+    width: 1240px;
+    margin: 0 auto;
+
+}
+
+.giveaways-secondcolumn-content > div {
+    float: left;
+}
+
+.giveaways-footercolumn {
+    width: 1920px;
+    margin: 0 auto;
+    position: relative;
+    left: 50%;
+    margin-left: -960px;
+    overflow: hidden;
+}
+
+/*share-off*/
+
+.share-off-2-col {
+    width: 1920px;
+    margin: 0 auto;
+    position: relative;
+    left: 50%;
+    margin-left: -960px;
+    overflow: hidden;
+    height: 538px;
+    background: url('/media/wysiwyg/topic/share-off/share_03.jpg') top left no-repeat, url('/media/wysiwyg/topic/share-off/share_04.jpg') bottom left no-repeat;
+}
+
+.share-off-price {
+    text-align: center;
+    font-size: 68px;
+    font-weight: bold;
+    height: 70px;
+    line-height: 70px;
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.off-btn {
+    text-align: center;
+    display: inline-block;
+    width: 346px;
+    height: 160px;
+    position: relative;
+    z-index: 3;
+}
+
+.share-to-btn {
+    background: url("../../images/topic/share-off/share_0.png") no-repeat;
+}
+
+.help-to-btn {
+    background: url("../../images/topic/share-off/share_06.png") no-repeat;
+}
+
+.share-off-2-btn {
+    text-align: center;
+    position: relative;
+}
+
+.share-to-link {
+    position: absolute;
+    width: 260px;
+    height: 78px;
+    top: 12%;
+    left: 35%;
+    z-index: 2;
+    background: url("../../images/topic/share-off/f.png") no-repeat 15px center;
+}
+
+.share-table {
+    width: 878px;
+    height: 280px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.share-table-title {
+    height: 40px;
+    font-size: 18px;
+    background: url("../../images/topic/share-off/table-title.png") no-repeat center;
+}
+
+.share-table span {
+    width: 33.3%;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
+}
+
+.share-to-link .follow-us-icon {
+    margin-top: 18px;
+}
+
+.share-table-carousel {
+    background: #581d31;
+    font-size: 16px;
+}
+
+.share-table-carousel li span:nth-child(2) {
+    color: #ff8a00;
+}
+
+.share-table-carousel li span:nth-child(3) {
+    font-size: 14px;
+}
+
+.share-table .bx-wrapper .bx-viewport {
+    height: 200px !important;
+}
+
+/* brand_campaign 品牌联合 common css*/
+.campaign-product-banner {
+    position: relative;
+}
+
+.campaign-banner-btn {
+    position: absolute;
+    width: 8.5%;
+    height: 8.8%;
+    bottom: 15.1%;
+    text-indent: -9999px;
+}
+
+.campaign-banner-btn.inquireNow-popup-btn {
+    left: 18.5%;
+}
+
+.campaign-banner-btn.buy-btn {
+    left: 28.5%;
+}
+
+.campaign-giveaways {
+    margin: 0.7rem auto 0.4rem;
+}
+
+.giveaway-date sup {
+    vertical-align: super;
+    font-size: 12px;
+}
+
+.campaign-main {
+    background: #d4384b url("/media/wysiwyg/topic/brand_campaign/smoant_bg.png");
+}
+
+.giveaways-info {
+    text-align: center;
+}
+
+.giveaways-info h2, .giveaways-info h4, .giveaways-info h5, .giveaways-info h6 {
+    font-family: opensans-bold;
+    color: #f1f1f1;
+}
+
+.giveaways-info h2 {
+    font-size: 92px;
+}
+
+.giveaways-info h6 {
+    font-family: opensans-regular;
+    font-size: 23px;
+    margin: 0.25rem 0 0.4rem;
+    font-weight: normal;
+}
+
+.giveaways-info h4 {
+    font-size: 35px;
+}
+
+.giveaways-info h5 {
+    font-size: 24px;
+    margin: 0.4rem 0 0.25rem;
+}
+
+.giveaways-info p {
+    font-size: 16px;
+    line-height: 1.9;
+    text-align: justify;
+    width: 83.333%;
+    margin: 0 auto;
+    color: #f1f1f1;
+}
+
+.giveaways-info p img {
+    float: right;
+    margin-left: 5px;
+}
+
+.campaign-title {
+    text-align: center;
+    width: 740px;
+    height: 260px;
+    margin: 0 auto;
+    color: #f1d2d2;
+    position: relative;
+    background: url("/media/wysiwyg/topic/brand_campaign/smoant_05.png") no-repeat center / 100%;
+}
+
+.campaign-recommend-coupon {
+    font-size: 27px;
+    position: absolute;
+    bottom: 20%;
+    left: calc(50% - 2rem);
+}
+
+.campaign-recommend-coupon span:first-child {
+    font-family: opensans-bold;
+}
+
+.campaign-recommend-product-list .home-list li.item {
+    width: calc((100% - 20px) / 4);
+    margin-right: 5px;
+    background-color: #fff;
+    height: 340px;
+    margin-bottom: 5px;
+}
+
+.campaign-recommend-product-list {
+    margin: 0 auto 0.2rem;
+}
+
+.campaign-recommend-product-list .home-list .home-product-img, .campaign-recommend-product-list .home-list .home-product-img a {
+    height: 220px;
+}
+
+.campaign-recommend-product-list .product-other-info {
+    padding: 0 0.2rem;
+}
+
+.campaign-recommend-product-list .product-inquire-btn {
+    background-color: #ff8a00;
+}
+
+a.product-item-buy-btn {
+    clear: both;
+    color: #666;
+    border: #999 solid 1px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    border-radius: 3px;
+    display: block;
+    font-style: italic;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 15px;
+    width: 65%;
+}
+
+a.product-item-buy-btn:hover{
+    background-color: #df2929;
+    color: #f3f3f3;
+    border-color: #df2929;
+}
+
+.campaign-ws-title {
+    text-align: center;
+}
+
+.campaign-ws-main {
+    width: 100%;
+    height: 368px;
+    background: url("/media/wysiwyg/topic/brand_campaign/smoant_07.png") no-repeat center / 100%;;
+}
+
+.campaign-ws-inquire {
+    width: 50%;
+    float: right;
+    margin-right: 8.3%;
+    margin-top: 1.08rem;
+}
+
+.campaign-ws-icon {
+    margin-left: 8.3%;
+    margin-top: 1rem;
+}
+
+.campaign-wholesale {
+    margin: 0.4rem auto;
+}
+
+.campaign-ws-title h3 {
+    font-size: 23px;
+    color: #fafeed;
+    margin-bottom: -35px;
+}
+
+.page-wholesale-form .wholesale-email-input, .page-wholesale-form .wholesale-mobile-input, .page-wholesale-form .wholesale-name-input, .page-wholesale-form .wholesale-textarea-input {
+    width: calc(100% - 72px);
+    background-color: #fff;
+}
+
+.page-wholesale-form .form-tip {
+    min-height: 15px;
+}
+
+.page-wholesale-form .wholesale-textarea textarea {
+    height: 68px;
+    padding: 10px 30px 0 42px;
+}
+
+.page-wholesale-form .wholesale-textarea .remain-word {
+    right: 10px;
+    bottom: 2px;
+}
+
+.page-wholesale-form .wholesale-submit {
+    margin-right: -12px;
+}
+
+.campaign-product-item {
+    position: relative;
+}
+
+.campaign-video {
+    position: absolute;
+}
+
+.campaign-product-add-btn-col {
+    position: relative;
+}
+
+/*vaporesso-sale page*/
+
+.vaporesso-sale .campaign-product-banner .campaign-banner-btn.inquireNow-popup-btn {
+    left: 56.3%;
+    bottom: 55%;
+}
+
+.vaporesso-sale .campaign-product-banner .campaign-banner-btn.buy-btn {
+    left: 18.6%;
+    bottom: 44%;
+}
+
+.vaporesso-sale .campaign-product .campaign-product-item:nth-child(1) .campaign-banner-btn.inquireNow-popup-btn {
+    left: 50.5%;
+    bottom: 11%;
+}
+
+.vaporesso-sale .campaign-product .campaign-product-item:nth-child(2) .campaign-banner-btn.inquireNow-popup-btn {
+    left: 17.5%;
+    bottom: 11%;
+    height: 11%;
+}
+
+.vaporesso-sale .campaign-product .campaign-product-item:nth-child(3) .campaign-product-item-left .campaign-banner-btn.inquireNow-popup-btn {
+    left: 46.5%;
+    bottom: 11%;
+    width: 15.5%;
+    height: 6.8%;
+}
+
+.vaporesso-sale .campaign-product .campaign-product-item:nth-child(3) .campaign-product-item-right .campaign-banner-btn.inquireNow-popup-btn {
+    left: 16.5%;
+    bottom: 11%;
+    width: 15.5%;
+    height: 6.8%;
+}
+
+.vaporesso-sale .campaign-product .campaign-product-item:nth-child(1) .campaign-banner-btn.buy-btn {
+    left: 56%;
+    bottom: 57%;
+    height: 5%;
+}
+
+.vaporesso-sale .campaign-product .campaign-product-item:nth-child(2) .campaign-banner-btn.buy-btn {
+    left: 51%;
+    bottom: 10%;
+    height: 7%;
+}
+
+.vaporesso-sale .campaign-product .campaign-product-item:nth-child(3) .campaign-banner-btn.buy-btn {
+    left: 18.5%;
+    bottom: 26%;
+    height: 9%;
+}
+
+.vaporesso-sale .campaign-product .campaign-product-item:nth-child(4) .campaign-product-item-left .campaign-banner-btn.buy-btn {
+    left: 56%;
+    bottom: 2%;
+    width: 15%;
+}
+
+.vaporesso-sale .campaign-product .campaign-product-item:nth-child(4) .campaign-product-item-right .campaign-banner-btn.buy-btn {
+    left: 23.8%;
+    bottom: 3%;
+    height: 6.8%;
+    width: 15%;
+}
+
+.vaporesso-01-video {
+    bottom: 21%;
+    right: 18.6%;
+    width: 24.9%;
+    height: 31.466%;
+}
+
+.vaporesso-02-video {
+    position: static;
+    width: 83.333%;
+    margin: 0.2rem auto 0;
+}
+
+.vaporesso-sale .campaign-main {
+    background: none;
+}
+
+.vaporesso-sale .campaign-giveaways-col {
+    background-color: #f5e9d9;
+    background: #f5e9d9 url("/media/wysiwyg/topic/brand_campaign/vaporesso_new_04.jpg") no-repeat bottom center / 100%;
+}
+
+.vaporesso-sale .giveaways-info h2 {
+    width: 83.333%;
+    margin: 0 auto;
+    color: #ff8a00;
+    text-align: left;
+}
+
+.vaporesso-sale .giveaways-info h5 {
+    line-height: 1.5;
+    width: 83.333%;
+    color: #333;
+    margin: .3rem auto .25rem;
+    text-align: left;
+}
+
+.vaporesso-sale .giveaways-info {
+    margin: 0 0 0.5rem;
+}
+
+.vaporesso-sale-bg {
+    background-color: #caf9e7;
+}
+
+.campaign-product-item-left {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    top: 0;
+    left: 0;
+}
+
+.campaign-product-item-right {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    top: 0;
+    right: 0;
+}
+
+.campaign-product-item a.vaporesso-product-link {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.vaporesso-sale .campaign-title {
+    margin: 0.3rem auto;
+    background: none;
+    height: auto;
+    color: #90bc5d;
+}
+
+.vaporesso-blog-link {
+    position: absolute;
+    left: 56.3%;
+    bottom: 67%;
+    width: 13.5%;
+    height: 1.8%;
+}
+
+.vaporesso-sale .campaign-ws-main {
+    background: url('/media/wysiwyg/topic/brand_campaign/vaporesso-w-bg.png') no-repeat center / 100%;
+}
+
+.vaporesso-sale .campaign-recommend-coupon {
+    bottom: 19%;
+    left: calc(50% - 2.6rem);
+    position: static;
+    font-size: 18px;
+}
+
+.vaporesso-sale .campaign-title h2{
+    font-size: 45px;
+    font-family: opensans-bold;
+}
+
+.vaporesso-sale .campaign-ws-title h3 {
+    margin-bottom: -27px;
+}
+
+.vaporesso-sale .giveaways-info h6 {
+    margin: .25rem 0 .2rem;
+}
+
+.vaporesso-sale .giveaways-info p {
+    line-height: 1.7;
+    color: #333;
+}
+
+.vaporesso-sale .giveaways-anchor {
+    width: 23%;
+    height: 30%;
+    left: 38%;
+    bottom: 0;
+}
+
+.giveaways-anchor {
+    position: absolute;
+}
+
+/*   ijoy  */
+
+.ijoy-sale .campaign-banner-btn {
+    width: 10.5%;
+}
+
+.ijoy-sale .ijoy-01-col .campaign-banner-btn.inquireNow-popup-btn {
+    left: 48%;
+    bottom: 19%;
+}
+
+.ijoy-sale .ijoy-01-col .campaign-banner-btn.buy-btn {
+    left: 59%;
+    bottom: 15%;
+}
+
+.ijoy-sale .ijoy-02-col .campaign-banner-btn.buy-btn {
+    left: 41.5%;
+    width: 12%;
+    bottom: 21%;
+}
+
+.ijoy-03-col .campaign-banner-btn.buy-btn {
+    left: 41.8%;
+    bottom: 17%;
+}
+
+.ijoy-04-col .campaign-banner-btn.inquireNow-popup-btn {
+    left: 48%;
+    bottom: 21%;
+}
+
+.ijoy-04-col .campaign-banner-btn.buy-btn {
+    left: 60.5%;
+    bottom: 19%;
+}
+
+.ijoy-sale .ijoy-05-col .campaign-banner-btn {
+    left: 26%;
+    bottom: 28%;
+    width: 4%;
+    height: 7%;
+}
+
+.ijoy-sale .ijoy-05-col .ijoy-05-col-one-product .campaign-banner-btn.buy-btn {
+    left: 26%;
+}
+
+.ijoy-sale .ijoy-05-col .ijoy-05-col-two-product .campaign-banner-btn.buy-btn {
+    left: 48.9%;
+}
+
+.ijoy-sale .ijoy-05-col .ijoy-05-col-three-product .campaign-banner-btn.buy-btn {
+    left: 70.4%;
+}
+
+.ijoy-sale .campaign-title {
+    margin: 0 auto 0;
+    width: 6.35rem;
+    height: 2.34rem;
+    background: url("/media/wysiwyg/topic/brand_campaign/ijoy-n_07.png") no-repeat center / 100%;
+}
+
+.ijoy-sale .countdown-time {
+    min-height: 0;
+}
+
+.ijoy-sale .campaign-main {
+    background: #efefef;
+}
+
+/* exclusive 独家 */
+
+.exclusive-bg{
+    background-color: #f2f2f2;
+}
+
+.exclusive-product {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.exclusive-compare .exclusive-show-time {
+    position: absolute;
+    bottom: 16%;
+    left: 9%;
+    font-size: 20px;
+    color: #b71424;
+    height: 180px;
+    line-height: 37px;
+    font-family: Arial;
+}
+
+.exclusive-compare .exclusive-show-time>div{
+    font-size: 30px;
+    margin-top: 35px;
+}
+
+.exclusive-compare .right-time-position{
+    background: url("../../images/topad/timebuttonr.png") no-repeat;
+}
+
+.exclusive-compare .exclusive-show-time span{
+    width: 37px;
+    height: 37px;
+    display: inline-block;
+    background-color: rgb(246, 243, 242);
+    opacity: 0.929;
+    box-shadow: 0px 1px 8px 0px #d4d4d4;
+    z-index: 20;
+    margin: 0 8px;
+    font-size: 20px;
+}
+
+
+.exclusive-header{
+    text-align: center;
+}
+
+.exclusive-header h1{
+    background: url("../../images/topad/exclusive-headerbg.png") no-repeat center center;
+    font-size: 45px;
+    color: #3d3d3d;
+    margin: 50px 0 40px;
+    font-weight: 800;
+}
+
+.exclusive-header h2{
+    color: #3d3d3d;
+    font-size: 24px;
+    margin: 10px 0 15px;
+}
+
+.vapo-activity-main .product_item_card{
+    height: 400px;
+    box-shadow: none;
+}
+
+.exclusive-product-list .product_item_card{
+    height: 400px;
+}
+
+.vapo-activity-main .product_item_card .price-box,.vapo-activity-main .product_card_name a,
+.exclusive-product-list .product_item_card .price-box,.exclusive-product-list .product_card_name a{
+    text-align: center;
+}
+
+.vapo-activity-main .product_item_card .price-box .regular-price .price{
+    color:#e31616;
+}
+
+.exclusive-product-list .product_item_card .show_msrp_price .price-box{
+    text-align: right;
+}
+
+.exclusive-product .feature-product-list {
+    padding-bottom: 30px;
+}
+
+.exclusive-product .feature-product-list .countdown-time{
+    display: none;
+}
+
+.exclusive-product .feature-product-list .product-other-info {
+    text-align: center;
+}
+
+.exclusive-product .feature-product-list .product-name{
+    text-align: left;
+    margin-top: 4px;
+}
+
+.hiddened {
+    position: absolute;
+    line-height: 50px;
+    width: 155px;
+    opacity: 0;
+    padding-left: 5px;
+}
+
+/* vaporesso */
+
+.vapo-activity-page{
+    background-color: #f4f4f4;
+    position: relative;
+}
+
+.vapo-sale-banner img {
+    width: 100%;
+}
+
+.vapo-activity-main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 50px auto 0;
+}
+
+.vapo-activity-main .col-1 iframe {
+    margin-right: 48px !important;
+}
+
+.vapo-activity-main .vapo-activity-detail{
+    /*background-color: #ebecf0;*/
+    box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.21);
+    margin: 0 4px 0 44px;
+}
+
+.vapo-activity-detail>div{
+    padding: 10.05% 4.63%;
+    text-align: center;
+}
+
+.vapo-activity-01 {
+    background-color: #f6f6f6;
+    font-size: 26px;
+    color: #e29e42;
+    line-height: 30px;
+    font-weight: 900;
+}
+
+.vapo-activity-01 p{
+    font-size: 24px;
+    line-height: 49px;
+}
+
+.vapo-activity-02 {
+    background-color: #fff;
+    font-size: 22px;
+    line-height: 35px;
+    color: #777;
+}
+
+.vapo-activity-02 p{
+    font-size: 25px;
+    line-height: 25px;
+    margin-bottom: 10px;
+    color: #76c1e6;
+}
+
+.vapo-activity-03 {
+    background-color: #ECEFF1;
+    color: #e29e42;
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.vapo-activity-title{
+    background: url("../../images/topad/vapo_04.png") no-repeat center;
+    height: 125px;
+}
+
+.position-fix-qq{
+    background: url("../../images/topad/qq.png") no-repeat center;
+    height: 313px;
+    width: 126px;
+    position: absolute;
+    left: 11%;
+    top: 40%;
+    z-index: 10;
+}
+
+.position-fix-cd{
+    background: url("../../images/topad/cd.png") no-repeat center;
+    height: 183px;
+    width: 118px;
+    position: absolute;
+    right: 12%;
+    top: 14.5%;
+    z-index: 10;
+}

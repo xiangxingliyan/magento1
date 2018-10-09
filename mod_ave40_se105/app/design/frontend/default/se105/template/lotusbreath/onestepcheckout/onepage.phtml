@@ -1,0 +1,531 @@
+<?php
+/**
+ * @var Mage_Sales_Model_Quote $cartQuote
+ */
+$cartQuote = Mage::helper('checkout/cart')->getQuote();
+
+/* @var Mobile_Detect $deviceDetector */
+$deviceDetector = Mage::helper('ave40_widget')->getDeviceDetector();
+
+/**
+ * 计算购物车总重量
+ */
+$cartTotalWeight = 0;
+foreach ($cartQuote->getAllVisibleItems() as $item) {
+    $cartTotalWeight += $item->getWeight() * $item->getQty();
+}
+
+/**
+ * 货币符号
+ */
+$currencyCode = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
+
+?>
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('onestepcheckout/mage/opcheckout.js') ?>"></script>
+<script type="text/javascript"
+		src="<?php echo $this->getSkinUrl('onestepcheckout/opcheckout_override_mage.js') ?>"></script>
+<?php //echo $this->getChildHtml("login");
+/*$isAllowComment = Mage::getStoreConfig('lotusbreath_onestepcheckout/general/allowcomment');
+$isNewsletter = Mage::getStoreConfig('lotusbreath_onestepcheckout/general/allowsubscribe');
+if ($isNewsletter) {
+    if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+        $subscriber = Mage::getModel('newsletter/subscriber')->loadByEmail(
+            Mage::getSingleton('customer/session')->getCustomer()->getEmail());
+        if ($subscriber && $subscriber->getId()) {
+            $isNewsletter = false;
+        }
+        
+    }
+}
+*/?>
+
+<!-- 移动端购物车选择收货地址等第二页的样式 -->
+<?php if(!$_GET['nodt'] && $deviceDetector->isMobile()): ?>
+	<style>
+		.cart-order-details, .bottom-fix{
+			display: block;
+		}
+		.cart-right{
+			display: none;
+		}
+	
+	</style>
+<?php endif; ?>
+
+<script id="loader-template" type="text/x-handlebars-template">
+	<div class="osc-loader" id="osc-loader">
+		<div class="osc-loader-background"></div>
+		<div class="loading-mask" data-role="loader">
+			<div class="loader">
+<!--				<img alt="{{imgAlt}}" src="{{icon}}">-->
+                <div class="ave40_loading_animation"></div>
+				<p>{{loaderText}}</p>
+			</div>
+		</div>
+	</div>
+</script>
+<script>
+	var loaderJson = {
+		imgAlt: '<?php echo addslashes(Mage::helper("Ave40_Translate")->__("Please wait..."));?>',
+		icon: '<?php echo $this->getSkinUrl('onestepcheckout/images/ajax-loader_3.gif');?>',
+		loaderText: '<?php echo  addslashes(Mage::helper("Ave40_Translate")->__("Please wait..."));?>'
+	};
+	
+	ave40 && ave40.showLoading('Loading...');
+
+    window.addEventListener('load', function () {
+		ave40 && ave40.closeLoading();
+	})
+</script>
+
+<?php echo Mage::app()->getLayout()->getBlock('messages')->toHtml() ?>
+
+<div class="lt-checkoutpage layout-2col cart-page" id="checkoutSteps">
+    
+    <?php echo $this->getChildHtml("loginform"); ?>
+
+
+    <div class="ave40-step clearfix">
+        <dl class="first-step done">
+            <dt>1</dt>
+            <dd>1. view the shoppingcart</dd>
+        </dl>
+        <dl class="second-step doing">
+            <dt>2</dt>
+            <dd>2. check out</dd>
+        </dl>
+        <dl class="last-step undone">
+            <dt>3</dt>
+            <dd>3. Complete payment</dd>
+        </dl>
+    </div>
+
+	<div class="cart-content w-1200">
+		<form id="checkout_form" name="checkout_form">
+			<div class="grid">
+                <?php if ($pageTitle = Mage::getStoreConfig('lotusbreath_onestepcheckout/content/pagetitle')): ?>
+					<h2 class="page-title hide"><?php echo $pageTitle; ?></h2>
+                <?php endif; ?>
+                <?php if ($pageDescription = Mage::getStoreConfig('lotusbreath_onestepcheckout/content/pagedescription')): ?>
+					<p class="page-description hide"><?php echo $pageDescription; ?></p>
+                <?php endif; ?>
+                <?php if (!Mage::helper('customer')->isLoggedIn()) : ?>
+					<p style="display:none;"><?php echo Mage::helper("Ave40_Translate")->__("Already registered? Please"); ?> <a
+								href="javascript:void(0);" id="loginFrmDlgO"> <?php echo Mage::helper("Ave40_Translate")->__("log in"); ?> </a>
+					</p>
+                <?php endif; ?>
+                <?php if (Mage::getStoreConfig('lotusbreath_onestepcheckout/content/display_bottom_static_block')): ?>
+                    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('onestepcheckout_top_block')->toHtml(); ?>
+                <?php endif; ?>
+				<div class="cart-main">
+                    
+
+						<div class="pay-info">
+							<div class="shipping-address">
+								<h3 class="pay-info-title">
+                                    <?php if ($billingHeader = Mage::getStoreConfig('lotusbreath_onestepcheckout/content/billing_header')): ?>
+                                        <?php echo Mage::helper("Ave40_Translate")->__($billingHeader); ?>
+                                    <?php else: ?>
+                                        <?php echo Mage::helper("Ave40_Translate")->__("Billing Information"); ?>
+                                    <?php endif; ?>
+								
+								</h3>
+                                <?php echo $this->getChildHtml('billing'); ?>
+								<div id="shipping-area" style="display: none;">
+									<h3 class="pay-info-title">
+                                        <?php if ($shippingHeader = Mage::getStoreConfig('lotusbreath_onestepcheckout/content/shipping_address_header')): ?>
+                                            <?php echo Mage::helper("Ave40_Translate")->__($shippingHeader); ?>
+                                        <?php else: ?>
+                                            <?php echo Mage::helper("Ave40_Translate")->__("Shipping Information"); ?>
+                                        <?php endif; ?>
+
+									</h3>
+                                    <?php
+                                    echo $this->getChildHtml('shipping'); ?>
+								</div>
+							</div>
+
+                            <div class="shipping-table-rates">
+                                <div id="shipping_partial">
+                                    <?php echo $this->getChildHtml('shipping_method'); ?>
+                                </div>
+                            </div>
+
+							<div class="payment">
+								<h3 class="pay-info-title">
+                                    <?php if ($paymentMethodHeader = Mage::getStoreConfig('lotusbreath_onestepcheckout/content/payment_method_header')): ?>
+                                        <?php echo Mage::helper("Ave40_Translate")->__($paymentMethodHeader); ?>
+                                    <?php else: ?>
+                                        <?php echo Mage::helper("Ave40_Translate")->__("Payment Method"); ?>
+                                    <?php endif; ?>
+								
+								</h3>
+                                <div id="payment-error" class="error"></div>
+								<div class="payment-way cart-toggle-module" id="payment_partial">
+                                    <?php echo $this->getChildHtml('payment'); ?>
+								</div>
+							</div>
+						
+						</div>
+
+                    <div class="cart-order-details checkout-order-page">
+                        <h3 class="pay-info-title">
+                            Check out
+                            <span class="drop-down iconfont icon-xiala3"></span>
+                        </h3>
+                        <div id="review_partial" class="cart-toggle-module">
+                            <?php echo $this->getData("reviewHtml"); ?>
+                            <?php echo $this->getChildHtml('review'); ?>
+                        </div>
+                    </div>
+
+                    <!-- coupon -->
+                    <?php if (Mage::getStoreConfig('lotusbreath_onestepcheckout/general/allowshowcoupon')): ?>
+                        <div id="coupon_patial">
+                            <h3 class="hide"><?php echo Mage::helper("Ave40_Translate")->__("Discount Codes"); ?></h3>
+                            <?php echo $this->getChildHtml('coupon'); ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="quoteDetail ">
+                        <div class="quoteDetail-list clearfix">
+                            <div class="qty">
+                                <span class="label">Qty :</span>
+                                <span class="value" id="count_partial">
+                                    <?php echo sprintf('%d', Mage::getModel('checkout/cart')->getQuote()->getItemsQty()) ?>
+                                </span>
+                            </div>
+                            <div class="weight">
+                                <span class="label">Weight :</span>
+                                <span class="value" id="weight_total_partial"><?php echo $cartTotalWeight ?>Kg</span>
+                            </div>
+                            <div class="subtal">
+                                <span class="label">Subtal :</span>
+                                <span class="value" id="subtotal_partial">
+                                    <?php echo sprintf("{$currencyCode}%.2f", Mage::getModel('checkout/cart')->getQuote()->getSubtotal()) ?>
+                                </span>
+                            </div>
+                            <div class="shipping">
+                                <span class="label">Shipping Table Rates:</span>
+                                <span class="value" id="ave40_shipping_partial">$0.00</span>
+                            </div>
+
+                            <?php
+                            /**
+                             * 货币符号
+                             */
+                            $currencyCode = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
+
+                            /**
+                             * 获取优惠券的优惠金额
+                             * @var Mage_Sales_Model_Quote $cartQuote
+                             */
+                            $cartQuote = $this->getQuote();
+                            $totals = $cartQuote->getTotals();
+                            $discountTotal = $totals['discount'];
+                            $couponDiscountAmount = 0;
+
+                            if($discountTotal) {
+                                $couponDiscountAmount = $discountTotal->getValue();
+                            }
+
+                            $couponDiscountAmountString = sprintf("{$currencyCode}%.2f", abs($couponDiscountAmount));
+
+                            if($couponDiscountAmount < 0) {
+                                $couponDiscountAmountString = '-' . $couponDiscountAmountString;
+                            }
+
+                            ?>
+                            <div class="coupon">
+                                <span class="label">Coupon :</span>
+                                <span class="value">
+                                    <span class="price ave40payment_filledfield_coupon_discount_partial" >
+                                        <?php echo $couponDiscountAmountString ?>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="additional-fees" id="ave40_right_totals">
+
+                            </div>
+                        </div>
+                        <div class="total">
+                            <span class="label">Total:</span>
+                            <span class="value" id="total_partial">
+                                <span class="price"><?php echo sprintf("{$currencyCode}%.2f", Mage::getModel('checkout/cart')->getQuote()->getGrandTotal()) ?></span>
+                            </span>
+                        </div>
+
+                        <div id="saveOder-error" class="error"></div>
+                        <div class="checkout-btn-box">
+                            <button role='review-save' type="submit"
+                                    onclick="_gaq.push(['_trackEvent','Checkout_button','Click','Checkout_button']);"
+                                    title="<?php echo Mage::helper('checkout')->__('Checkout') ?>" name="submitbtn"
+                                    id="lbonepage-place-order-btn"  class="button btn-checkout palce-order ">
+                                <span><span><?php echo Mage::helper('checkout')->__('Checkout') ?></span></span>
+                            </button>
+                        </div>
+
+
+                    </div>
+
+				</div>
+                
+                <?php /*if($_GET['nodt'] || !$deviceDetector->isMobile()): */?><!--
+					<div class="cart-right" style="display: none;">
+						<div class="payment-total-info">
+							<div class="payment-total-info-title"><?php /*echo Mage::helper("Ave40_Translate")->__('Payments details') */?></div>
+							<div class="pay-price-info">
+								<div class="pay-price-info-quantity clearfix">
+									<span class="words"><?php /*echo Mage::helper("Ave40_Translate")->__('Quantity') */?>:</span>
+									<span class="pay-price-info-num pay-price-info-right">
+									<b>
+										<span id="count_partial">
+                                            <?php /*echo sprintf('%d', Mage::getModel('checkout/cart')->getQuote()->getItemsQty()) */?>
+										</span>
+									</b>
+								</span>
+								</div>
+								
+								<div class="subtotal-box clearfix">
+									<span class="words"><?php /*echo Mage::helper("Ave40_Translate")->__('SubTotal') */?>:</span>
+									<span class="subtotal-price" id="subtotal-price">
+                                        <span id="subtotal_partial">
+                                            <?php /*echo sprintf("{$currencyCode}%.2f", Mage::getModel('checkout/cart')->getQuote()->getSubtotal()) */?>
+                                        </span>
+                                    </span>
+								
+								</div>
+								
+								<div class="item-box clearfix">
+									<span class="words"><?php /*echo Mage::helper("Ave40_Translate")->__('Weight') */?>:</span>
+									<span class="weight-num pay-price-info-right"
+										  id="weight_total_partial"><?php /*echo $cartTotalWeight */?>Kg</span>
+								</div>
+                                
+                                <?php /*if (!$this->getQuote()->isVirtual()): */?>
+									<div class="shipping-fee-box">
+										<h3 class="pay-info-title hide">
+                                            <?php /*if ($shippingMethodHeader = Mage::getStoreConfig('lotusbreath_onestepcheckout/content/shipping_method_header')): */?>
+                                                <?php /*echo Mage::helper("Ave40_Translate")->__($shippingMethodHeader); */?>
+                                            <?php /*else: */?>
+                                                <?php /*echo Mage::helper("Ave40_Translate")->__("Shipping Method"); */?>
+                                            <?php /*endif; */?>
+										</h3>
+										<div id="shipping_partial">
+                                            <?php /*echo $this->getChildHtml('shipping_method'); */?>
+										</div>
+									
+									</div>
+                                <?php /*endif; */?>
+                                
+
+							
+							
+							</div>
+							<div class="total-box">
+                                <table id="ave40_right_totals">
+                                    <?php /*echo $this->getLayout()->getBlock('checkout.onepage.review')->getChild('info')->getChildHtml('totals') */?>
+                                </table>
+                                <div class="ave40_total_partial">
+                                    <span class="words"><?php /*echo Mage::helper("Ave40_Translate")->__('Total') */?>:</span>
+                                    <span class="total-price subtotal-price" id="total-price">
+                                        <span id="total_partial">
+                                            <span class="price">
+                                                <?php /*echo sprintf("{$currencyCode}%.2f", Mage::getModel('checkout/cart')->getQuote()->getGrandTotal()) */?>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </div>
+								<div id="saveOder-error" class="error"></div>
+								<button role='review-save' type="submit"
+                                        onclick="_gaq.push(['_trackEvent','Checkout_button','Click','Checkout_button']);"
+										title="<?php /*echo Mage::helper('checkout')->__('Checkout') */?>" name="submitbtn"
+										id="lbonepage-place-order-btn"  class="button btn-checkout palce-order ">
+									<span><span><?php /*echo Mage::helper('checkout')->__('Checkout') */?></span></span>
+								</button>
+							</div>
+						</div>
+						<div class="inquire">
+							<p><?php /*echo Mage::helper('Ave40_Translate')->__('Want a wholesale price?') */?></p>
+							<span class="inquireNow inquireNow-popup-btn"><?php /*echo Mage::helper('Ave40_Translate')->__('Inquire now') */?></span>
+						</div>
+					
+					</div>
+                --><?php /*endif; */?>
+				
+				<div class="clearfix"></div>
+                <?php if (Mage::getStoreConfig('lotusbreath_onestepcheckout/content/display_bottom_static_block')): ?>
+                    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('onestepcheckout_bottom_block')->toHtml(); ?>
+                <?php endif; ?>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!--<div class="mb-cart-bottom-fix bottom-fix">
+	<ul>
+		<li class="mb-fix-w checkout-buy-info">
+			<div class="ave40-checkout-payment">
+				<p class="mb-checkout-qty"><i>Quantity :</i><span class="ave40payment_filledfield_count_partial"><?php /*echo sprintf('%d', Mage::getModel('checkout/cart')->getQuote()->getItemsQty()) */?></span></p>
+				<p class="mb-checkout-weight"><i>Weight :</i><span class="ave40payment_filledfield_weight_total_partial"><?php /*echo $cartTotalWeight */?></span>KG</p>
+				<p class="mb-checkout-subtotal"><i>SubTotal :</i><span class="ave40payment_filledfield_subtotal_partial"><?php /*echo sprintf("{$currencyCode}%.2f", Mage::getModel('checkout/cart')->getQuote()->getSubtotal()) */?></span></p>
+			</div>
+		</li>
+		<li class="mb-fix-w checkout-btn" id="mb-checkout-btn"><a href="/onestepcheckout/?nodt=1">Submit</a></li>
+	</ul>
+</div>-->
+
+<script>
+	
+	~function ($) {
+		$(function () {
+
+            $('#shipping_partial').on('click','.ave40-sp-methods-items-content',function () {
+                $('.ave40-sp-methods-list').find('.ave40-sp-methods-items').removeClass('checked');
+                $(this).closest('.ave40-sp-methods-items').addClass('checked');
+                $('.quoteDetail .shipping .value').html($(this).find('.s_method_price .price').text());
+            });
+
+            $('.ave40-sp-methods-list .ave40-sp-methods-items ').each(function (index,elem) {
+                if ($(this).find('input[name="shipping_method"]:checked').length > 0){
+                    $(this).addClass('checked');
+                    $('#ave40_shipping_partial').text( $(this).find('.s_method_price .price').text());
+                }
+            });
+
+			
+			$('#review_partial').on('click', '.qty-add-btn', function () {
+				
+				var num = $(this).siblings('.review-qty-input');
+				num.val(parseInt(num.val()) + 1);
+				$('#update_cart_action').trigger('click');
+			});
+
+            $('#review_partial').on('click','.qty-reduce-btn', function () {
+                var num = $(this).siblings('.review-qty-input');
+
+                /*if (num.val(parseInt(num.val() - 1)) < 1) {
+                    $(".cart-remove-btn").click();
+                    window.location.reload();
+                } else {
+                    num.value = parseInt(num.val() - 1);
+                }*/
+
+				num.val(parseInt(num.val() - 1) < 1 ? 1 : parseInt(num.val() - 1));
+                $('#update_cart_action').trigger('click');
+            });
+			
+			
+			/**
+			 *  移动端点击checkout隐藏商品详情信息
+			 */
+			
+			/*$('#mb-checkout-btn').click(function () {
+                $('.cart-order-details , .bottom-fix').hide();
+                $('.pay-info').show();
+            })*/
+			
+			
+			/**
+			 * checkout页面一加载显示数量加减,点击按钮执行update点击事件
+			 */
+			$('#review_partial').on('click', '.ui-spinner-button', function () {
+				$('#update_cart_action').trigger('click');
+			});
+			
+			
+			$('#review_partial').on('change', '.review-qty-input', function () {
+				$('#update_cart_action').trigger('click');
+			});
+			
+			$('.cart-product-info .spinner-qty').on('blur', function () {
+				var val = parseInt($(this).val());
+				var maxQty = parseInt($(this).attr('data-max'));
+				
+				if (val >= maxQty) {
+					if (maxQty == 0) {
+						$(this).val(1);
+					} else {
+						$(this).val(maxQty);
+					}
+					
+					Ave40MessageBox.alertError('<?php echo Mage::helper("Ave40_Translate")->__('The requested quantity is not available') ?>');
+				}
+			});
+			
+			/**
+			 *
+			 * 确认订单收缩按钮
+			 */
+			$('.pay-info-title .drop-down').click(function () {
+				var _this = $(this);
+				$(this).closest('.pay-info-title').siblings('.cart-toggle-module').slideToggle(200, function () {
+					if ($(this).css('display') == 'none') {
+						_this.addClass('active');
+					} else {
+						_this.removeClass('active');
+					}
+				});
+			});
+			
+			/**
+			 *  收货地址放大
+			 */
+			$('.ship-address-show').text($('#billing-address-select option:selected').text());
+			$('#billing-address-select').change(function () {
+				$('.ship-address-show').text($('#billing-address-select option:selected').text());
+				
+			});
+			
+			
+			/**
+			 *  支付方式与收货地址的bug问题
+             *
+			 */
+			var paymentRequiredEntryClass = 'input.required-entry,textarea.required-entry,select.required-entry';
+			var savePaymentAction = function () {
+				var requiredEntry = $(this).closest('dd').find(paymentRequiredEntryClass);
+				for (var i = 0; i < requiredEntry.length; i++) {
+					if (requiredEntry[i].value == '') {
+						return;
+					}
+				}
+				$('#payment_partial dt input:radio:checked').trigger('click');
+			};
+			
+			$('#checkout_form .payment').on('change', paymentRequiredEntryClass, savePaymentAction);
+			
+			$('#billing-new-address-form input.required-entry').on('change', function () {
+				if ($(this).hasClass('mage-error')) {
+					$('#payment_partial dt input:radio:checked').trigger('click');
+				}
+			});
+		});
+		
+		$(window).scroll(function () {
+			
+			if ($('.pay-info').is(':visible')){
+				
+				if ($('.pay-info').offset().top - $("body").scrollTop() < 350) {
+					$('.step-content .step-two').addClass('active').siblings('.step').removeClass('active');
+				} else {
+					$('.step-content .step').addClass('active').siblings('.step-two').removeClass('active');
+				}
+			}
+		});
+		
+		window.onresize = function () {
+			if (window.innerHeight < 800) {
+				$('.cart-right').css({
+					'top': '50%',
+					'marginTop': (-$('.cart-right').outerHeight() / 2) + 'px'
+				});
+				return
+			}
+		};
+	}(jQuery)
+</script>
+
+
+

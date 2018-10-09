@@ -1,0 +1,91 @@
+<?php
+$_helper           =  Mage::helper('catalogsearch');
+$_value            = $_helper->getEscapedQueryText();
+$_currentCategory  = Mage::helper('ave40_catalogsearch/request')->reset()->getParam('categories');
+// $_currentCategory  = Mage::getSingleton('core/app')->getRequest()->getParam('cat');
+// $_currentCategory  = array_unique(array_filter(is_array($_currentCategory) ? $_currentCategory : explode(',',$_currentCategory)));
+$_currentAttribute = Mage::getSingleton('core/app')->getRequest()->getParam('attr');
+$_filterType       = $this->getFilterType();
+$_url              = $this->getAjaxUrl();
+?>
+<form class="searchautocomplete UI-SEARCHAUTOCOMPLETE" action="<?php echo '/search' ?>" method="get"
+    data-tip="<?php echo Mage::helper("Ave40_Translate")->__(Mage::getStoreConfig('searchautocomplete/general/tip')) ?>"
+    data-url="<?php echo $_url ?>"
+    data-minchars="<?php echo Mage::getStoreConfig('searchautocomplete/general/min_chars') ?>"
+    data-delay="<?php echo Mage::getStoreConfig('searchautocomplete/general/delay') ?>">
+
+
+    <div class="nav">
+
+        <?php if ($_filterType == 'category'): ?>
+        <div class="nav-search-in">
+            <span class="category-fake UI-CATEGORY-TEXT"><?php echo Mage::helper("Ave40_Translate")->__('All') ?></span>
+            <span class="nav-down-arrow"></span>
+            <select name="cat" class="category UI-CATEGORY" id="page_head_searchbar_categorys_selected_box">
+                <option value="0"><?php echo Mage::helper("Ave40_Translate")->__('All') ?></option>
+                <?php foreach ($this->getCategories() as $_category): ?>
+                <option value="<?php echo $_category->getId() ?>" <?php if (in_array($_category->getId(), $_currentCategory)): ?>selected<?php endif ?>>
+                    <?php echo $_category->getName() ?>
+                </option>
+                <?php endforeach ?>
+            </select>
+        </div>
+        <?php elseif ($_filterType == 'attribute'): ?>
+            <div class="nav-search-in">
+                <span class="category-fake UI-CATEGORY-TEXT"><?php echo Mage::helper("Ave40_Translate")->__('All') ?></span>
+                <span class="nav-down-arrow"></span>
+                <select name="attr" class="category UI-CATEGORY">
+                    <option value="0"><?php echo Mage::helper("Ave40_Translate")->__('All') ?></option>
+                    <?php foreach ($this->getAttributes() as $_code => $_name): ?>
+                    <option value="<?php echo $_code ?>" <?php if ($_currentAttribute == $_code): ?>selected<?php endif ?>>
+                        <?php echo $_name ?>
+                    </option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+        <?php endif ?>
+
+        <div class="nav-input UI-NAV-INPUT">
+            <div class="nav-input-box">
+                <input class="input-text UI-SEARCH" id="page_head_search_input" type="text" autocomplete="off" name="name"
+					   value=""
+					   maxlength="<?php echo $_helper->getMaxQueryLength() ?>" />
+            </div>
+        </div>
+        <div class="nav-submit-button">
+            <button type="button" id="page_head_searchbar_ok_btn" title="<?php echo Mage::helper("Ave40_Translate")->__('Go') ?>" class="button iconfont icon-sousuo" ></button>
+        </div>
+
+        <div class="searchautocomplete-loader UI-LOADER" style="display:none;"></div>
+
+    </div>
+
+	<div id="popular_search_box">
+		<h3 class="title"><?php echo Mage::helper("Ave40_Translate")->__('Popular Searches:') ?></h3>
+		<ol id="search_item_list">
+			<?php
+			$terms = Mage::getResourceModel('catalogsearch/query_collection')
+				->setPopularQueryFilter(Mage::app()->getStore()->getId())
+				->setPageSize(10)
+				->load()
+				->getItems();
+			?>
+			<?php foreach ($terms as $term): ?>
+				<?php //$term->setUrl(Mage::getModel('core/url')->setQueryParam('name', $term->getName())->getUrl('catalogsearch/advanced/result')); ?>
+				<li>
+					<a href="/search/name/<?php echo $term->getName() ?>"><?=$term->getName()?>
+						<!--<span class="search_item_right"><i class="search_item-num">56</i>product</span>-->
+					</a>
+
+				</li>
+			<?php endforeach ?>
+		</ol>
+	</div>
+
+
+    <span class="close">X</span>
+    <div style="display:none" class="searchautocomplete-placeholder UI-PLACEHOLDER"></div>
+    
+    <?php //echo Mage::app()->getLayout()->createBlock('cms/block')->setBlockId('home-search-quick')->toHtml() ?>
+
+</form>

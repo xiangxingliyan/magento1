@@ -1,0 +1,21 @@
+
+<?php $_product = $this->getProduct(); ?>
+<?php $_wishlistSubmitUrl = $this->helper('wishlist')->getAddUrl($_product); ?>
+
+<ul class="add-to-links">
+
+<?php if ($this->helper('wishlist')->isAllow()) : ?>
+    <li class="list-wishlist"><a href="<?php echo $_wishlistSubmitUrl ?>" onclick="productAddToCartForm.submitLight(this, '<?php echo $_wishlistSubmitUrl ?>'); return false;" class="link-wishlist"><?php echo Mage::helper("Ave40_Translate")->__('Add to Wishlist') ?></a></li>
+<?php endif; ?>
+<?php
+    $_compareUrl = $this->helper('catalog/product_compare')->getAddUrl($_product);
+?>
+<?php if($_compareUrl) : ?>
+    <li class="list-compare"><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo Mage::helper("Ave40_Translate")->__('Add to Compare') ?></a></li>
+<?php endif; ?>
+<?php if ($this->canEmailToFriend()): ?>
+     <li class="list-email"><a href="<?php echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>" class="email-friend"><?php echo Mage::helper("Ave40_Translate")->__('Email to a Friend') ?></a></li>
+<?php endif; ?>
+
+
+</ul>

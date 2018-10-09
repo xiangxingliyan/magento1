@@ -1,0 +1,324 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2018/5/31
+ * Time: 11:13
+ */
+
+?>
+
+<style>
+
+    .summer-sale-page {
+        background-color:#d3dae2;
+        overflow: hidden;
+    }
+
+    .summer-banner-col{
+        position: relative;
+    }
+
+    a.summer-login-label{
+        position: absolute;
+        left: 55%;
+        bottom: 13%;
+        padding: 8px 30px;
+        border-radius: 15px;
+        font-size: 16px;
+        color: #333;
+        background-color: rgb(223, 219, 203);
+        text-transform: uppercase;
+    }
+
+    .summer-login-label i{
+        color: #1476e4;
+    }
+
+    .summer-login-label:hover i{
+        color: #e10b0b;
+    }
+
+    .summer-coupon-content{
+        text-align: center;
+		margin-bottom: 0.3rem;
+    }
+
+	.summer-coupon-col {
+		background-color: #fff;
+		overflow: hidden;
+	}
+
+	.summer-featured-col {
+		padding-bottom: 0.5rem;
+	}
+
+    .summer-title{
+        text-align: center;
+        margin: 0.7rem 0 0.4rem;
+    }
+
+    .summer-featured-content{
+        position: relative;
+        background-color: #c5cdcf;
+    }
+
+
+
+    .summer-featured-content .product_card_name{
+        height: auto;
+        display: block;
+        -webkit-line-clamp: initial;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: normal;
+    }
+
+
+    .summer-featured-l{
+        position: absolute;
+        left: -167px;
+        bottom: 50px;
+    }
+
+    .summer-featured-r{
+        position: absolute;
+        right: -194px;
+        bottom: 50px;
+    }
+
+    .summer-recommend-content .product_card_price .regular-price .price,.summer-recommend-content .product_card_price .special-price .price{
+        color: #e31616;
+    }
+
+    .summer-featured-content .msrp-price{
+        float: right;
+        margin-top: 2px;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .summer-featured-content .msrp-price span{
+        font-size: 14px;
+    }
+
+    .summer-featured-content .price-box{
+        float: left;
+    }
+
+	.labor-tips{
+		font-size: 18px;
+		color: #252a69;
+		margin-top: 0.1rem;
+	}
+
+	.labor-tips p:first-child{
+		margin-bottom: 5px;
+	}
+
+    @media screen and (min-width: 768px) {
+        .summer-featured-content .product_item_box{
+            width: 20%;
+            padding-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .summer-featured-content .product_item_card{
+            height: 300px;
+        }
+
+        .summer-featured-content .product_item_box:nth-child(4) ~ .product_item_box{
+            margin-bottom: 0;
+        }
+
+        .summer-featured-content .product_item_wrap {
+            margin-right: -10px;
+        }
+
+        .summer-featured-content .product_item_box:first-child .product_card_price{
+            margin-top: 30px;
+        }
+
+        .summer-featured-content .product_item_box:first-child .product_card_price .regular-price .price, .summer-featured-content .product_item_box:first-child .product_card_price .special-price .price{
+            font-size: 26px;
+        }
+
+        .summer-featured-content .product_item_box:first-child  {
+            width: 40%;
+        }
+
+        .summer-featured-content .product_item_box:first-child .product_item_card{
+            background: #efefef url("/media/wysiwyg/topic/summer-sale/summer_10.png") no-repeat top right ;
+        }
+
+        .summer-featured-content .product_item_box:first-child .product_card_other_info{
+            float: left;
+            width: 50%;
+            margin-top: 60px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 0 0 0 0.3rem;
+        }
+
+        .summer-featured-content .product_item_box:first-child .product_card_img{
+            float: right;
+            margin: 0;
+            height: 100%;
+            position: relative;
+            width: 50%;
+        }
+
+        .summer-featured-content .product_item_box:first-child .product_card_img img{
+            position: absolute;
+            left: 50%;
+            margin-left: -100px;
+            top: 50%;
+            margin-top: -100px;
+        }
+
+
+        .summer-featured-content .product_item_box:first-child .product_card_name a{
+            text-overflow: initial;
+            white-space: initial;
+            text-align: left;
+            font-size: 26px;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+		.summer-recommend-col {
+			margin-bottom: 0.5rem;
+		}
+
+        .summer-featured-content .product_item_box:first-child .product_card_name a p{
+            font-family: opensans-semibold;
+        }
+
+        .summer-featured-content .product_card_price .regular-price .price, .summer-featured-content .product_card_price .special-price .price{
+            font-size: 20px;
+            color: #333;
+        }
+
+    }
+
+    @media screen and (max-width: 1023px){
+        a.summer-login-label {
+            bottom: 8%;
+            padding: 3px 15px;
+            font-size: 14px;
+        }
+
+        .summer-coupon-tips{
+            padding: 0 0.2rem;
+        }
+
+
+        .pagination-common{
+            background: inherit;
+        }
+
+        .summer-featured-content .product_item_box:first-child {
+            width: 50%;
+        }
+
+        .summer-featured-content .product_item_box {
+            width: 25%;
+        }
+    }
+
+    @media screen and (max-width: 767px){
+        a.summer-login-label {
+            padding: 3px 15px;
+            font-size: 14px;
+            position: static;
+            display: block;
+            background-color: transparent;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+		.labor-tips{
+			font-size: 14px;
+		}
+
+        .summer-coupon-tips{
+            text-align: center;
+            padding: 0;
+            font-size: 14px;
+        }
+
+        .summer-featured-content .product_item_box:first-child .product_card_other_info .product_card_name p{
+            display: inline-block;
+        }
+
+        .summer-featured-content .msrp-price,.summer-featured-content .msrp-price span{
+            margin-top: 0;
+            font-size: 12px;
+        }
+
+
+
+
+    }
+
+
+</style>
+
+<div class="summer-sale-page">
+    <div class="summer-banner-col">
+        <img src="/media/wysiwyg/topic/labor-sale/labor_01_new.jpg" alt="">
+        <img src="/media/wysiwyg/topic/labor-sale/labor_02_new.jpg" alt="">
+
+    </div>
+
+    <div class="summer-coupon-col">
+        <div class="summer-title">
+            <img src="/media/wysiwyg/topic/labor-sale/labor_04.png" alt="">
+			<div class="labor-tips">
+				<p >Valid from 1st to 7th Sept</p>
+				<p >For Retail Customers Only</p>
+			</div>
+        </div>
+        <div class="summer-coupon-content">
+            <img src="/media/wysiwyg/topic/labor-sale/labor_03.png" alt="">
+        </div>
+    </div>
+
+    <div class="summer-featured-col">
+        <div class="summer-title">
+            <img src="/media/wysiwyg/topic/labor-sale/labor_05.png" alt="">
+        </div>
+        <div class="summer-featured-content w-1200">
+            <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                ->setTemplate('cms/activity/labor-sale/labor-sale-product-items.phtml')
+                ->setData('categories', '1054')
+                ->setData('sort', 'position desc')
+                ->setData('item_limit', '9')
+                ->setData('image_size', '200,200')
+                ->setData('mouse_over_tools', '0')
+                ->toHtml() ?>
+            <img src="/media/wysiwyg/topic/labor-sale/summer_07.png" alt="" class="summer-featured-l">
+            <img src="/media/wysiwyg/topic/labor-sale/summer_08.png" alt="" class="summer-featured-r">
+        </div>
+    </div>
+
+    <div class="summer-recommend-col">
+        <div class="summer-title">
+            <img src="/media/wysiwyg/topic/labor-sale/labor_06.png" alt="">
+        </div>
+        <div class="summer-recommend-content product_item_buy_now_template w-1200">
+            <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/product-items-buy-now.phtml')
+                ->setData('categories', '1053')
+                ->setData('sort', 'e.entity_id desc')
+                ->setData('enable_pagination', '1')
+                ->setData('pagination_page_size', '16')
+                ->setData('image_size', '230,230')
+                ->setData('mouse_over_tools', '0')->toHtml() ?>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,57 @@
+<div class="campaign-page ijoy-sale">
+    <div class="campaign-banner imgCenterPosition">
+        <img src="/media/wysiwyg/topic/brand_campaign/ijoy-n_01.jpg" alt="" />
+        <div class="campaign-product-add-btn-col ijoy-01-col">
+            <img src="/media/wysiwyg/topic/brand_campaign/ijoy-n_02.jpg" alt="" />
+            <a href="/ijoy-x3-324w-kit-with-captain-x3-subohm-tank-8ml.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+        </div>
+
+        <div class="campaign-product-add-btn-col ijoy-02-col">
+            <img src="/media/wysiwyg/topic/brand_campaign/ijoy-n_03.jpg" alt="" />
+            <a href="/ijoy-genie-pd270-234w-tc-kit-with-captain-s-subohm-tank-4ml.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">Learn more about IJOY X3 324W</a>
+        </div>
+
+        <div class="campaign-product-add-btn-col ijoy-03-col">
+            <img src="/media/wysiwyg/topic/brand_campaign/ijoy-n_04.jpg" alt="" />
+
+            <a href="/ijoy-capo-216-srda-20700-squonker-kit-6000mah.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+        </div>
+
+        <div class="campaign-product-add-btn-col ijoy-04-col">
+            <img src="/media/wysiwyg/topic/brand_campaign/ijoy-n_05.jpg" alt="" />
+            <a href="/ijoy-captain-pd270-234w-tc-kit-6000mah.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+        </div>
+
+        <div class="campaign-product-add-btn-col ijoy-05-col">
+            <img src="/media/wysiwyg/topic/brand_campaign/ijoy-n_06.jpg" alt="" />
+            <div class="ijoy-05-col-one-product">
+                <a href="/ijoy-elite-ps2170-100w-kit-captain-mini-subohm-tank.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+            </div>
+            <div class="ijoy-05-col-two-product">
+                <a href="/ijoy-capo-kit-100w-without-battery.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+            </div>
+            <div class="ijoy-05-col-three-product">
+                <a href="/ijoy-capo-squonk-kit-100w.html" title="buy now" class="campaign-banner-btn buy-btn" target="_blank">buy now</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="campaign-main clearfix">
+        <div class="campaign-recommend clearfix">
+            <div class="campaign-title">
+            </div>
+            <div class="campaign-recommend-product-list w-1200">
+                <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')
+                    ->setTemplate('cms/activity/brand_campaign/brand-campaign-product-items.phtml')
+                    ->setData('categories', '661')
+                    ->setData('sort', 'e.entity_id desc')
+                    ->setData('item_limit', '16')
+                    ->setData('image_size', '200,200')
+                    ->setData('mouse_over_tools', '0')
+                    ->toHtml() ?>
+            </div>
+        </div>
+
+    </div>
+</div>

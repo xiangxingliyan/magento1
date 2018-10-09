@@ -1,0 +1,43 @@
+<?php
+/**
+ * 产品展示列表
+ * @var \Ave40_Catalog_Block_Product_List $this
+ */
+
+$_itemCollection = $this->getData('wish_product_collection');
+$_helper = $this->helper('catalog/output');
+$jsAddToCartFunc = $this->getData('js_addtocart_name');
+
+?>
+
+<?php foreach ($_itemCollection as $item): ?>
+<?php /* @var \Mage_Catalog_Model_Product $_product */
+$_product = $item->getProduct();
+
+$productName = $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true);
+$productImageUrl = $this->helper('catalog/image')->init($_product, 'small_image')->resize(155, 120);
+$specialPriceInfo = $this->getSpecialDateInfo($_product);
+$productUrl = $_product->getProductUrl();
+$priceHtml = $this->getPriceHtml($_product, true);
+$this->setWishListCount($item->getQty());
+$reviewsSumaryHtml = $this->getReviewsSummaryHtml($_product, 'short', true);
+
+?>
+
+	<li class="item" product_id="<?=$_product->getId()?>">
+		<div class="home-product-img">
+			<a  href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>)">
+				<img class="lazy" data-original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(200,200) ?>"  src="<?php echo $this->getSkinUrl('images/loader.gif'); ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" />
+			</a>
+		</div>
+		<div class="product-other-info">
+			<a href="<?= $this->getUrl('*/*/remove/item/' . $item->getId(). '/') ?>"><i class="icon wishlist-product-delete"></i></a>
+			<?php echo $this->getReviewsSummaryHtml($_product, 'short', true) ?>
+            <?php echo $_product->getData('is_in_stock'); ?>
+			<h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>)"><?php echo $this->htmlEscape($_product->getName()) ?></a></h2>
+			<?php echo $this->getPriceHtml($_product, true, $this->getPriceSuffix()) ?>
+			<div class="clear"></div>
+		</div>
+	</li>
+
+<?php endforeach; ?>

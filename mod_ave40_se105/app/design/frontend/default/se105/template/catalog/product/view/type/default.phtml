@@ -1,0 +1,51 @@
+<?php /* @var $this Mage_Catalog_Block_Product_View_Abstract */?>
+<?php $_product = $this->getProduct() ?>
+<?php /* @var $ave40CatalogHelper Ave40_Catalog_Helper_Data */?>
+<?php $ave40CatalogHelper = Mage::helper('ave40_catalog') ?>
+<?php /* @var $ave40CustomerHelper Ave40_Base_Helper_Customer */?>
+<?php $ave40CustomerHelper = Mage::helper('ave40_base/customer') ?>
+
+<?php if ($this->displayProductStockStatus() && (($ave40CustomerHelper->isWholesaleUser() && $_product->getTypeId() != 'configurable') || !$ave40CustomerHelper->isWholesaleUser())): ?>
+    <div class="availability-satus">
+	      <span class="words"><?php echo Mage::helper("Ave40_Translate")->__('Availability:') ?></span>
+        <?php if ($_product->getData('pre_sales')): ?>
+            <span class="status inStock"><?php echo Mage::helper("Ave40_Translate")->__('Pre-order') ?></span>
+	      <?php elseif ($_product->isAvailable()): ?>
+	          <span class="status inStock"><?php echo Mage::helper("Ave40_Translate")->__('In stock') ?></span>
+	      <?php else: ?>
+	          <span class="status outStock"><?php echo $ave40CatalogHelper->getProductTagStockText($_product) ? $ave40CatalogHelper->getProductTagStockText($_product) : __t('Out of stock') ?></span>
+	      <?php endif; ?>
+
+	      <?php if($_product->getData('pre_arrival_date')): ?>
+		        <?php $preArrivalDate = Mage::helper('ave40_api/date')->calcDaysBetween2Date(time(), $_product->getData('pre_arrival_date')) ?>
+		        <?php if ($preArrivalDate > 0): ?>
+			          <span class="presale-date-info" style="display: ;">
+				            <i><?php echo Mage::helper("Ave40_Translate")->__('Estimated Delivery Date') ?> <span class="delivery-time"><?php echo $preArrivalDate ?></span></i>
+
+				            <?php if (Mage::getModel('customer/session')->isLoggedIn()): ?>
+					              <i style="display:;" onclick="sendNotifyEmail()" class="sendmail-icon" title="<?php echo Mage::helper("Ave40_Translate")->__('Notify me via Email') ?>"></i>
+				            <?php endif; ?>
+			          </span>
+		        <?php endif; ?>
+        <?php endif; ?>
+    </div>
+	  <script>
+		 function sendNotifyEmail() {
+			   ave40.showLoading();
+			   ave40.ajaxPost('/ave40api/notifying/productExpectedArrivalEmail', {
+				     product: '<?php echo $_product->getId() ?>',
+				     formkey: '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>'
+			   }, function () {
+				     ave40.closeLoading();
+
+				     if (this.ok) {
+					       Ave40MessageBox.alertSuccess('<?php echo Mage::helper("Ave40_Translate")->__('Sent successfully') ?>');
+				     } else {
+					       Ave40MessageBox.alertError(this.message);
+				     }
+			   });
+		 }
+	  </script>
+<?php endif; ?>
+
+<?php echo $this->getChildHtml('product_type_data_extra') ?>

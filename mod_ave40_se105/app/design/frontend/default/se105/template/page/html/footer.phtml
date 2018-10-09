@@ -1,0 +1,124 @@
+<?php
+/** @var Ave40_CatalogSearch_Helper_Data $ave40SearchHelper */
+$ave40SearchHelper = Mage::helper('ave40_catalogsearch');
+?>
+<style>
+    .vapingunderground-icon{
+        margin-top: 3px;
+        opacity: 0.9
+    }
+
+    .vapingunderground-icon:hover{
+        opacity: 1;
+    }
+</style>
+<div class="footer-contain">
+    <div class="mb-follow-us">
+        <div class="head"><span>Follow Us</span></div>
+        <div class="mb-follow-us-list">
+            <a href="https://www.facebook.com/Ave40" title="facebook" target="_blank"
+               class="follow-us-icon facebook"></a>
+            <a href="https://www.instagram.com/ave40official/" title="instagram" target="_blank"
+               class="follow-us-icon ins"></a>
+            <a href="https://plus.google.com/u/0/+Ave40" title="google+" target="_blank"
+               class="follow-us-icon google"></a>
+            <a href="https://twitter.com/AveForty" title="twitter" target="_blank" class="follow-us-icon twitter"></a>
+            <a href="https://vk.com/ave40_vape" title="vk" target="_blank" class="follow-us-icon vk"></a>
+            <a href="https://www.youtube.com/c/ave40" title="youtube" target="_blank"
+               class="follow-us-icon youtube"></a>
+        </div>
+
+    </div>
+
+    <div id="footer" class="w-1200">
+        <?= $this->getChildHtml('scroll_share') ?>
+
+        <div id="customer-services" class="clearfix">
+            <ul class="service-item-1">
+                <li>Get to Know Us</li>
+                <li><a href="/about-us.html">About us</a></li>
+                <li><a href="https://www.ave40.com/blog/" target="_blank" rel="nofollow">Ave40 Blog</a></li>
+                <li><a href="/contact-us.html" rel="nofollow">Contact us</a></li>
+                <li><a class="click-email" href="mailto:info@ave40.com" rel="nofollow">Click Here To Email Us</a></li>
+            </ul>
+            <ul class="service-item-2">
+                <li>Let Us Help You</li>
+                <li><a href="/new-user-guide.html" rel="nofollow">New User Guide</a></li>
+                <li><a href="/shipping-tracking.html" rel="nofollow">Shipping &amp; Handling</a></li>
+                <li><a href="/warranty-return.html">Warranty &amp; Returns</a></li>
+                <li><a href="/terms-conditions.html" rel="nofollow">Terms &amp; Conditions</a></li>
+                <li><a href="/privacy-policy.html" rel="nofollow">Privacy Policy</a></li>
+
+            </ul>
+            <ul class="service-item-3">
+                <li>Make Money with Us</li>
+                <li><a href="/fast-order" rel="nofollow">Fast Order</a></li>
+                <li><a href="/affiliate-program.html" rel="nofollow">Affiliate Program</a></li>
+            </ul>
+            <ul class="service-item-4">
+                <li>Follow Us</li>
+                <li class="follow-us-list">
+                    <a href="https://www.facebook.com/Ave40" title="facebook" target="_blank" class="iconfont icon-facebook"></a>
+                    <a href="https://twitter.com/AveForty" title="twitter" target="_blank" class="iconfont icon-twitter"></a>
+                    <a href="https://www.instagram.com/ave40official/"  title="instagram" target="_blank" class="iconfont icon-instagram"></a>
+                    <a href="https://www.youtube.com/c/ave40" title="youtube" target="_blank"  class="iconfont icon-youtube"></a>
+                </li>
+
+                <li>
+                    <?= $this->getChildHtml('subscribe') ?>
+                </li>
+            </ul>
+        </div>
+
+        <div class="simple-footer">
+            <?= $this->getChildHtml('simple_footer') ?>
+        </div>
+    </div>
+
+	<?php if(avepcache_begin('PAGE_FOOTER_HOT_TAGS_HTML', [], 3600*2)): ?>
+	<?php
+		$hotTags = $ave40SearchHelper->getHotTags();
+		$hotTags = array_chunk($hotTags->getItems(), 6);
+	?>
+    <div class="footer-product-keywords ">
+        <ul class="footer-keyword-list clearfix">
+            <li class="hot_tags">
+                <p>Hot Tags</p>
+                <ul>
+					<?php foreach($hotTags as $tags): ?>
+                    <li>
+						<?php /** @var Mage_CatalogSearch_Model_Query $tag */ ?>
+						<?php foreach ($tags as $tag): ?>
+							<?php if($tag->getRedirect()): ?>
+								<a href="<?php echo $tag->getRedirect() ?>" title="<?php echo $tag->getQueryText() ?>" target="_blank"><?php echo $tag->getQueryText() ?></a>
+							<?php else: ?>
+								<a href="/search/name/<?php echo urlencode($tag->getQueryText()) ?>" title="<?php echo $tag->getQueryText() ?>" target="_blank"><?php echo $tag->getQueryText() ?></a>
+							<?php endif; ?>
+						<?php endforeach; ?>
+                    </li>
+					<?php endforeach; ?>
+                </ul>
+            </li>
+            <li class="partnerships">
+                <p>Partnerships</p>
+                <p>
+                    <a href="http://www.e-cigarette-forum.com/forum/forums/ave40.959/" title="E-Cigarette Forum" target="_blank"> E-Cigarette Forum </a>
+                    <a href="http://vapingcheap.com/vaporesso-revenger-220w-kit-ave40" title="Vapingcheap" target="_blank"> Vapingcheap </a>
+                    <a href="http://www.hotdeals.com/" title="Hotdeals" target="_blank" <?php if(!Mage::registry('ave40_is_in_home_route')) :?> rel="nofollow" <?php endif; ?> > Hotdeals </a>
+                    <a href="https://www.vapinginsider.com/forum/" title="Vaping Insider Forum" target="_blank"> Vaping Insider Forum </a>
+                    <a href="http://www.vapedeals.top/" title="Vape Deals" target="_blank"> Vape Deals</a>
+					<a href="https://www.vapingforums.com/" title="vapingforums" target="_blank"> Vapingforums </a>
+                    <a href="http://vapingunderground.com/" title="vapingunderground" target="_blank">
+                        <span>Vapingunderground</span><br />
+                        <img src="<?php echo $this->getSkinUrl('images/common/vapingunderground.jpg') ?>"  class="vapingunderground-icon" alt="">
+                    </a>
+
+                </p>
+            </li>
+        </ul>
+    </div>
+	<?php avepcache_end(); endif; ?>
+</div>
+
+<!-- 引入快速预览模块 -->
+<?php echo Mage::app()->getLayout()->createBlock('core/template')->setTemplate('catalog/product/quickviewpopup.phtml')->toHtml() ?>

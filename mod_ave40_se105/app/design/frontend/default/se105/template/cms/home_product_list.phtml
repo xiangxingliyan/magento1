@@ -1,0 +1,18 @@
+<?php
+$storeId = Mage::app()->getStore()->getId();
+$collection = Mage::getModel('cms/block')->getCollection();
+$collection->addStoreFilter($storeId);
+$collection->addFieldToFilter('is_active', 1);
+$collection->addFieldToFilter('identifier', ['like' => 'home-product-list-%']);
+$collection->getSelect()->order('identifier');
+$_collection = array();
+foreach($collection as $v) {
+    $_collection[$v->getIdentifier()][] = $v->getContent();
+}
+?>
+<div class="stairsSection-list">
+<?php foreach ($_collection as $block): ?>
+	<?php $block = array_reverse($block); ?>
+	<?=Mage::getModel('core/email_template_filter')->filter($block[0])?>
+<?php endforeach ?>
+</div>

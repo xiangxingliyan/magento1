@@ -1,0 +1,492 @@
+<?php
+
+/* @var Mage_Catalog_Block_Product_List $productBlock */
+$productBlock = Mage::app()->getLayout()->createBlock('catalog/product_list');
+
+?>
+
+
+
+<style>
+    .lars-banner p{
+        position: absolute;
+        left: 53.5%;
+        bottom: 8%;
+        color: #c1c1c1;
+        font-size: 16px;
+    }
+
+    .lars-banner p a{
+        color: #57baff;
+        text-decoration: underline;
+    }
+
+    .lars-des-r {
+        float: right;
+    }
+
+    .lars-des-l {
+        float: left;
+    }
+
+    .lars-design-col .lars-des-r {
+        width: 53.333%;
+    }
+
+    .lars-design-col .lars-des-l {
+        width: 39.167%;
+    }
+
+    .lars-description p{
+        line-height: 2;
+        font-size: 16px;
+        text-align: justify;
+        color: #666;
+    }
+
+    .lars-description .lars-design-col p{
+        margin: 0.4rem 0 0;
+    }
+
+    .lars-design-col {
+        margin: 1.2rem 0;
+    }
+
+    .lars-features-col .lars-des-r img{
+        margin: 0.4rem 0;
+    }
+
+    .lars-features-col .lars-des-r{
+        padding-left: 0.5rem;
+        width: 40.334%;
+        box-sizing: border-box;
+    }
+
+    .lars-features-col .lars-des-l{
+        width:59.666%;
+    }
+
+    .lars-features-col{
+        background-color: #e8e8e8;
+    }
+
+    .lars-specifications-col {
+        margin: 1.2rem 0 0.6rem;
+    }
+
+    .lars-specifications-col .lars-des-l ul li{
+        list-style-type: square;
+        list-style-position: inside;
+        line-height: 2;
+        color: #666;
+    }
+
+    .lars-note{
+        margin-bottom: 0.3rem;
+    }
+
+    .lars-note h2{
+        font-size: 16px;
+        font-family: opensans-semibold;
+        margin-bottom: 10px;
+    }
+
+    .lars-note p{
+        font-size: 14px;
+    }
+
+    .lars-specifications-col .lars-des-l ul li span{
+        font-size: 16px;
+    }
+
+    .lars-specifications-col .lars-des-l ul li span:first-child{
+        font-family: opensans-bold;
+        min-width: 200px;
+        display: inline-block;
+    }
+
+    .lars-specifications-col .lars-des-l ul li span:nth-child(3){
+        display: block;
+        margin-left: 220px;
+    }
+
+    .lars-specifications-col .lars-des-l ul{
+        margin-top: 0.5rem;
+    }
+
+    .lars-specifications-col .lars-des-r{
+        width: 51.5%;
+    }
+
+    .lars-des-video {
+        width: 100%;
+        height: 3.88rem;
+    }
+
+    .lars-image-col {
+        display: flex;
+        display: -webkit-flex;
+        flex-flow: row wrap;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+    }
+
+    .lars-testimonial-info {
+        position: absolute;
+        top: 22%;
+        left: 18.222%;
+        color: #ededed;
+        font-size: 16px;
+        line-height: 2;
+        max-width: 50%;
+    }
+
+    .lars-testimonial-info ul{
+        margin-top: 0.8rem;
+    }
+
+    .lars-testimonial-info ul li{
+        background: url('/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-title_05.png') left 7px no-repeat;
+        padding-left: 55px;
+        margin: 0.3rem 0;
+    }
+
+    .lars-product {
+        display: flex;
+        display: -webkit-flex;
+        margin-top: 0.8rem;
+        flex-flow: row wrap;
+    }
+
+    .lars-brand-logo {
+        flex: 1;
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .lars-price{
+        float: left;
+        margin-top: 0.1rem;
+    }
+
+    .lars-price > span {
+        font-size: 16px;
+        color: #999;
+    }
+
+    .lars-price .price-box .special-price .price, .lars-price .price-box .regular-price .price{
+        font-size: 32px;
+        color: #ff8a00;
+        font-weight: bold;
+        margin-top: 0.1rem;
+    }
+
+    .lars-price .price-box .old-price .price{
+        font-size: 16px;
+        color: #999;
+        margin-left: 10px;
+    }
+
+    .lars-price .price-box{
+        margin-top: 0.1rem;
+        text-align: left;
+    }
+
+    .lars-price .price-box .percent-off{
+        display: none;
+    }
+
+    .lars-product-list > a p {
+        font-size: 25px;
+        margin: 0.3rem 0 0.2rem;
+    }
+
+    .lars-product-list {
+        padding-bottom: .5rem;
+    }
+
+    a.lars-shop-buy {
+        display: inline-block;
+        width: 175px;
+        height: 45px;
+        line-height: 45px;
+        background: #ff8a00;
+        text-align: center;
+        font-size: 16px;
+        color: #fff;
+        border-radius: 5px;
+        float: right;
+        margin-top: 17px;
+    }
+
+    a.lars-shop-buy:hover{
+        background: #fc951b;
+    }
+
+    .lars-animate{
+        overflow: hidden;
+    }
+
+    .lars-animate:hover img{
+        transform: scale(1.02, 1.02);
+        -ms-transform: scale(1.02, 1.02);
+        -moz-transform: scale(1.02, 1.02);
+        -webkit-transform: scale(1.02, 1.02);
+        -o-transform: scale(1.02, 1.02);
+    }
+
+    .lars-animate img{
+        transition: transform ease .3s;
+        -ms-transition: -ms-transform ease .3s;
+        -moz-transition: -moz-transform ease .3s;
+        -webkit-transition: -webkit-transform ease .3s;
+        -o-transition: -o-transform ease .3s;
+    }
+
+    .lars-product-image{
+        display: inline-block;
+        width: 426px;
+        height: 426px;
+        overflow: hidden;
+    }
+
+    .lars-specifications-col .lars-des-l ul li:last-child span:last-child{
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .lars-specifications-col .lars-des-l ul li:last-child span:last-child i:last-child{
+        display: block;
+    }
+
+    .lars-product-list > p{
+        font-size: 16px;
+        margin-bottom: 0.1rem;
+    }
+
+    .lars-product-list > p a{
+        color: #57baff;
+        text-decoration: underline;
+    }
+
+    @media (max-width: 1366px) {
+        .lars-testimonial-info{
+            top: 11%;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .lars-des-l,.lars-des-r{
+            width: 100%!important;
+        }
+
+        .lars-design-col .lars-des-r{
+            text-align: center;
+        }
+        .lars-specifications-col .lars-des-video{
+            width: 100%;
+        }
+
+        .lars-features-col .lars-des-r,.lars-design-col .lars-des-l,.lars-specifications-col .lars-des-l {
+            padding: 0.2rem;
+            box-sizing: border-box;
+        }
+
+        .lars-testimonial-info {
+            top: 57%;
+            position: relative;
+            left: 0;
+            color: #333;
+            max-width: none;
+            text-align: center;
+        }
+
+        .lars-testimonial-info ul {
+            padding: 0 0.2rem;
+            text-align: justify;
+        }
+
+        .lars-testimonial-info ul li {
+            padding-left: 0.8rem;
+        }
+
+        .lars-product-list {
+            margin: 0 auto;
+        }
+
+        .lars-brand-logo{
+            flex: auto;
+            margin-top:0;
+        }
+
+        .lars-banner p {
+            position: absolute;
+            left: 53.5%;
+            bottom:2%;
+            font-size: 10px;
+        }
+    }
+
+    @media (max-width: 567px) {
+        .lars-product-list {
+            width: 100%;
+        }
+    }
+
+</style>
+
+<div class="limitless-arms-race-sale-page">
+    <div class="lars-banner imgCenterPosition">
+        <a href="/limitless-arms-race-lmc-v2-200w-box-mod.html" target="_blank"
+           title="Limitless Arms Race LMC V2 220W Box Mod">
+            <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-race-lmc_01.jpg" alt="">
+        </a>
+        <?php if (!Mage::getModel('customer/session')->isLoggedIn()): ?>
+        <p>Please <a href="/customer/account/login" title="Sign in" target="_blank">log in </a>for wholesale price</p>
+        <?php endif; ?>
+    </div>
+
+    <div class="lars-description w-1200">
+        <div class="lars-design-col clearfix">
+            <div class="lars-des-l">
+                <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-title_02.png" alt="">
+                <p>Limitless released another striking device- Limitless Arms Race LMC V2 220W Box Mod. This device, as
+                    one of members of Limitless Family, gains traction in the vaping market. Skull chief pattern on the
+                    lower part of this body not only add vitality to this box mod, but also traces vapers Indian
+                    history. takes a new look in the vaping market will take a new look with technology and culture
+                    integration.</p>
+            </div>
+            <div class="lars-des-r lars-animate">
+                <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-race-lmc_02.jpg" alt="">
+            </div>
+        </div>
+
+        <div class="lars-features-col clearfix">
+            <div class="lars-des-l lars-animate">
+                <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-race-lmc_03.jpg" alt="">
+            </div>
+            <div class="lars-des-r">
+                <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-title_03.png" alt="">
+                <p>220W maximum output with dual 18650 batteries</p>
+                <p>The smoothest airflow and the best flavor</p>
+                <p>Big size fire button</p>
+                <p>Unique chipset provides high performance</p>
+            </div>
+        </div>
+
+        <div class="lars-specifications-col clearfix">
+            <div class="lars-des-l">
+                <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-title_04.png" alt="">
+                <ul>
+                    <li>
+                        <span>Brand</span>
+                        <span>Limitless</span>
+                    </li>
+                    <li>
+                        <span>Battery Type</span>
+                        <span>Dual 18650 Batteries</span>
+                    </li>
+                    <li>
+                        <span>Max Wattage</span>
+                        <span>220W</span>
+                    </li>
+                    <li>
+                        <span>Color</span>
+                        <span>Skull Chief V3, Mothership</span>
+                    </li>
+                    <li>
+                        <span>Package Included</span>
+                        <span>
+                            <i>1 x Arms Race V2 Mod</i>
+                            <i>1 x Manual</i>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="lars-des-r">
+                <div class="lars-des-video">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Qd0OSAyJx7s?ecver=1" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="lars-image-col w-1200">
+            <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-race-lmc_04.jpg" alt="">
+            <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-race-lmc_05.jpg" alt="">
+            <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-race-lmc_06.jpg" alt="">
+        </div>
+    </div>
+
+    <div class="lars-testimonial-col imgCenterPosition">
+        <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-race-lmc_07.jpg" alt="">
+        <div class="lars-testimonial-info">
+            <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-title_01.png" alt="">
+            <ul>
+                <li>Looks good, feels good. The top half is a soft rubber that's really comfortable in the hand. I
+                    prefer bottom loaders for the batteries so it is a good fit for me perfectly. This thing rips with
+                    the reactor tank.
+                </li>
+                <li>The mod looks fantastic. Works good and use good.</li>
+                <li>Looks cool. Cute and lovely skull. Soft rubber and fit me very much.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="lars-product w-1200">
+        <div class="lars-product-list">
+            <a href="/limitless-arms-race-lmc-v2-200w-box-mod.html" target="_blank"
+               title="Limitless Arms Race LMC V2 220W Box Mod " class="lars-product-image lars-animate">
+                <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-race-lmc_08.jpg" alt="" >
+            </a>
+
+            <a href="/limitless-arms-race-lmc-v2-200w-box-mod.html" target="_blank"
+               title="Limitless Arms Race LMC V2 220W Box Mod ">
+                <p>Arms Race LMC V2 220W Box Mod</p>
+            </a>
+            <?php if (!Mage::getModel('customer/session')->isLoggedIn()): ?>
+                <p>Please <a href="/customer/account/login" title="Sign in" target="_blank">log in </a>for wholesale price</p>
+            <?php endif; ?>
+            <div class="lars-detail">
+                <span class="lars-price">
+                    <span>Discount Price :</span>
+                    <?php echo $productBlock->getPriceHtml(Mage::getModel('catalog/product')->load('318789'), true) ?>
+                </span>
+                <a class="lars-shop-buy" href="/limitless-arms-race-lmc-v2-200w-box-mod.html" target="_blank"
+                   title="Shop Now" >Shop Now</a>
+            </div>
+        </div>
+        <div class="lars-brand-logo">
+            <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-race-lmc_09.png" alt="">
+        </div>
+
+        <div class="lars-product-list">
+            <a href="/limitless-arms-race-200w-box-mod.html" target="_blank"
+               title="Limitless Arms Race 200W Box Mod" class="lars-product-image lars-animate">
+                <img src="/media/wysiwyg/topic/limitless-arms-sale/limitless-arms-race-lmc_10.jpg" alt="" >
+            </a>
+            <a href="/limitless-arms-race-200w-box-mod.html" target="_blank"
+               title="Limitless Arms Race 200W Box Mod">
+                <p>Arms Race 200W Box Mod</p>
+            </a>
+            <?php if (!Mage::getModel('customer/session')->isLoggedIn()): ?>
+                <p>Please <a href="/customer/account/login" title="Sign in" target="_blank">log in </a>for wholesale price</p>
+            <?php endif; ?>
+            <div class="lars-detail clearfix">
+                <span class="lars-price">
+                    <span>Discount Price :</span>
+                    <?php echo $productBlock->getPriceHtml(Mage::getModel('catalog/product')->load('1072'), true) ?>
+                </span>
+                <a class="lars-shop-buy" href="/limitless-arms-race-200w-box-mod.html" target="_blank"
+                   title="Shop Now" >Shop Now</a>
+            </div>
+        </div>
+    </div>
+    <div class="lars-note w-1200">
+        <h2>Note:</h2>
+        <p>Free DHL shipping is valid for retail customers only and valid for Countries as below: United States, Canada, France, Japan, Australia, Germany, Italy, Spain, Belgium, Netherlands, Poland, Denmark, Finland, Ireland, Sweden, Swaziland, Cyprus, Portugal, Bulgaria, Estonia, Latvia, Lithuania, Malta, Slovakia, Slovenia, Czech Republic, Hungary, Romania. If you have any questions about this, please contact Ave40 Customer Service.</p>
+    </div>
+</div>
+
+
+

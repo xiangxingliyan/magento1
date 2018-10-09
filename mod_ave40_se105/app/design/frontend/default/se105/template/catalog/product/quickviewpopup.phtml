@@ -1,0 +1,95 @@
+<?php
+/**
+ * 产品展示列表
+ * @var \Ave40_Catalog_Block_Product_List $this
+ * @var Mage_CatalogSearch_Model_Resource_Advanced_Collection $_productCollection
+ * @var Mage_Catalog_Helper_Output $_helper
+ */
+
+?>
+
+<script>
+	window.quickViewProductTimer = null;
+    /**
+     *  快速预览iframe子页面调用父页面的方法
+     */
+    function quickViewVerification() {
+        jQuery('#quickViewOpenWin').closeAve40PopupBox();
+        jQuery('#verify-wholesale-user-modal').showAve40PopupBox();
+    }
+    function closequickViewWin() {
+        jQuery('#quickViewOpenWin').closeAve40PopupBox();
+    }
+
+    function showQuickViewWin() {
+    	if(quickViewProductTimer) {
+    		clearTimeout(quickViewProductTimer);
+		}
+        jQuery('#quickViewOpenWin').showAve40PopupBox('fade');
+
+    }
+</script>
+
+<?php
+/** @var Ave40_Base_Helper_Customer $customerHelper */
+$customerHelper = Mage::helper('ave40_base/customer');?>
+<div id="quickViewOpenWin" class="esc-pop <?php echo $customerHelper->isWholesaleUser() ? 'wholesale-user':'' ?>">
+    <span class="ave40-common-close-btn iconfont icon-remove"></span>
+    <iframe id="ifareID" frameborder="0" width="100%" height="100%" scrolling="no" ></iframe>
+
+</div>
+
+<script type="text/javascript">
+    ~function ($) {
+        $(function () {
+
+            var iframe = document.getElementById('ifareID');
+            iframe.onload = function () {
+                iframe.height = iframe.contentDocument.body.scrollHeight;
+            };
+
+            $(".quickView").on('click', function () {
+                ave40.showLoading('Please waiting');
+                var proId = $(this).parent().parent().parent().attr('product_id');
+                var urlBefore = "/ave40_catalog/quickview/view/id/";
+                var url = urlBefore + proId;
+                $('#ifareID').attr('src',urlBefore + proId);
+				
+                window.quickViewProductTimer = setTimeout(function () {
+					$('#ifareID').attr('src', '');
+					Ave40MessageBox.alertError('Request timeout, please try again later');
+					ave40.closeLoading();
+				}, 15000);
+				
+                // $.ajax({
+                //     url: url,
+                //     type: 'get',
+                //     timeout: '15000',
+                //     success: function (result) {
+                //         console.log('success')
+                //     },
+                //     error: function (jqXHR, textStatus, errorThrown) {
+                //         ave40.closeLoading();
+                //         if (textStatus=='timeout'){
+                //             Ave40MessageBox.alertError('Request time out, please try again');
+                //         } else {
+                //             Ave40MessageBox.alertError('Request error, please try again');
+                //         }
+                //
+                //     }
+                // });
+
+
+
+            });
+
+            $('#quickViewOpenWin .icon-remove').on('click',function(){
+                $('#ifareID').removeAttr('src');
+                $('#quickViewOpenWin').closeAve40PopupBox();
+            });
+
+        });
+    }(jQuery)
+</script>
+
+

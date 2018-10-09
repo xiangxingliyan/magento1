@@ -1,0 +1,150 @@
+<?php
+	function _getCatClass($id, $class='selected') {
+		static $cats = null;
+		
+		if($cats === null) {
+			$cats = Mage::app()->getRequest()->getParam('cat');
+			$cats = is_array($cats) ? $cats : explode(',', $cats);
+			
+			$brands = Mage::app()->getRequest()->getParam('brands');
+			$brands = is_array($brands) ? $brands : explode(',', $brands);
+			
+			$cats = array_merge($cats, $brands);
+			$cats = array_filter(array_unique($cats));
+		}
+		
+		return in_array($id, $cats) ? $class : '';
+	}
+	
+	function theCatClass($id, $class='selected')
+	{
+		echo _getCatClass($id, $class);
+	}
+?>
+
+<?php $_categories = $this->getStoreCategories(); ?>
+<?php //$_brands = Mage::helper('ave40_brands')->getBrands(); ?>
+
+<style>
+	.nav-brands li.selected {
+		border:solid 1px #fd060a;
+	}
+	.main{
+		width: 100%;
+	}
+	.nav-container {
+		display: none;
+	}
+
+	.fixed .nav-container {
+		display: block;
+	}
+
+	.breadcrumbs {
+		display: none;
+	}
+
+	.nav-categories li.selected a {
+		color:#fd060a;
+	}
+
+	/*.nav-categories li.selected i {*/
+		/*background-position: -59px;*/
+	/*}*/
+</style>
+
+<script type='text/javascript' src="<?php echo $this->getSkinUrl('js/JKHelper.js') ?>"></script>
+
+<div class="clearance-header">
+	<div class="clearance-banner nav-banner">
+		<img src="<?php echo  $this->getSkinUrl('images/clearance/clearance.png') ?>" alt="">
+	</div>
+	
+	<!--  品牌筛选栏 开始 -->
+	<?php //if (!empty($_brands['brands_data'])): ?>
+	<!--<div class="nav-brands">-->
+	<!--	<ul class="brands-screen-list litter-brands">-->
+	<!--		--><?php //$i = 0;
+	// 		foreach ($_brands['brands_data'] as $brand): ?>
+	<!--			--><?php
+	// 			/* @var \Mage_Catalog_Model_Category $brand */
+	// 			if ($i++ > 9) break;
+	// 			?>
+	<!--			<li class="--><?php //theCatClass($brand->getData('entity_id')) ?><!--" data-id="--><?php //echo $brand->getData('entity_id') ?><!--"-->
+	<!--				class="">-->
+	<!--				<img onload="jkImageFitWrap(this)" src="--><?php //echo $brand->getImageUrl() ?><!--"-->
+	<!--					 height="70"-->
+	<!--					 alt="--><?php //echo $brand->getData('name') ?><!--" title="--><?php //echo $brand->getData('name') ?><!--"">-->
+	<!--			</li>-->
+	<!--		--><?php //endforeach; ?>
+	<!--	</ul>-->
+	<!--</div>-->
+	<?php //endif; ?>
+	<!-- ^ 品牌筛选栏 结束 -->
+	
+	<!-- 分类筛选 开始 -->
+	<?php if (count($_categories)): ?>
+	<div class="nav-categories clearance-categorys">
+		<ul>
+		<?php foreach ($_categories as $_category): ?>
+			<li class="category-<?php echo $_category->getId()?>" data-category-id="<?php echo $_category->getId()?>">
+				<a href="javascript:;" data-id="<?php echo $_category->getId()?>">
+					<i class="icon icon-<?php echo $_category->getId()?>"></i>
+					<span><?php echo $_category->getName()?></span>
+				</a>
+			</li>
+		<?php endforeach ?>
+		</ul>
+	</div>
+	<!-- ^ 分类筛选 结束 -->
+</div>
+
+<script type="text/javascript">
+	~function ($) {
+		var url = jkUrl(location.href);
+
+		var cats = url.getParam('cat', ',');
+		$('.clearance-categorys li').each(function () {
+			var cat = String($(this).data('category-id'));
+			if(-1 !== cats.indexOf(cat)) {
+				$(this).addClass('selected');
+			}
+		});
+		
+		$('.clearance-header .nav-brands li').click(function () {
+			var id = $(this).data('id');
+
+			if (id) {
+				var brands = url.getParam('brands', ',');
+				var index = brands.indexOf(String(id));
+				
+				if (index != -1) {
+					brands.splice(index, 1);
+				} else {
+					brands.push(id);
+				}
+
+				url.setParam('brands', brands).go();
+			}
+		});
+
+		$('.clearance-header .nav-categories li a').click(function () {
+			var id = $(this).data('id');
+			
+			if (id) {
+				var brands = url.getParam('cat', ',');
+				var index = brands.indexOf(String(id));
+
+				if (index != -1) {
+					brands.splice(index, 1);
+				} else {
+					brands.push(id);
+				}
+
+				url.setParam('cat', brands).go();
+			}
+		});
+	}(jQuery);
+</script>
+<?php endif ?>
+

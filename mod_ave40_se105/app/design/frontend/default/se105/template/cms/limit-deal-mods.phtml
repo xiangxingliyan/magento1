@@ -1,0 +1,119 @@
+<div class="limit-deal limit-deal-mods">
+	<!-- <div class="head"><b><i>TODAY'S</i> DEALS</b></div> -->
+	<p class="deal-nav clearfix">
+		<a href="javascript:;" class="first-nav on">Buy now</a>
+		<span class="line"></span>
+		<a href="javascript:;" class="">Coming soon</a>
+	</p>
+	<div class="js-limitTargetPro">
+		<p class="limit-deal-time">
+			<strong class="status-title">Ends in:</strong>
+			<span class="js-limitDealTime" >
+				<span class="day">00</span><span>Day </span><span class="hour">00</span>:<span class="minute">00</span>:<span class="second">00</span>
+			</span>
+		</p>
+		<p class="limit-pro">
+			<a href=""><img class="lazy" alt="" width="220" src="<?php echo $this->getSkinUrl('images/slider/slider1.jpg'); ?>" style="display: inline;"/>
+			 </a>
+		</p>
+		<div class="clearfix price-totalnum">
+			<p class="price fl">
+				<span orgp="36.74" class="my_shop_price">$36.<i>74</i></span>
+				<span class="costPrice"><span orgp="88.62" class="my_shop_price">$88.<i>62</i></span></span>
+			</p>
+			<p class="totalnum fr"><strong>17</strong> left</p>
+		</div>
+	</div>
+	<div class="js-limitTargetPro none">
+		<p class="limit-deal-time">
+			<strong class="status-title">Starts in:</strong>
+			<span class="js-limitDealTime" >
+				<span class="day">00</span><span>Day&nsbp;</span><span class="hour">00</span>:<span class="minute">00</span>:<span class="second">00</span>
+			</span>
+		</p>
+		<p class="limit-pro">
+			<a href=""><img class="lazy" alt="" width="220" src="<?php echo $this->getSkinUrl('images/slider/slider3.jpg'); ?>" style="display: inline;"/>
+			 </a>
+		</p>
+		<div class="clearfix price-totalnum">
+			<p class="price fl">
+				<span orgp="28.88" class="my_shop_price">$28.<i>88</i></span>
+				<span class="costPrice"><span orgp="88.62" class="my_shop_price">$88.<i>62</i></span></span>
+			</p>
+			<p class="totalnum fr"><strong>30</strong> left</p>
+		</div>
+	</div>
+	<div class="deal-list">
+		<ul>
+			<li>
+				<p class="pro-img fl">
+					<a href="#"><img class="lazy"   alt="" src="<?php echo $this->getSkinUrl('images/slider/slider3.jpg'); ?>" style="display: inline;"></a>
+				</p>
+				<div class="pro-detail fr">
+					<p class="pro-title"><a href="#">ASUS ABTU005 ZenPower 10050mAh Power Bank</a></p>
+					<p class="price">
+						<span orgp="20.09" class="my_shop_price">$20.<i>09</i></span>
+						<span class="deal_price">30.00</span>
+					</p>
+				</div>
+			</li>
+			<li>
+				<p class="pro-img fl">
+					<a href="#"><img class="lazy"   alt="" src="<?php echo $this->getSkinUrl('images/slider/slider1.jpg'); ?>" style="display: inline;"></a>
+				</p>
+				<div class="pro-detail fr">
+					<p class="pro-title"><a href="#">ASUS ABTU005 ZenPower 10050mAh Power Bank</a></p>
+					<p class="price">
+						<span orgp="20.09" class="my_shop_price">$20.<i>09</i></span>
+						<span class="deal_price">30.00</span>
+					</p>
+				</div>
+			</li>
+			<li>
+				<p class="pro-img fl">
+					<a href="#"><img class="lazy"   alt="" src="<?php echo $this->getSkinUrl('images/slider/slider1.jpg'); ?>" style="display: inline;"></a>
+				</p>
+				<div class="pro-detail fr">
+					<p class="pro-title"><a href="#">ASUS ABTU005 ZenPower 10050mAh Power Bank</a></p>
+					<p class="price">
+						<span orgp="20.09" class="my_shop_price">$20.<i>09</i></span>
+						<span class="deal_price">30.00</span>
+					</p>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<script>
+jQuery(function(){
+	jQuery('.deal-nav a').on('click',function(){
+		jQuery(this).addClass("on").siblings('a').removeClass("on");
+		var index = jQuery(this).index('.deal-nav a')
+		jQuery(".js-limitTargetPro:eq("+index+")").removeClass('none').siblings(".js-limitTargetPro").addClass('none')
+	})
+
+	countDown("2017/2/5 16:17:59",".limit-deal-mods .js-limitDealTime .day",".limit-deal-mods  .js-limitDealTime .hour",".limit-deal-mods  .js-limitDealTime .minute",".limit-deal-mods  .js-limitDealTime .second");
+	function countDown(time,day_elem,hour_elem,minute_elem,second_elem){
+		//if(typeof end_time == "string")
+		var end_time = new Date(time).getTime(),//月份是实际月份-1
+		//current_time = new Date().getTime(),
+		sys_second = (end_time-new Date().getTime())/1000;
+		var timer = setInterval(function(){
+			if (sys_second > 1) {
+				sys_second -= 1;
+				var day = Math.floor((sys_second / 3600) / 24);
+				var hour = Math.floor((sys_second / 3600) % 24);
+				var minute = Math.floor((sys_second / 60) % 60);
+				var second = Math.floor(sys_second % 60);
+				day_elem && jQuery(day_elem).text(day);//计算天
+				jQuery(hour_elem).text(hour<10?"0"+hour:hour);//计算小时
+				jQuery(minute_elem).text(minute<10?"0"+minute:minute);//计算分
+				jQuery(second_elem).text(second<10?"0"+second:second);// 计算秒
+
+			} else {
+				clearInterval(timer);
+			}
+		}, 1000);
+	}
+})
+</script>

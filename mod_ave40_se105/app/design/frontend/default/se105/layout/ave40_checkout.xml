@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<layout version="1.0.0">
+    <ave40checkout_cart_index>
+        <label>Shopping Cart</label>
+        <!-- Mage_Checkout -->
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/ave40_cart.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="core/template" template="checkout/ave40_cart.phtml" name="ave40checkout_cart" />
+        </reference>
+        <block type="core/text_list" name="additional.product.info" translate="label">
+            <label>Additional Product Info</label>
+        </block>
+    </ave40checkout_cart_index>
+
+    <ave40checkout_index_repay>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/ave40checkout.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="ave40_checkout/order_detail" name="_order_detail" template="ave40_checkout/order_details.phtml"/>
+            <block type="ave40_checkout/order_detail" name="_payment_address" template="ave40_checkout/payment_address.phtml"/>
+            <block type="ave40_checkout/order_detail" name="_payment_methods" template="ave40_checkout/payment_methods.phtml"/>
+            <remove name="cart_sidebar" />
+            <remove name="right.permanent.callout" />
+            <remove name="right.poll" />
+            <remove name="sale.reorder.sidebar" />
+            <block type="ave40_checkout/order_detail" name="_payment_info" template="ave40_checkout/payment_info.phtml"/>
+        </reference>
+    </ave40checkout_index_repay>
+
+    <ave40checkout_index_success>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/ave40checkout.css</name></action>
+        </reference>
+        <reference name="right">
+            <remove name="cart_sidebar" />
+            <remove name="right.permanent.callout" />
+            <remove name="right.poll" />
+            <remove name="sale.reorder.sidebar" />
+        </reference>
+        <reference name="content">
+            <block type="ave40_checkout/order_detail" name="_payment_methods" template="ave40_checkout/success.phtml"/>
+        </reference>
+    </ave40checkout_index_success>
+</layout>

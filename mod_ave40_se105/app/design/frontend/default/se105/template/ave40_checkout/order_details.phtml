@@ -1,0 +1,73 @@
+<?php
+/** @var Ave40_Checkout_Block_Order_Detail $this */
+	$orderInfo = $this->getOrderInfo();
+    $_orderInfo = $orderInfo['orderInfo'];
+?>
+
+<div class="ave40-step clearfix">
+    <dl class="first-step doing">
+        <dt>1</dt>
+        <dd>1. view the shoppingcart</dd>
+    </dl>
+    <dl class="second-step doing">
+        <dt>2</dt>
+        <dd>2. check out</dd>
+    </dl>
+    <dl class="last-step undone">
+        <dt>3</dt>
+        <dd>3. Complete payment</dd>
+    </dl>
+</div>
+
+<div class="cart-order-details">
+<h3 class="pay-info-title"> <span>Order details (Order number: <?php echo $this->getOrder()->getIncrementId() ?>)</span>
+    <!--							<span class="drop-down"></span>--> </h3>
+<div id="review_partial" class="cart-toggle-module">
+    <div class="order-review" id="checkout-review-load">
+        <div id="checkout-review-table-wrapper" class="mobile-table">
+            <table class="table data-table" id="checkout-review-table" cellspacing="0">
+                <colgroup>
+                    <col width="1" />
+                    <col width="1" />
+                    <col width="1" />
+                    <col width="1" />
+                    <col width="1" />
+                </colgroup>
+                <thead>
+                <tr>
+                    <th rowspan="1">Selected Item(s)</th>
+                    <th colspan="1" class="a-center">Unit Price</th>
+                    <th rowspan="1" wrap="wrap" class="a-center">Qty</th>
+                    <th colspan="1" class="a-center">Subtotal</th>
+                    <!--<th colspan="1" class="a-center remove-item-diplay" style="display: none;"></th> -->
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($orderInfo['item'] as $item): ?>
+                    <tr class="cart-product-info ">
+                        <td class="a-left checkout-product-details">
+                            <div class="cart-item-img">
+                                <img src="<?php echo  $item['product_img']; ?>" alt="<?php echo  $item['name']; ?>" />
+                            </div>
+                            <div class="cart-product-params">
+                                <h3 class="product-name"><a title="<?php echo  $item['name']; ?>" href="<?php echo  $item['product_obj']->getProductUrl(); ?>"><?php echo  $item['name']; ?></a> </h3>
+								<div class="attribute">
+									<?php $pruduct_options = unserialize($item['product_options']); ?>
+									<ul>
+										<?php foreach($pruduct_options['attributes_info'] as $attribute): ?>
+										 	<li><span class="label"><?php echo $attribute['label']; ?>:<span><span class="value"><?php echo $attribute['value']; ?><span></li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+                            </div> </td>
+                        <td class="a-center checkout-product-price"> <span class="cart-price"> <span class="price"><?php echo $formattedPrice = Mage::helper('core')->currency($item['price'], true, false); ?></span> </span> </td>
+                        <td class="a-center checkout-product-qty" nowrap=""> <span ><span><?php echo (int)$item['qty_ordered']; ?></span> </td>
+                        <td class="a-center cart-subtotal-price"> <span class="cart-price"> <span class="price"><?php echo $formattedPrice = Mage::helper('core')->currency($item['row_total'], true, false); ?></span> </span> </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>

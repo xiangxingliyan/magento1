@@ -1,0 +1,331 @@
+/**
+上部搜索条件选中高亮
+ */
+.search-page li.user-selected {
+    border:solid 1px #e10b0b;
+}
+
+li.user-selected:before,.color-on:before {
+    background: url('../../images/search/select.png') no-repeat center;
+    content: " ";
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    right: -5px;
+    bottom: -4px;
+}
+
+.additional-filter .color-screen-list {
+    padding: 2px 4px;
+}
+
+.additional-filter .color-screen-list a {
+    width:100%;
+    height:100%;
+    display:inline-block;
+}
+
+.additional-filter .choose-more-list .color-screen-list {
+    min-width: 44px;
+    white-space: nowrap;
+}
+
+/**
+附加条件筛选选中高亮
+ */
+.additional-filter .user-selected {
+    border:solid 1px #e10b0b !important;
+    position: relative;
+}
+
+/**
+附加条件选项样式
+ */
+.additional-filter.additional-color .color-screen-list {
+    border:solid 1px #d4d4d4;
+    padding: 2px;
+    user-select: none;
+}
+
+/**
+用户排序高亮
+ */
+a.user-sort {
+    color:#e10b0b;
+}
+
+/* 搜索左侧分类选中 */
+.search-page .parentMenu .user-selected {
+    color: #ff8a00;
+}
+
+.big-deal-screen label,
+.big-deal-screen input {
+    cursor:pointer;
+}
+
+.big-deal-screen label.user-selected {
+    color:orange;
+}
+
+.choose-more {
+    box-shadow: 0 0 9px grey;
+    border: solid 1px white;
+    left: -1px;
+    /*overflow: hidden;*/
+    /*height: 300px;*/
+}
+
+.choose-more-box {
+    /*height: 100%;*/
+    /*padding-bottom: 50px;*/
+    border:none;
+    overflow: auto;
+}
+
+.choose-more .choose-more-operation {
+    /*position: absolute;*/
+    /*bottom: 0;*/
+    /*width:100%;*/
+    /*background:white;*/
+}
+
+
+
+
+/* begin - 颜色筛选 */
+/*.search-main-left .additional-filter.additional-color .additional-val { width:30px; }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-aliceblue {  color:AliceBlue ; background: AliceBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-antiquewhite {  color:AntiqueWhite ; background: AntiqueWhite ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-aqua {  color:Aqua ; background: Aqua ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-aquamarine {  color:Aquamarine ; background: Aquamarine ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-azure {  color:Azure ; background: Azure ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-beige {  color:Beige ; background: Beige ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-bisque {  color:Bisque ; background: Bisque ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-black {  color:Black ; background: Black ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-blanchedalmond {  color:BlanchedAlmond ; background: BlanchedAlmond ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-blue {  color:Blue ; background: Blue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-blueviolet {  color:BlueViolet ; background: BlueViolet ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-brown {  color:Brown ; background: Brown ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-burlywood {  color:BurlyWood ; background: BurlyWood ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-cadetblue {  color:CadetBlue ; background: CadetBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-chartreuse {  color:Chartreuse ; background: Chartreuse ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-chocolate {  color:Chocolate ; background: Chocolate ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-coral {  color:Coral ; background: Coral ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-cornflowerblue {  color:CornflowerBlue ; background: CornflowerBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-cornsilk {  color:Cornsilk ; background: Cornsilk ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-crimson {  color:Crimson ; background: Crimson ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-cyan {  color:Cyan ; background: Cyan ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkblue {  color:DarkBlue ; background: DarkBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkcyan {  color:DarkCyan ; background: DarkCyan ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkgoldenrod {  color:DarkGoldenRod ; background: DarkGoldenRod ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkgray {  color:DarkGray ; background: DarkGray ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkgreen {  color:DarkGreen ; background: DarkGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkkhaki {  color:DarkKhaki ; background: DarkKhaki ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkmagenta {  color:DarkMagenta ; background: DarkMagenta ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkolivegreen {  color:DarkOliveGreen ; background: DarkOliveGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkorange {  color:DarkOrange ; background: DarkOrange ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkorchid {  color:DarkOrchid ; background: DarkOrchid ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkred {  color:DarkRed ; background: DarkRed ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darksalmon {  color:DarkSalmon ; background: DarkSalmon ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkseagreen {  color:DarkSeaGreen ; background: DarkSeaGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkslateblue {  color:DarkSlateBlue ; background: DarkSlateBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkslategray {  color:DarkSlateGray ; background: DarkSlateGray ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkturquoise {  color:DarkTurquoise ; background: DarkTurquoise ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-darkviolet {  color:DarkViolet ; background: DarkViolet ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-deeppink {  color:DeepPink ; background: DeepPink ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-deepskyblue {  color:DeepSkyBlue ; background: DeepSkyBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-dimgray {  color:DimGray ; background: DimGray ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-dodgerblue {  color:DodgerBlue ; background: DodgerBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-firebrick {  color:FireBrick ; background: FireBrick ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-floralwhite {  color:FloralWhite ; background: FloralWhite ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-forestgreen {  color:ForestGreen ; background: ForestGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-fuchsia {  color:Fuchsia ; background: Fuchsia ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-gainsboro {  color:Gainsboro ; background: Gainsboro ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-ghostwhite {  color:GhostWhite ; background: GhostWhite ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-gold {  color:Gold ; background: Gold ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-goldenrod {  color:GoldenRod ; background: GoldenRod ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-gray {  color:Gray ; background: Gray ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-green {  color:Green ; background: Green ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-greenyellow {  color:GreenYellow ; background: GreenYellow ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-honeydew {  color:HoneyDew ; background: HoneyDew ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-hotpink {  color:HotPink ; background: HotPink ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-indianred {  color:IndianRed  ; background: IndianRed  ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-indigo {  color:Indigo  ; background: Indigo  ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-ivory {  color:Ivory ; background: Ivory ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-khaki {  color:Khaki ; background: Khaki ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lavender {  color:Lavender ; background: Lavender ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lavenderblush {  color:LavenderBlush ; background: LavenderBlush ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lawngreen {  color:LawnGreen ; background: LawnGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lemonchiffon {  color:LemonChiffon ; background: LemonChiffon ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightblue {  color:LightBlue ; background: LightBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightcoral {  color:LightCoral ; background: LightCoral ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightcyan {  color:LightCyan ; background: LightCyan ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightgoldenrodyellow {  color:LightGoldenRodYellow ; background: LightGoldenRodYellow ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightgray {  color:LightGray ; background: LightGray ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightgreen {  color:LightGreen ; background: LightGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightpink {  color:LightPink ; background: LightPink ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightsalmon {  color:LightSalmon ; background: LightSalmon ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightseagreen {  color:LightSeaGreen ; background: LightSeaGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightskyblue {  color:LightSkyBlue ; background: LightSkyBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightslategray {  color:LightSlateGray ; background: LightSlateGray ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightsteelblue {  color:LightSteelBlue ; background: LightSteelBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lightyellow {  color:LightYellow ; background: LightYellow ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-lime {  color:Lime ; background: Lime ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-limegreen {  color:LimeGreen ; background: LimeGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-linen {  color:Linen ; background: Linen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-magenta {  color:Magenta ; background: Magenta ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-maroon {  color:Maroon ; background: Maroon ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-mediumaquamarine {  color:MediumAquaMarine ; background: MediumAquaMarine ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-mediumblue {  color:MediumBlue ; background: MediumBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-mediumorchid {  color:MediumOrchid ; background: MediumOrchid ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-mediumpurple {  color:MediumPurple ; background: MediumPurple ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-mediumseagreen {  color:MediumSeaGreen ; background: MediumSeaGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-mediumslateblue {  color:MediumSlateBlue ; background: MediumSlateBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-mediumspringgreen {  color:MediumSpringGreen ; background: MediumSpringGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-mediumturquoise {  color:MediumTurquoise ; background: MediumTurquoise ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-mediumvioletred {  color:MediumVioletRed ; background: MediumVioletRed ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-midnightblue {  color:MidnightBlue ; background: MidnightBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-mintcream {  color:MintCream ; background: MintCream ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-mistyrose {  color:MistyRose ; background: MistyRose ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-moccasin {  color:Moccasin ; background: Moccasin ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-navajowhite {  color:NavajoWhite ; background: NavajoWhite ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-navy {  color:Navy ; background: Navy ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-oldlace {  color:OldLace ; background: OldLace ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-olive {  color:Olive ; background: Olive ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-olivedrab {  color:OliveDrab ; background: OliveDrab ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-orange {  color:Orange ; background: Orange ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-orangered {  color:OrangeRed ; background: OrangeRed ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-orchid {  color:Orchid ; background: Orchid ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-palegoldenrod {  color:PaleGoldenRod ; background: PaleGoldenRod ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-palegreen {  color:PaleGreen ; background: PaleGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-paleturquoise {  color:PaleTurquoise ; background: PaleTurquoise ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-palevioletred {  color:PaleVioletRed ; background: PaleVioletRed ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-papayawhip {  color:PapayaWhip ; background: PapayaWhip ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-peachpuff {  color:PeachPuff ; background: PeachPuff ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-peru {  color:Peru ; background: Peru ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-pink {  color:Pink ; background: Pink ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-plum {  color:Plum ; background: Plum ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-powderblue {  color:PowderBlue ; background: PowderBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-purple {  color:Purple ; background: Purple ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-red {  color:Red ; background: Red ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-rosybrown {  color:RosyBrown ; background: RosyBrown ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-royalblue {  color:RoyalBlue ; background: RoyalBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-saddlebrown {  color:SaddleBrown ; background: SaddleBrown ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-salmon {  color:Salmon ; background: Salmon ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-sandybrown {  color:SandyBrown ; background: SandyBrown ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-seagreen {  color:SeaGreen ; background: SeaGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-seashell {  color:SeaShell ; background: SeaShell ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-sienna {  color:Sienna ; background: Sienna ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-silver {  color:Silver ; background: Silver ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-skyblue {  color:SkyBlue ; background: SkyBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-slateblue {  color:SlateBlue ; background: SlateBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-slategray {  color:SlateGray ; background: SlateGray ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-snow {  color:Snow ; background: Snow ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-springgreen {  color:SpringGreen ; background: SpringGreen ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-steelblue {  color:SteelBlue ; background: SteelBlue ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-tan {  color:Tan ; background: Tan ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-teal {  color:Teal ; background: Teal ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-thistle {  color:Thistle ; background: Thistle ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-tomato {  color:Tomato ; background: Tomato ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-turquoise {  color:Turquoise ; background: Turquoise ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-violet {  color:Violet ; background: Violet ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-wheat {  color:Wheat ; background: Wheat ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-white {  color:White ; background: White ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-whitesmoke {  color:WhiteSmoke ; background: WhiteSmoke ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-yellow {  color:Yellow ; background: Yellow ;  }*/
+/*.search-main-left .additional-filter.additional-color .additional-val-yellowgreen {  color:YellowGreen ; background: YellowGreen ;  }*/
+
+/* end - 颜色筛选 */
+
+
+/*
+   搜索页 推荐产品、博客文章模块
+*/
+.search-recommend-product-content,.search-blog-content,.search-word-content{
+    width: 980px;
+    padding-left: 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-bottom: 50px;
+}
+.search-blog-content{
+    margin-bottom: 10px;
+    
+}
+
+.search-page .stairsSection-list,.search-page .home-box .head{
+    background: #fff;
+}
+.search-blog-content .home-box.stairsSection{
+    width: 100%;
+}
+
+.search-main .home-box .head span{
+    height: 19px;
+    line-height: 23px;
+    font-size: 18px;
+    color: #666;
+    padding-left: 13px;
+}
+.search-word-content{
+    background: #fff;
+}
+
+.search-recommend-product-content .head {
+    border-top: 1px solid #eceaea;
+    padding-top: 20px;
+}
+.search-word-content p{
+    line-height: 1.5;
+}
+
+
+#selected_items {
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+#left-screen-box > li.search-filter-operating{
+    padding: 0 10px;
+}
+
+a.search-clean-all {
+    float: right;
+    color: #fff;
+    width: 68px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    background-color: #e10b0b;
+    border-radius: 2px;
+}
+
+#selected_items li:not(:first-child) {
+    display: inline-block;
+    padding: 2px 4px;
+    border: 1px solid #929292;
+    margin: 5px 8px 8px 5px;
+    border-radius: 2px;
+    position: relative;
+}
+
+.search-filter-operating .remove {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+    background: url("../../images/search/close.png") no-repeat center;
+}
+
+.options-title{
+    margin-bottom: 20px;
+}
+
+.tpd-filter{
+    margin-left: 0.5rem;
+}

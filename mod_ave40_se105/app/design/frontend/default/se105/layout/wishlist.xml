@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<default>
+		<reference name="top.links">
+			<block type="wishlist/links" name="wishlist_link" />
+			<action method="addLinkBlock"><blockName>wishlist_link</blockName></action>
+		</reference>
+
+		<reference name="left">
+			<!--
+			<block type="wishlist/customer_sidebar" name="wishlist_sidebar" as="wishlist" after="cart_sidebar" template="wishlist/sidebar.phtml" />
+			-->
+		</reference>
+	</default>
+
+	<customer_account>
+
+		<reference name="customer_account_navigation">
+			<action method="addLink" translate="label" module="wishlist" ifconfig="wishlist/general/active"><name>wishlist</name><path>wishlist/</path><label>My Wishlist</label></action>
+		</reference>
+	</customer_account>
+
+	<customer_account_index>
+		<reference name="right">
+			<action method="unsetChild"><name>wishlist</name></action>
+		</reference>
+	</customer_account_index>
+
+	<wishlist_index_index translate="label">
+		<label>Customer My Account My Wishlist</label>
+		<!-- Mage_Wishlist -->
+		<update handle="customer_account" />
+		<reference name="my.account.wrapper">
+			<block type="wishlist/customer_wishlist" name="customer.wishlist" template="wishlist/view.phtml">
+				<action method="setTitle" translate="title">
+					<title>My Wishlist</title>
+				</action>
+
+				<block type="ave40_catalog/product_list" name="wishlist_product_list" template="wishlist/product-list.phtml" />
+			</block>
+		</reference>
+		<reference name="right">
+			<action method="unsetChild"><name>wishlist_customer_sidebar</name></action>
+		</reference>
+
+		<reference name="left">
+			<!--<remove name="wishlist_sidebar"/>-->
+			<!--<remove name="reorder"/>-->
+			<!--<action method="unsetChild"><name>wishlist_customer_sidebar</name></action>-->
+			<action method="unsetChild"><as>reorder</as></action>
+			<action method="unsetChild"><as>wishlist</as></action>
+		</reference>
+	</wishlist_index_index>
+
+	<wishlist_index_share translate="label">
+		<label>Customer My Account Wishlist Sharing Form</label>
+
+		<update handle="customer_account" />
+		<reference name="my.account.wrapper">
+			<block type="wishlist/customer_sharing" name="wishlist.sharing" template="wishlist/sharing.phtml" />
+		</reference>
+		<reference name="right">
+			<action method="unsetChild"><name>wishlist_customer_sidebar</name></action>
+		</reference>
+	</wishlist_index_share>
+
+	<wishlist_index_configure translate="label">
+		<label>Configure Wishlist Item</label>
+		<update handle="catalog_product_view" />
+		<reference name="product.info">
+			<block type="wishlist/item_configure" name="product.info.addto" as="addto" template="wishlist/item/configure/addto.phtml" />
+		</reference>
+		<reference name="product.info.options.wrapper.bottom">
+			<action method="unsetChild"><name>product.info.addto</name></action>
+			<action method="append"><block>product.info.addto</block></action>
+		</reference>
+	</wishlist_index_configure>
+
+	<wishlist_shared_index translate="label">
+		<label>Customer Shared Wishlist View</label>
+
+		<reference name="content">
+			<block type="wishlist/share_wishlist" name="customer.wishlist" template="wishlist/shared.phtml" />
+		</reference>
+	</wishlist_shared_index>
+</layout>

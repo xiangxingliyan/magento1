@@ -1,0 +1,369 @@
+<?php
+/** @var Ave40_Base_Helper_Customer $customerHelper */
+$customerHelper = Mage::helper('ave40_base/customer');
+$product1 = Mage::getModel('catalog/product')->load(318789);
+$product2 = Mage::getModel('catalog/product')->load(320482);
+$time1 = (int)strtotime($product1->getData('special_to_date'))-time();
+$time2 = (int)strtotime($product2->getData('special_to_date'))-time();
+
+/* @var Mage_Catalog_Block_Product_List $productBlock */
+$productBlock = Mage::app()->getLayout()->createBlock('catalog/product_list');
+?>
+
+<style>
+    .exclusive-banner{
+        width: 100%;
+        padding-top: 32.291666%;
+        background-image: url("<?php echo ave40_sitedata('活动推广/独家页面/product_01/banner');  ?>") ;
+        background-size: cover;
+    }
+
+    .exclusive-product-item{
+        position: relative;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+
+    .exclusive-product-item.medea{
+        background-image: url("<?php echo ave40_sitedata('活动推广/独家页面/product_02/banner');  ?>");
+        padding-top: 42%;
+        margin-top: -20px;
+    }
+
+    .exclusive-words {
+        position: absolute;
+        font-size: 14px;
+        line-height: 1.9;
+    }
+
+    .exclusive-product-item.medea .exclusive-words{
+        color: #cdc6bf;
+        top: 35%;
+        left: 10%;
+    }
+
+    .exclusive-banner .exclusive-words{
+        bottom: 21%;
+        left: 23%;
+    }
+
+    .product-price .special-price .price,.product-price .regular-price .price{
+        color: #e5ded7;
+        font-size: 25px;
+        font-family: opensans-bold;
+    }
+
+    .product-price .old-price .price{
+        font-size: 14px;
+        color: #999;
+        margin-left: 10px;
+    }
+
+    .exclusive-banner .product-price .special-price .price,.exclusive-banner .product-price .regular-price .price{
+        font-size: 40px;
+        color: #b71424;
+        vertical-align: sub;
+    }
+
+    .exclusive-banner .product-price .old-price .price{
+        font-size: 20px;
+    }
+
+    .exclusive-product-item .product-price{
+        margin-top: 20px;
+    }
+
+    .buy-now-btn {
+        margin-top: 25px;
+        display: block;
+        margin-left: -20px;
+    }
+
+    .exclusive-product-item.vladdin{
+        background-image: url("<?php echo ave40_sitedata('活动推广/独家页面/product_03/banner');  ?>");
+        padding-top: 42%;
+    }
+
+    .exclusive-product-item.vladdin .exclusive-words{
+        left: 39%;
+        top: 35%;
+        color: #7b7b7b;
+    }
+
+    .exclusive-product-item.vladdin .product-price .special-price .price,.exclusive-product-item.vladdin .product-price .regular-price .price{
+        color: #5f5f5f;
+    }
+
+    .exclusive-product-item.nikola{
+        background-image: url("<?php echo ave40_sitedata('活动推广/独家页面/product_04/banner');  ?>");
+        padding-top: 48.08%;
+    }
+
+    .exclusive-product-item.nikola .exclusive-words{
+        top: 37%;
+        left: 10%;
+        width: 38%;
+    }
+
+    .exclusive-product-item.nikola .product-price .special-price .price,.exclusive-product-item.nikola .product-price .regular-price .price{
+        color: #5f5f5f;
+    }
+
+    .exclusive-product-item.medea:before{
+        content: '';
+        position: absolute;
+        left: -12px;
+        top: 0;
+        border-right: solid 12px #851c1b;
+        border-top: solid 20px transparent;
+    }
+
+    .exclusive-product-item.medea:after{
+        content: '';
+        position: absolute;
+        right: -12px;
+        top: 0;
+        border-left: solid 12px #851c1b;
+        border-top: solid 20px transparent;
+    }
+
+    .exclusive-product-list .a-link{
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .exclusive-product-item a.words-link{
+        color: currentColor!important;
+    }
+
+
+    @media screen and (max-width: 940px){
+        .exclusive-banner .exclusive-words {
+            bottom: 15%;
+            left: 6%;
+        }
+
+        .product-price .special-price .price, .product-price .regular-price .price{
+            font-size: 18px!important;
+        }
+
+        .product-price .old-price .price{
+            font-size: 12px!important;
+        }
+
+        .exclusive-product-item .product-price{
+            margin-top: 10px;
+        }
+
+        .buy-now-btn {
+            margin-top: 15px;
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        .exclusive-banner{
+            background-image: url("<?php echo ave40_sitedata('活动推广/独家页面/product_01/mobile_banner');  ?>") ;
+            padding-top: 56.8%;
+        }
+
+        .exclusive-product-item.medea{
+            background-image: url("<?php echo ave40_sitedata('活动推广/独家页面/product_02/mobile_banner');  ?>");
+            padding-top: 52.8%;
+        }
+
+		.exclusive-product-item.vladdin{
+			background-image: url("<?php echo ave40_sitedata('活动推广/独家页面/product_03/mobile_banner');  ?>");
+			padding-top: 47.6%;
+		}
+
+		.exclusive-product-item.nikola{
+            background-image: url("<?php echo ave40_sitedata('活动推广/独家页面/product_04/mobile_banner');  ?>");
+            padding-top: 54.13%;
+        }
+
+
+        .exclusive-words {
+            line-height: 1.4;
+            font-size: 12px;
+        }
+
+        .exclusive-product-item.medea .exclusive-words{
+            left: 4%;
+            top: 38%;
+            color: #cdc6bf;
+        }
+
+        .exclusive-product-item.medea .product-price .special-price .price,.exclusive-product-item.medea .product-price .regular-price .price{
+            color: #5f5f5f;
+        }
+
+        .buy-now-btn{
+            display: none;
+        }
+
+        .exclusive-product-item .product-price{
+            margin-top: 5px;
+        }
+
+        .exclusive-product-item.vladdin .exclusive-words {
+            left: 33%;
+            top: 18%;
+
+        }
+
+        .exclusive-product-item.nikola .exclusive-words {
+            top: 26%;
+            left: 4%;
+            color: #7b7b7b;
+            width: 45%;
+        }
+
+        .exclusive-product-item.nikola .product-price .special-price .price, .exclusive-product-item.nikola .product-price .regular-price .price {
+            color: #e5ded7;
+        }
+
+        .exclusive-product-item.medea:after,.exclusive-product-item.medea:before{
+            display: none;
+        }
+
+    }
+
+
+</style>
+
+<div class="exclusive-bg">
+
+    <div class="exclusive-compare">
+        <a href="<?php echo ave40_sitedata('活动推广/独家页面/product_01/banner_url');  ?>" alt="<?php echo ave40_sitedata('活动推广/独家页面/product_01/banner_title');  ?>"
+		   title="<?php echo ave40_sitedata('活动推广/独家页面/product_01/banner_title');  ?>">
+            <div class="exclusive-banner exclusive-product-item">
+                <div class="exclusive-words">
+                    <div class="product-price">
+                        <?php echo $productBlock->getPriceHtml(Mage::getModel('catalog/product')->load(ave40_sitedata('活动推广/独家页面/product_01/product_id')), true) ?>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+    </div>
+
+    <div class="exclusive-product-list w-1200">
+            <div class="exclusive-product-item medea">
+                <a href="<?php echo ave40_sitedata('活动推广/独家页面/product_02/banner_url');  ?>" title="<?php echo ave40_sitedata('活动推广/独家页面/product_02/banner_title');  ?>" target="_blank" class="a-link"></a>
+                <div class="exclusive-words">
+                    <a href="<?php echo ave40_sitedata('活动推广/独家页面/product_02/banner_url');  ?>" class="words-link" target="_blank">
+                        <p>Dual 18650 battery up to 218W</p>
+                        <p>0.96-inch OLED display</p>
+                        <p>1.5A Micro USB charging</p>
+                    </a>
+                    <div class="product-price">
+                        <?php echo $productBlock->getPriceHtml(Mage::getModel('catalog/product')->load(ave40_sitedata('活动推广/独家页面/product_02/product_id')), true) ?>
+                    </div>
+                    <a href="<?php echo ave40_sitedata('活动推广/独家页面/product_02/banner_url');  ?>" class="buy-now-btn" target="_blank" title="Buy Now">
+                        <img src="/media/wysiwyg/topic/exclusive/buy-now.png" alt="buy-now">
+                    </a>
+                </div>
+            </div>
+
+            <div class="exclusive-product-item vladdin">
+                <a href="<?php echo ave40_sitedata('活动推广/独家页面/product_03/banner_url');  ?>" title="<?php echo ave40_sitedata('活动推广/独家页面/product_03/banner_title');  ?>" target="_blank" class="a-link" ></a>
+                <div class="exclusive-words">
+                    <a href="<?php echo ave40_sitedata('活动推广/独家页面/product_03/banner_url');  ?>" class="words-link" target="_blank">
+                        <p>Vladdin with closed loop system has been strengthened the</p>
+                        <p>atomization technique to make the particles smaller</p>
+                        <p>and easier to absorb the nicotine</p>
+                    </a>
+                    <div class="product-price ">
+                        <?php echo $productBlock->getPriceHtml(Mage::getModel('catalog/product')->load(ave40_sitedata('活动推广/独家页面/product_03/product_id')), true) ?>
+                    </div>
+                    <a href="<?php echo ave40_sitedata('活动推广/独家页面/product_03/banner_url');  ?>" class="buy-now-btn" title="Buy Now" target="_blank">
+                        <img src="/media/wysiwyg/topic/exclusive/buy-now.png" alt="buy-now">
+                    </a>
+                </div>
+            </div>
+
+            <div class="exclusive-product-item nikola">
+                <a href="<?php echo ave40_sitedata('活动推广/独家页面/product_04/banner_url');  ?>" target="_blank" title="<?php echo ave40_sitedata('活动推广/独家页面/product_04/banner_title');  ?>" class="a-link"></a>
+                <div class="exclusive-words">
+                    <a href="<?php echo ave40_sitedata('活动推广/独家页面/product_04/banner_url');  ?>" class="words-link">
+                        6ml Squonker - large tank capacity and comes with a RDA for large cloud Regulated 7-200W, adjustable wattage and stable output
+                    </a>
+                    <div class="product-price ">
+                        <?php echo $productBlock->getPriceHtml(Mage::getModel('catalog/product')->load(ave40_sitedata('活动推广/独家页面/product_04/product_id')), true) ?>
+                    </div>
+                    <a href="<?php echo ave40_sitedata('活动推广/独家页面/product_04/banner_url');  ?>" class="buy-now-btn" title="Buy Now" target="_blank">
+                        <img src="/media/wysiwyg/topic/exclusive/buy-now.png" alt="buy-now">
+                    </a>
+                </div>
+            </div>
+
+    </div>
+
+    <div class="exclusive-product">
+        <div class="exclusive-header">
+            <h1>EXCLUSIVE</h1>
+        </div>
+        <div class="feature-product-list exclusive-product-list">
+            <?php echo Mage::app()->getLayout()->createBlock('ave40_catalog/products')->setTemplate('cms/activity/brand_campaign/brand-campaign-product-items.phtml')
+                ->setData('categories', ave40_sitedata('global_category_specify/exclusive', 1043))
+                ->setData('sort', 'position desc')
+                ->setData('enable_pagination', '1')
+                ->setData('pagination_page_size', '12')
+                ->setData('image_size', '230,230')
+                ->setData('mouse_over_tools', '0')->toHtml() ?>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    ~function ($) {
+        $(function () {
+
+            var result1=Math.floor(<?php echo $time1; ?>);
+            var result2=Math.floor(<?php echo $time2; ?>);
+            var interval=setInterval(sub,1000);
+            function sub(){
+                if (result1>1||result2>1) {
+                    result1 = result1 - 1;
+                    var second1 = Math.floor(result1 % 60);
+                    var minite1 = Math.floor((result1 / 60) % 60);
+                    var hour1 = Math.floor((result1 / 3600) % 24);
+                    var day1 = Math.floor(result1 / (3600*24));
+                    hour1 = hour1 + 24*day1;
+                    $(".exhour1").html(hour1);
+                    $(".exminites1").html(minite1);
+                    $(".exseconds1").html(second1);
+
+                    result2 = result2 - 1;
+                    var second2 = Math.floor(result2 % 60);
+                    var minite2 = Math.floor((result2 / 60) % 60);
+                    var hour2 = Math.floor((result2 / 3600) % 24);
+                    var day2 = Math.floor(result2 / (3600*24));
+                    hour2 = hour2 + 24*day2;
+                    $(".exhour2").html(hour2);
+                    $(".exminites2").html(minite2);
+                    $(".exseconds2").html(second2);
+                }
+                else{
+                    $(".exhour1").html('00');
+                    $(".exminites1").html('00');
+                    $(".exseconds1").html('00');
+                    clearInterval(interval);
+                }
+            };
+
+
+        })
+    }(jQuery)
+</script>
+
+
+
+
+
+
